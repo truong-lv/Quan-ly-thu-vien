@@ -17,19 +17,19 @@ import javax.persistence.Table;
  *
  * @author Phat
  */
-@Table(name = "NganKeSach")
+//@Table(name = "NganKeSach")
 public class NganKeSach {
 
     private String maNganKe;
     private String tenNgan;
     private String maKe;
 
-    @ManyToOne()
-    @JoinColumn(name = "maKe")
-    private KeSach keSach;
-
-    @OneToMany(mappedBy = "sach", fetch = FetchType.EAGER)
-    private List<Sach> cacSach;
+//    @ManyToOne()
+//    @JoinColumn(name = "maKe")
+//    private KeSach keSach;
+//
+//    @OneToMany(mappedBy = "sach", fetch = FetchType.EAGER)
+//    private List<Sach> cacSach;
 
     public String getMaNganKe() {
         return maNganKe;
@@ -55,12 +55,12 @@ public class NganKeSach {
         this.maKe = maKe;
     }
 
-    public KeSach getKeSach() {
-        return keSach;
-    }
-
-    public void setKeSach(KeSach keSach) {
-        this.keSach = keSach;
-    }
+//    public KeSach getKeSach() {
+//        return keSach;
+//    }
+//
+//    public void setKeSach(KeSach keSach) {
+//        this.keSach = keSach;
+//    }
 
 }
