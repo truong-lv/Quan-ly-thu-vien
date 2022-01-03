@@ -4,13 +4,17 @@ package Form;
 import Code.HamXuLyBang;
 import Code.LoadThoiGian;
 import Code.ThuVien;
+import Form.QuanLy.PnQlyDoanhThu;
 import Form.ThuThu.PnQlyMuonSach;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 public class GDChinh extends javax.swing.JFrame {
 
     HamXuLyBang xLBang=new HamXuLyBang();
-    public GDChinh() {
+    public GDChinh() throws SQLException {
         initComponents();
         LbUserAcc.setText(ThuVien.Account);
         LbUserName.setText(ThuVien.hoTen);
@@ -21,7 +25,7 @@ public class GDChinh extends javax.swing.JFrame {
     }
     
     // LOAD TỪNG PANEL CHỨC NĂNG  VÀO GIAO DIỆN CHÍNH DỰA THEO QUYỀN TRUY CẬP CỦA TỪNG ĐỐI TƯỢNG
-    private void loadGiaoDien(){
+    private void loadGiaoDien() throws SQLException{
         
         // CHỨC NĂNG CHO KHÁCH
         switch (ThuVien.quyen) {
@@ -34,6 +38,9 @@ public class GDChinh extends javax.swing.JFrame {
             case "Quản lý":
 //            PnQLyNhanVien qlyNV =new PnQLyNhanVien();
 //            addPanel(qlyNV, "QLÝ NHÂN VIÊN", "/image/user-icon11.png");
+                PnQlyDoanhThu qlyDT =new PnQlyDoanhThu();
+                addPanel(qlyDT, "QLÝ DOANH THU", "/image/user-icon11.png");
+                
                 break;
                 
             case "Thủ thư":
@@ -180,7 +187,8 @@ public class GDChinh extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnInfor, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tbPnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE))
+                .addComponent(tbPnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tbPnMenu.getAccessibleContext().setAccessibleName("QLÝ VÉ XE");
@@ -205,7 +213,7 @@ public class GDChinh extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -227,7 +235,11 @@ public class GDChinh extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GDChinh().setVisible(true);
+                try {
+                    new GDChinh().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(GDChinh.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

@@ -13,6 +13,9 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -26,7 +29,7 @@ public class Login extends javax.swing.JFrame {
         txtTK.setText(ThuVien.Account);
         
     }
-    public  void loadAccount(){
+    public  void loadAccount() throws SQLException{
         boolean checkLogin=false;
         Connection connect=Code.KetNoi.layKetNoi();
         String tk=txtTK.getText();
@@ -167,21 +170,33 @@ public class Login extends javax.swing.JFrame {
     private void psMatkhauKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_psMatkhauKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            loadAccount();
+            try {
+                loadAccount();
+            } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_psMatkhauKeyPressed
 
     private void btnDangNhapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDangNhapKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            loadAccount();
+            try {
+                loadAccount();
+            } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnDangNhapKeyPressed
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
-        // TODO add your handling code here:
-        loadAccount();
-
+        try {
+            // TODO add your handling code here:
+            loadAccount();
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_btnDangNhapActionPerformed
 
     /**
@@ -195,7 +210,7 @@ public class Login extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
