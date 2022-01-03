@@ -26,7 +26,7 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
-        txtTK.setText(ThuVien.Account);
+        //txtTK.setText(ThuVien.Account);
         
     }
     public  void loadAccount() throws SQLException{
@@ -117,6 +117,7 @@ public class Login extends javax.swing.JFrame {
         pnLogin.add(btnDangNhap);
         btnDangNhap.setBounds(160, 340, 350, 50);
 
+        psMatkhau.setText("123456");
         psMatkhau.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 psMatkhauKeyPressed(evt);
@@ -130,6 +131,9 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setText("Đăng Nhập Tài Khoản");
         pnLogin.add(jLabel1);
         jLabel1.setBounds(220, 20, 300, 32);
+
+        txtTK.setText("tk247");
+        txtTK.setToolTipText("");
         pnLogin.add(txtTK);
         txtTK.setBounds(200, 230, 310, 42);
 
