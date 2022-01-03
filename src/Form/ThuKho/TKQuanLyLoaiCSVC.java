@@ -12,12 +12,12 @@ import javax.swing.JOptionPane;
  *
  * @author n18dc
  */
-public class TKQuanLyCSVC extends javax.swing.JPanel {
+public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
 
     /**
      * Creates new form PnQlyMuonSach
      */
-    public TKQuanLyCSVC() {
+    public TKQuanLyLoaiCSVC() {
         initComponents();
     }
 
