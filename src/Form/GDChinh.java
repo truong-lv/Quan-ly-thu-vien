@@ -4,6 +4,9 @@ package Form;
 import Code.HamXuLyBang;
 import Code.LoadThoiGian;
 import Code.ThuVien;
+import Form.ThuKho.TKQuanLyCSVC;
+import Form.ThuKho.TKQuanLyLoaiCSVC;
+import Form.ThuKho.TKQuanLySach;
 import Form.ThuThu.PnQlyMuonSach;
 import javax.swing.JPanel;
 
@@ -46,7 +49,14 @@ public class GDChinh extends javax.swing.JFrame {
                 break;
                 
             case "Thủ kho":  
+                TKQuanLySach tKQuanLySach = new TKQuanLySach();
+                addPanel(tKQuanLySach, "Quản lý Sách", "/image/user-icon11.png");
                 
+                TKQuanLyCSVC tKQuanLyCSVC = new TKQuanLyCSVC();
+                addPanel(tKQuanLyCSVC, "Quản lý CSVC", "/image/user-icon11.png");
+                
+                TKQuanLyLoaiCSVC tKQuanLyLoaiCSVC = new TKQuanLyLoaiCSVC();
+                addPanel(tKQuanLyLoaiCSVC, "Quản lý Loại CSVC", "/image/user-icon11.png");
                 break;
                 
             default:
@@ -205,7 +215,7 @@ public class GDChinh extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
