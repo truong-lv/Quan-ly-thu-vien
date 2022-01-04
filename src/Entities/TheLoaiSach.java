@@ -71,6 +71,24 @@ public class TheLoaiSach {
         return cacTheLoaiSach;
     }
 
+    public static TheLoaiSach retrieve(String maTheLoai) {
+        TheLoaiSach theLoaiSach = null;
+
+        try {
+            String query = "SELECT * FROM TheLoaiSach WHERE maTheLoai = '" + maTheLoai + "'";
+            DBAccess dba = new DBAccess();
+            ResultSet rs = dba.Query(query);
+            if (rs.next()) {
+                theLoaiSach = new TheLoaiSach();
+                theLoaiSach.setMaTheLoai(rs.getNString("maTheLoai"));
+                theLoaiSach.setTenTheLoai(rs.getNString("tenTheLoai"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TheLoaiSach.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return theLoaiSach;
+    }
+
     public static List<TheLoaiSach> search(String keyword) {
         List<TheLoaiSach> cacTheLoaiSach = new ArrayList<>();
 
