@@ -84,6 +84,24 @@ public class TacGia {
         return cacTacGia;
     }
 
+    public static TacGia retrieve(String maTacGia) {
+        TacGia tacGia = null;
+
+        try {
+            String query = "SELECT * FROM TacGia WHERE maTacGia = '" + maTacGia + "'";
+            DBAccess dba = new DBAccess();
+            ResultSet rs = dba.Query(query);
+            if (rs.next()) {
+                tacGia = new TacGia();
+                tacGia.setMaTacGia(rs.getNString("maTacGia"));
+                tacGia.setTenTacGia(rs.getNString("tenTacGia"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TacGia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tacGia;
+    }
+
     public static boolean insert(String maTacGia, String tenTacGia) {
         String query = "INSERT INTO TACGIA VALUES(N'" + maTacGia + "', N'" + tenTacGia + "')";
         DBAccess dba = new DBAccess();
@@ -104,5 +122,4 @@ public class TacGia {
         boolean i = dba.Update(query);
         return i;
     }
-
 }
