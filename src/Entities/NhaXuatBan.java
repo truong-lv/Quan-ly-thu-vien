@@ -70,6 +70,24 @@ public class NhaXuatBan {
         return cacNXB;
     }
 
+    public static NhaXuatBan retrieve(String maNXB) {
+        NhaXuatBan nxb = new NhaXuatBan();
+
+        try {
+            String query = "SELECT * FROM NhaXuatBan WHERE maNXB = '" + maNXB + "'";
+            DBAccess dba = new DBAccess();
+            ResultSet rs = dba.Query(query);
+            if (rs.next()) {
+                nxb.setMaNXB(rs.getNString("maNXB"));
+                nxb.setTenNXB(rs.getNString("tenNXB"));
+            }
+            return nxb;
+        } catch (SQLException ex) {
+            Logger.getLogger(NhaXuatBan.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     public static List<NhaXuatBan> search(String keyword) {
         List<NhaXuatBan> cacNXB = new ArrayList<>();
 

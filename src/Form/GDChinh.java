@@ -4,9 +4,12 @@ import Code.HamXuLyBang;
 import Code.LoadThoiGian;
 import Code.ThuVien;
 import Form.QuanLy.PnQlyDoanhThu;
+import Form.ThuKho.TKQuanLyCSVC;
+import Form.ThuKho.TKQuanLyKeVaNganKe;
 import Form.ThuKho.TKQuanLyKhu;
 import Form.ThuKho.TKQuanLyLoaiCSVC;
 import Form.ThuKho.TKQuanLyNXB;
+import Form.ThuKho.TKQuanLySach;
 import Form.ThuKho.TKQuanLyTacGia;
 import Form.ThuKho.TKQuanLyTheLoaiSach;
 import Form.ThuThu.PnQlyMuonSach;
@@ -58,6 +61,15 @@ public class GDChinh extends javax.swing.JFrame {
                 break;
 
             case "Thủ kho":
+                TKQuanLyKeVaNganKe tKQuanLyKeVaNganKe = new TKQuanLyKeVaNganKe();
+                addPanel(tKQuanLyKeVaNganKe, "QLÝ Kệ và Ngăn Kệ", "/image/user-icon11.png");
+                
+                TKQuanLySach tKQuanLySach = new TKQuanLySach();
+                addPanel(tKQuanLySach, "QLÝ Sách", "/image/user-icon11.png");
+                
+                TKQuanLyCSVC tKQuanLyCSVC = new TKQuanLyCSVC();
+                addPanel(tKQuanLyCSVC, "QLÝ CSVC", "/image/user-icon11.png");
+                
                 TKQuanLyLoaiCSVC tKQuanLyLoaiCSVC = new TKQuanLyLoaiCSVC();
                 addPanel(tKQuanLyLoaiCSVC, "QLÝ Loại CSVC", "/image/user-icon11.png");
                 
@@ -72,13 +84,11 @@ public class GDChinh extends javax.swing.JFrame {
 
                 TKQuanLyTacGia tKQuanLyTacGia = new TKQuanLyTacGia();
                 addPanel(tKQuanLyTacGia, "QLÝ Tác giả", "/image/user-icon11.png");
-
                 break;
 
             default:
                 break;
         }
-
     }
 
     private void addPanel(JPanel pn, String tieuDe, String icon) {
@@ -206,8 +216,8 @@ public class GDChinh extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnInfor, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tbPnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(tbPnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         tbPnMenu.getAccessibleContext().setAccessibleName("QLÝ VÉ XE");
