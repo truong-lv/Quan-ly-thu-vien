@@ -5,7 +5,8 @@
  */
 package Form.ThuKho;
 
-import Entities.LoaiCoSoVatChat;
+import Entities.TacGia;
+import Form.ThuThu.*;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -16,18 +17,18 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Phat
  */
-public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
+public class TKQuanLyTacGia extends javax.swing.JPanel {
 
-    private List<LoaiCoSoVatChat> list = null;
+    private List<TacGia> list = null;
     String button = "";
 
     /**
      * Creates new form PnQlyMuonSach
      */
-    public TKQuanLyLoaiCSVC() {
+    public TKQuanLyTacGia() {
         initComponents();
 
-        list = LoaiCoSoVatChat.getList();
+        list = TacGia.getList();
         updateTable();
 
         DocumentListener dl = new DocumentListener() {
@@ -49,9 +50,9 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
             protected void updateFieldState() {
                 String keyword = txtSearch.getText();
                 if (keyword.isEmpty()) {
-                    list = LoaiCoSoVatChat.getList();
+                    list = TacGia.getList();
                 } else {
-                    list = LoaiCoSoVatChat.search(keyword);
+                    list = TacGia.search(keyword);
                 }
 
                 updateTable();
@@ -65,8 +66,8 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
         DefaultTableModel dtm = (DefaultTableModel) table.getModel();
         dtm.setRowCount(0);
 
-        for (LoaiCoSoVatChat loaiCSVC : list) {
-            String data[] = {loaiCSVC.getMaLoaiCSVC(), loaiCSVC.getTenLoaiCSVC()};
+        for (TacGia tacGia : list) {
+            String data[] = {tacGia.getMaTacGia(), tacGia.getTenTacGia()};
             dtm.addRow(data);
         }
     }
@@ -85,10 +86,10 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
         table = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        txtTenLoaiCSVC = new javax.swing.JTextField();
+        txtTenTacGia = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        txtMaLoaiCSVC = new javax.swing.JTextField();
+        txtMaTacGia = new javax.swing.JTextField();
         btnAdd = new javax.swing.JLabel();
         btnEdit = new javax.swing.JLabel();
         btnDelete = new javax.swing.JLabel();
@@ -103,14 +104,14 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1155, 500));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("Quản lý Loại cơ sở vật chất");
+        jLabel1.setText("Quản lý Tác giả");
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mã loại CSVC", "Tên loại CSVC"
+                "Mã Tác giả", "Tên Tác giả"
             }
         ) {
             Class[] types = new Class [] {
@@ -128,8 +129,8 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        table.setIntercellSpacing(new java.awt.Dimension(1, 3));
         table.setRowHeight(25);
+        table.setRowMargin(3);
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableMouseClicked(evt);
@@ -142,9 +143,9 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
         }
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel8.setText("Tên loại CSVC:");
+        jLabel8.setText("Tên Tác giả:");
 
-        txtTenLoaiCSVC.setEditable(false);
+        txtTenTacGia.setEditable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -152,21 +153,21 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtTenLoaiCSVC, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(txtTenTacGia, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jLabel8)
-                .addComponent(txtTenLoaiCSVC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtTenTacGia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setText("Mã loại CSVC:");
+        jLabel9.setText("Mã Tác giả:");
 
-        txtMaLoaiCSVC.setEditable(false);
+        txtMaTacGia.setEditable(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -174,15 +175,15 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtMaLoaiCSVC, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(txtMaTacGia, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jLabel9)
-                .addComponent(txtMaLoaiCSVC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtMaTacGia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -238,6 +239,7 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
         });
 
         btnRefresh.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/reload.png"))); // NOI18N
         btnRefresh.setText("Tải lại");
         btnRefresh.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -271,14 +273,20 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1135, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(112, 112, 112)
+                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(51, 51, 51)
+                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnAdd)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -286,27 +294,20 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnDelete)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnRefresh))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(btnRefresh)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(457, 457, 457))
             .addGroup(layout.createSequentialGroup()
-                .addGap(123, 123, 123)
-                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
-                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(502, 502, 502)
+                .addComponent(jLabel1)
+                .addContainerGap(515, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(28, 28, 28)
                 .addComponent(jLabel1)
-                .addGap(26, 26, 26)
+                .addGap(28, 28, 28)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,7 +327,7 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnSave))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -340,9 +341,9 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
     }//GEN-LAST:event_tableMouseClicked
 
     private void onTableClick(int selectedRow) {
-        LoaiCoSoVatChat loaiCSVC = list.get(selectedRow);
-        txtMaLoaiCSVC.setText(loaiCSVC.getMaLoaiCSVC());
-        txtTenLoaiCSVC.setText(loaiCSVC.getTenLoaiCSVC());
+        TacGia tacGia = list.get(selectedRow);
+        txtMaTacGia.setText(tacGia.getMaTacGia());
+        txtTenTacGia.setText(tacGia.getTenTacGia());
     }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -353,8 +354,8 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
         // TODO add your handling code here:
         editState();
-        txtMaLoaiCSVC.setText("");
-        txtTenLoaiCSVC.setText("");
+        txtMaTacGia.setText("");
+        txtTenTacGia.setText("");
         button = "add";
     }//GEN-LAST:event_btnAddMouseClicked
 
@@ -365,7 +366,7 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEditMouseClicked
 
     private void editState() {
-        txtTenLoaiCSVC.setEditable(true);
+        txtTenTacGia.setEditable(true);
         btnSave.setEnabled(true);
         btnCancel.setEnabled(true);
 
@@ -377,8 +378,8 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
         // TODO add your handling code here:
-        if (JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa loại CSVC này?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-            boolean i = LoaiCoSoVatChat.delete(txtMaLoaiCSVC.getText());
+        if (JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa tác giả này?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+            boolean i = TacGia.delete(txtMaTacGia.getText());
             if (i == true) {
                 showMessage("Xóa thành công");
                 normalState();
@@ -391,11 +392,11 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
 
-        if (txtTenLoaiCSVC.getText().isEmpty()) {
-            showMessage("Tên loại CSVC không được để trống");
+        if (txtTenTacGia.getText().isEmpty()) {
+            showMessage("Tên tác giả không được để trống");
         } else {
             if (button.equals("add")) {
-                boolean i = LoaiCoSoVatChat.insert(Integer.toString(list.size()), txtTenLoaiCSVC.getText());
+                boolean i = TacGia.insert(Integer.toString(list.size()), txtTenTacGia.getText());
                 if (i == true) {
                     showMessage("Thêm thành công");
                     normalState();
@@ -403,7 +404,7 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
                     showMessage("Thêm thất bại");
                 }
             } else if (button.equals("edit")) {
-                boolean i = LoaiCoSoVatChat.update(txtMaLoaiCSVC.getText(), txtTenLoaiCSVC.getText());
+                boolean i = TacGia.update(txtMaTacGia.getText(), txtTenTacGia.getText());
                 if (i == true) {
                     showMessage("Sửa thành công");
                     normalState();
@@ -416,7 +417,7 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
 
     private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
         // TODO add your handling code here:
-        list = LoaiCoSoVatChat.getList();
+        list = TacGia.getList();
         updateTable();
         onTableClick(0);
     }//GEN-LAST:event_btnRefreshMouseClicked
@@ -431,12 +432,12 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
         btnDelete.setEnabled(true);
         table.setEnabled(true);
 
-        txtMaLoaiCSVC.setEditable(false);
-        txtTenLoaiCSVC.setEditable(false);
+        txtMaTacGia.setEditable(false);
+        txtTenTacGia.setEditable(false);
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
 
-        list = LoaiCoSoVatChat.getList();
+        list = TacGia.getList();
         updateTable();
         onTableClick(0);
     }
@@ -458,8 +459,8 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable table;
-    private javax.swing.JTextField txtMaLoaiCSVC;
+    private javax.swing.JTextField txtMaTacGia;
     private javax.swing.JTextField txtSearch;
-    private javax.swing.JTextField txtTenLoaiCSVC;
+    private javax.swing.JTextField txtTenTacGia;
     // End of variables declaration//GEN-END:variables
 }

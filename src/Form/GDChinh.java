@@ -1,10 +1,14 @@
-
 package Form;
 
 import Code.HamXuLyBang;
 import Code.LoadThoiGian;
 import Code.ThuVien;
 import Form.QuanLy.PnQlyDoanhThu;
+import Form.ThuKho.TKQuanLyKhu;
+import Form.ThuKho.TKQuanLyLoaiCSVC;
+import Form.ThuKho.TKQuanLyNXB;
+import Form.ThuKho.TKQuanLyTacGia;
+import Form.ThuKho.TKQuanLyTheLoaiSach;
 import Form.ThuThu.PnQlyMuonSach;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -13,20 +17,21 @@ import javax.swing.JPanel;
 
 public class GDChinh extends javax.swing.JFrame {
 
-    HamXuLyBang xLBang=new HamXuLyBang();
+    HamXuLyBang xLBang = new HamXuLyBang();
+
     public GDChinh() throws SQLException {
         initComponents();
         LbUserAcc.setText(ThuVien.Account);
         LbUserName.setText(ThuVien.hoTen);
         loadGiaoDien();
-       
-        LoadThoiGian tg=new LoadThoiGian(lbClock, lbDate);
+
+        LoadThoiGian tg = new LoadThoiGian(lbClock, lbDate);
         tg.start();
     }
-    
+
     // LOAD TỪNG PANEL CHỨC NĂNG  VÀO GIAO DIỆN CHÍNH DỰA THEO QUYỀN TRUY CẬP CỦA TỪNG ĐỐI TƯỢNG
-    private void loadGiaoDien() throws SQLException{
-        
+    private void loadGiaoDien() throws SQLException {
+
         // CHỨC NĂNG CHO KHÁCH
         switch (ThuVien.quyen) {
 
@@ -34,40 +39,54 @@ public class GDChinh extends javax.swing.JFrame {
 //            PnDatVe datVe =new PnDatVe();
 //            addPanel(datVe, "ĐẶT VÉ", "/image/payment-icon.png");
                 break;
-                
+
             case "Quản lý":
 //            PnQLyNhanVien qlyNV =new PnQLyNhanVien();
 //            addPanel(qlyNV, "QLÝ NHÂN VIÊN", "/image/user-icon11.png");
-                PnQlyDoanhThu qlyDT =new PnQlyDoanhThu();
+                PnQlyDoanhThu qlyDT = new PnQlyDoanhThu();
                 addPanel(qlyDT, "QLÝ DOANH THU", "/image/user-icon11.png");
-                
+
                 break;
-                
+
             case "Thủ thư":
-                PnQlyMuonSach qlyMS =new PnQlyMuonSach();
+                PnQlyMuonSach qlyMS = new PnQlyMuonSach();
                 addPanel(qlyMS, "QLÝ Mượn sách", "/image/user-icon11.png");
-                
-                PnQlyMuonSach qlyMSs =new PnQlyMuonSach();
+
+                PnQlyMuonSach qlyMSs = new PnQlyMuonSach();
                 addPanel(qlyMSs, "QLÝ Mượn sách", "/image/user-icon11.png");
-                
+
                 break;
+
+            case "Thủ kho":
+                TKQuanLyLoaiCSVC tKQuanLyLoaiCSVC = new TKQuanLyLoaiCSVC();
+                addPanel(tKQuanLyLoaiCSVC, "QLÝ Loại CSVC", "/image/user-icon11.png");
                 
-            case "Thủ kho":  
-                
+                TKQuanLyKhu tKQuanLyKhu = new TKQuanLyKhu();
+                addPanel(tKQuanLyKhu, "QLÝ Khu", "/image/user-icon11.png");
+
+                TKQuanLyNXB tKQuanLyNXB = new TKQuanLyNXB();
+                addPanel(tKQuanLyNXB, "QLÝ NXB", "/image/user-icon11.png");
+
+                TKQuanLyTheLoaiSach tKQuanLyTheLoaiSach = new TKQuanLyTheLoaiSach();
+                addPanel(tKQuanLyTheLoaiSach, "QLÝ Thể Loại Sách", "/image/user-icon11.png");
+
+                TKQuanLyTacGia tKQuanLyTacGia = new TKQuanLyTacGia();
+                addPanel(tKQuanLyTacGia, "QLÝ Tác giả", "/image/user-icon11.png");
+
                 break;
-                
+
             default:
                 break;
         }
-        
+
     }
-    private void addPanel(JPanel pn,String tieuDe, String icon){
+
+    private void addPanel(JPanel pn, String tieuDe, String icon) {
         tbPnMenu.add(tieuDe, pn);
-        tbPnMenu.setIconAt(tbPnMenu.getTabCount()-1, new javax.swing.ImageIcon(getClass().getResource(icon)));
+        tbPnMenu.setIconAt(tbPnMenu.getTabCount() - 1, new javax.swing.ImageIcon(getClass().getResource(icon)));
     }
 
     //=================================HÀM LẤY THÔNG TIN NHÂN VIÊN====================
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
