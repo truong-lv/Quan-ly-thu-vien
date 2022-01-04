@@ -92,6 +92,26 @@ public class Khu {
         return cacKhu;
     }
 
+    public static Khu retrieve(String maKhu) {
+        Khu khu = new Khu();
+
+        try {
+            String query = "SELECT * FROM Khu WHERE maKhu = '" + maKhu + "'";
+            DBAccess dba = new DBAccess();
+            ResultSet rs = dba.Query(query);
+            if (rs.next()) {
+                khu.setMaKhu(rs.getNString("maKhu"));
+                khu.setTenKhu(rs.getNString("tenKhu"));
+                khu.setMoTa(rs.getNString("moTa"));
+                khu.setTang(rs.getNString("tang"));
+            }
+            return khu;
+        } catch (SQLException ex) {
+            Logger.getLogger(Khu.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     public static List<Khu> search(String keyword) {
         List<Khu> cacKhu = new ArrayList<>();
 
