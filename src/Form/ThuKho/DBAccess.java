@@ -32,12 +32,17 @@ public class DBAccess {
     }
 
     public boolean Update(String str) {
+        int i = 0;
         try {
-            int i = stmt.executeUpdate(str);
-            return true;
+            i = stmt.executeUpdate(str);
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (i == 0) {
             return false;
+        } else {
+            return true;
         }
     }
 
