@@ -254,7 +254,7 @@ public class Sach {
 
     public static boolean insert(String maISBN, String tenSach, String maTacGia, String maNXB, Date namXB, float giaBia, int soTrang, String moTa, String maTheLoai, int soLuong, int soLuongCon, String maNganKe) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String query = "INSERT INTO Sach VALUES(N'" + maISBN + "', N'" + tenSach + "', N'" + maTacGia + "', N'" + dateFormat.format(namXB) + "', N'" + giaBia + "', N'" + soTrang + "', N'" + moTa + "', N'" + maTheLoai + "', N'" + soLuong + "', N'" + soLuongCon + "', N'" + soLuongCon + "')";
+        String query = "INSERT INTO Sach VALUES(N'" + maISBN + "', N'" + tenSach + "', N'" + maTacGia + "', N'" + maNXB + "',  N'" + dateFormat.format(namXB) + "', N'" + giaBia + "', N'" + soTrang + "', N'" + moTa + "', N'" + maTheLoai + "', N'" + soLuong + "', N'" + soLuongCon + "', N'" + maNganKe + "')";
         DBAccess dba = new DBAccess();
         boolean i = dba.Update(query);
         return i;
