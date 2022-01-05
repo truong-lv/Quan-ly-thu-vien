@@ -26,14 +26,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Phat
  */
 public class TKQuanLySach extends javax.swing.JPanel {
-
+    
     private List<Sach> listSach = null;
     private List<TacGia> listTacGia = null;
     private List<TheLoaiSach> listTheLoaiSach = null;
     private List<KeSach> listKeSach = null;
     private List<NganKeSach> listNganKeSach = null;
     private List<NhaXuatBan> listNXB = null;
-
+    
     String button = "";
 
     /**
@@ -41,27 +41,27 @@ public class TKQuanLySach extends javax.swing.JPanel {
      */
     public TKQuanLySach() {
         initComponents();
-
+        
         listSach = Sach.getList();
         updateTable();
         updateCombobox();
-
+        
         DocumentListener dl = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 updateFieldState();
             }
-
+            
             @Override
             public void removeUpdate(DocumentEvent e) {
                 updateFieldState();
             }
-
+            
             @Override
             public void changedUpdate(DocumentEvent e) {
                 updateFieldState();
             }
-
+            
             protected void updateFieldState() {
                 String keyword = txtSearch.getText();
                 if (keyword.isEmpty()) {
@@ -69,48 +69,48 @@ public class TKQuanLySach extends javax.swing.JPanel {
                 } else {
                     listSach = Sach.search(keyword);
                 }
-
+                
                 updateTable();
             }
         };
-
+        
         txtSearch.getDocument().addDocumentListener(dl);
     }
-
+    
     private void updateTable() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
         DefaultTableModel dtm = (DefaultTableModel) table.getModel();
         dtm.setRowCount(0);
-
+        
         for (Sach sach : listSach) {
             String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), Float.toString(sach.getGiaBia()), Integer.toString(sach.getSoTrang()), sach.getMoTa(), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuong()), Integer.toString(sach.getSoLuongCon()), sach.getNganKeSach().getTenNgan()};
             dtm.addRow(data);
         }
     }
-
+    
     private void updateCombobox() {
         listTacGia = TacGia.getList();
         listNXB = NhaXuatBan.getList();
         listTheLoaiSach = TheLoaiSach.getList();
         listKeSach = KeSach.getList();
         listNganKeSach = NganKeSach.getList();
-
+        
         for (TacGia tacGia : listTacGia) {
             cbxTacGia.addItem(tacGia.getTenTacGia());
         }
-
+        
         for (NhaXuatBan nxb : listNXB) {
             cbxNXB.addItem(nxb.getTenNXB());
         }
-
+        
         for (TheLoaiSach theLoaiSach : listTheLoaiSach) {
             cbxTheLoai.addItem(theLoaiSach.getTenTheLoai());
         }
-
+        
         for (KeSach keSach : listKeSach) {
             cbxKeSach.addItem(keSach.getTenKe());
         }
-
+        
         for (NganKeSach nganKeSach : listNganKeSach) {
             cbxNganKe.addItem(nganKeSach.getTenNgan());
         }
@@ -712,14 +712,14 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
         onTableClick(selectedRow);
     }//GEN-LAST:event_tableMouseClicked
-
+    
     private void onTableClick(int selectedRow) {
         Sach sach = listSach.get(selectedRow);
         txtMaISBN.setText(sach.getMaISBN());
         txtTenSach.setText(sach.getTenSach());
         txtGiaBia.setText(Float.toString(sach.getGiaBia()));
         txtMoTa.setText(sach.getMoTa());
-
+        
     }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -741,7 +741,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
         editState();
         button = "edit";
     }//GEN-LAST:event_btnEditMouseClicked
-
+    
     private void editState() {
         txtMaISBN.setEditable(true);
         txtTenSach.setEditable(true);
@@ -750,19 +750,21 @@ public class TKQuanLySach extends javax.swing.JPanel {
         txtMoTa.setEditable(true);
         txtSoTrang.setEditable(true);
         dpNamXB.setEnabled(true);
-
+        
         cbxTacGia.setEnabled(true);
         cbxTacGia.setSelectedIndex(0);
         cbxTheLoai.setEnabled(true);
         cbxTheLoai.setSelectedIndex(0);
         cbxKeSach.setEnabled(true);
         cbxKeSach.setSelectedIndex(0);
+        cbxNganKe.setEnabled(true);
+        cbxNganKe.setSelectedIndex(0);
         cbxNXB.setEnabled(true);
         cbxNXB.setSelectedIndex(0);
-
+        
         btnSave.setEnabled(true);
         btnCancel.setEnabled(true);
-
+        
         btnAdd.setEnabled(false);
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
@@ -781,7 +783,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnDeleteMouseClicked
-
+    
     private TacGia getSelectedAuthor() {
         String selectedAuthor = cbxTacGia.getItemAt(cbxTacGia.getSelectedIndex());
         for (TacGia tacGia : listTacGia) {
@@ -791,7 +793,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
         return null;
     }
-
+    
     private TheLoaiSach getSelectedCategory() {
         String selectedCategory = cbxTheLoai.getItemAt(cbxTheLoai.getSelectedIndex());
         for (TheLoaiSach theLoaiSach : listTheLoaiSach) {
@@ -801,7 +803,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
         return null;
     }
-
+    
     private NhaXuatBan getSelectedPublishingHouse() {
         String selectedPublishingHouse = cbxNXB.getItemAt(cbxNXB.getSelectedIndex());
         for (NhaXuatBan nxb : listNXB) {
@@ -811,7 +813,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
         return null;
     }
-
+    
     private KeSach getSelectedBookshelf() {
         String selectedBookshelf = cbxKeSach.getItemAt(cbxKeSach.getSelectedIndex());
         for (KeSach keSach : listKeSach) {
@@ -821,9 +823,9 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
         return null;
     }
-
+    
     private NganKeSach getSelectedBookshelfCapartment() {
-        String selected = cbxTheLoai.getItemAt(cbxTheLoai.getSelectedIndex());
+        String selected = cbxNganKe.getItemAt(cbxNganKe.getSelectedIndex());
         for (NganKeSach nganKeSach : listNganKeSach) {
             if (nganKeSach.getTenNgan().equals(selected)) {
                 return nganKeSach;
@@ -834,16 +836,15 @@ public class TKQuanLySach extends javax.swing.JPanel {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-
-        if (txtTenSach.getText().isEmpty()) {
-            showMessage("Tên sách không được để trống");
-        } else if (txtMaISBN.getText().isEmpty()) {
+        if (txtMaISBN.getText().isEmpty()) {
             showMessage("Mã ISBN được để trống");
+        } else if (txtTenSach.getText().isEmpty()) {
+            showMessage("Tên sách không được để trống");
         } else {
             if (button.equals("add")) {
                 boolean i = Sach.insert(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
                         dpNamXB.getDate(), Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
-                        getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuongCon.getText()), getSelectedBookshelfCapartment().getMaNganKe()
+                        getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuong.getText()), getSelectedBookshelfCapartment().getMaNganKe()
                 );
                 if (i == true) {
                     showMessage("Thêm thành công");
@@ -854,7 +855,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
             } else if (button.equals("edit")) {
                 boolean i = Sach.update(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
                         dpNamXB.getDate(), Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
-                        getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuongCon.getText()), getSelectedBookshelfCapartment().getMaNganKe()
+                        getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuong.getText()), getSelectedBookshelfCapartment().getMaNganKe()
                 );
                 if (i == true) {
                     showMessage("Sửa thành công");
@@ -876,19 +877,24 @@ public class TKQuanLySach extends javax.swing.JPanel {
     private void cbxKeSachItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxKeSachItemStateChanged
         // TODO add your handling code here:
         KeSach keSach = getSelectedBookshelf();
+        listNganKeSach = NganKeSach.getList(keSach.getMaKe());
+        cbxNganKe.removeAllItems();
         
+        for (NganKeSach nganKeSach : listNganKeSach) {
+            cbxNganKe.addItem(nganKeSach.getTenNgan());
+        }
     }//GEN-LAST:event_cbxKeSachItemStateChanged
-
+    
     private void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
     }
-
+    
     private void normalState() {
         btnAdd.setEnabled(true);
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
         table.setEnabled(true);
-
+        
         txtMaISBN.setEditable(false);
         txtTenSach.setEditable(false);
         txtGiaBia.setEditable(false);
@@ -896,15 +902,15 @@ public class TKQuanLySach extends javax.swing.JPanel {
         txtMoTa.setEditable(false);
         txtSoTrang.setEditable(false);
         dpNamXB.setEnabled(false);
-
+        
         cbxTacGia.setEnabled(false);
         cbxTheLoai.setEnabled(false);
         cbxKeSach.setEnabled(false);
         cbxNXB.setEnabled(false);
-
+        
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
-
+        
         listSach = Sach.getList();
         updateTable();
         onTableClick(0);
