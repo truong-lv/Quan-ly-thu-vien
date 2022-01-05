@@ -140,7 +140,7 @@ public class KeSach {
             if (rs.next()) {
                 keSach.setMaKe(rs.getNString("maKe"));
                 keSach.setTenKe(rs.getNString("tenKe"));
-                keSach.setThongTin(rs.getNString("moTa"));
+                keSach.setThongTin(rs.getNString("thongTin"));
 
                 Khu khu = Khu.retrieve(rs.getNString("maKhu"));
                 keSach.setKhu(khu);
