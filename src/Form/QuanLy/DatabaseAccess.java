@@ -5,6 +5,7 @@
  */
 package Form.QuanLy;
 
+import Code.ThuVien;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -21,8 +22,8 @@ import java.util.List;
  */
 public class DatabaseAccess {
 
-    public List<DoanhThuTheoThoiGian> layDoanhThuTrongThang() throws SQLException {
-        List<DoanhThuTheoThoiGian> list = new ArrayList<>();
+    public List<TongDoanhThuTheoThoiGian> layDoanhThuTrongThang() throws SQLException {
+        List<TongDoanhThuTheoThoiGian> list = new ArrayList<>();
         Connection connect = Code.KetNoi.layKetNoi();
         PreparedStatement ps = null;
         java.util.Date utilDate = new java.util.Date();
@@ -31,7 +32,7 @@ public class DatabaseAccess {
             localDate = LocalDate.now().minusMonths(i);
             utilDate = java.util.Date.from(localDate.atStartOfDay().toInstant(ZoneOffset.UTC));
 //            System.out.println(utilDate+": util");
-            DoanhThuTheoThoiGian dttn = new DoanhThuTheoThoiGian();
+            TongDoanhThuTheoThoiGian dttn = new TongDoanhThuTheoThoiGian();
             java.sql.Date date = new java.sql.Date(utilDate.getTime());
 
             dttn.setDate(date);
@@ -77,8 +78,8 @@ public class DatabaseAccess {
         return list;
     }
 
-    public List<DoanhThuTheoThoiGian> layDoanhThuTrongTuan() throws SQLException {
-        List<DoanhThuTheoThoiGian> list = new ArrayList<>();
+    public List<TongDoanhThuTheoThoiGian> layDoanhThuTrongTuan() throws SQLException {
+        List<TongDoanhThuTheoThoiGian> list = new ArrayList<>();
         Connection connect = Code.KetNoi.layKetNoi();
         PreparedStatement ps = null;
         java.util.Date utilDate = new java.util.Date();
@@ -87,7 +88,7 @@ public class DatabaseAccess {
             localDate = LocalDate.now().minusDays(i);
             utilDate = java.util.Date.from(localDate.atStartOfDay().toInstant(ZoneOffset.UTC));
 //            System.out.println(utilDate+": util");
-            DoanhThuTheoThoiGian dttn = new DoanhThuTheoThoiGian();
+            TongDoanhThuTheoThoiGian dttn = new TongDoanhThuTheoThoiGian();
             java.sql.Date date = new java.sql.Date(utilDate.getTime());
 
             dttn.setDate(date);
@@ -317,6 +318,67 @@ public class DatabaseAccess {
         return list;
     }
 
+    public double layDoanhThu(String loai, java.util.Date dateToCheck, String searchMode) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        String queryDoanhThuMuon = "", queryDoanhThuThanhToan = "", queryDoanhThuThanhLy = "";
+
+        if (searchMode == "theo-ngay") {
+            queryDoanhThuMuon = "SELECT SUM(tongTien) as total FROM PhieuMuon WHERE ngayMuon=?";
+            queryDoanhThuThanhToan = "SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE ngayThanhToan=?";
+            queryDoanhThuThanhLy = "SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE ngayThanhLy=?";
+        } else if (searchMode == "theo-thang") {
+            queryDoanhThuMuon = "SELECT SUM(tongTien) as total FROM PhieuMuon WHERE MONTH(ngayMuon)= MONTH(?) AND YEAR(ngayMuon)= YEAR(?)";
+            queryDoanhThuThanhToan = "SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE MONTH(ngayThanhToan)= MONTH(?) AND YEAR(ngayThanhToan)= YEAR(?)";
+            queryDoanhThuThanhLy = "SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE MONTH(ngayThanhLy)= MONTH(?) AND YEAR(ngayThanhLy)= YEAR(?)";
+        } else if (searchMode == "theo-nam") {
+                        queryDoanhThuMuon = "SELECT SUM(tongTien) as total FROM PhieuMuon WHERE YEAR(ngayMuon)= YEAR(?)";
+            queryDoanhThuThanhToan = "SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE YEAR(ngayThanhToan)= YEAR(?)";
+            queryDoanhThuThanhLy = "SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE YEAR(ngayThanhLy)= YEAR(?)";
+        }
+        
+        java.sql.Date date = new Date(dateToCheck.getTime());
+        switch (loai) {
+            case "muon":
+                ps = connect.prepareStatement(queryDoanhThuMuon);
+                ps.setDate(1, date);
+                if(searchMode.equalsIgnoreCase("theo-thang")){
+                    ps.setDate(2, date);
+                }
+                ResultSet rs = ps.executeQuery();
+                double sum = 0;
+                while (rs.next()) {
+                    sum = rs.getDouble("total");
+                }
+                return sum;
+            case "thanh-toan":
+                ps = connect.prepareStatement(queryDoanhThuThanhToan);
+                ps.setDate(1, date);
+                if(searchMode.equalsIgnoreCase("theo-thang")){
+                    ps.setDate(2, date);
+                }
+                rs = ps.executeQuery();
+                sum = 0;
+                while (rs.next()) {
+                    sum = rs.getDouble("total");
+                }
+                return sum;
+            case "thanh-ly":
+                ps = connect.prepareStatement(queryDoanhThuThanhLy);
+                ps.setDate(1, date);
+                if(searchMode.equalsIgnoreCase("theo-thang")){
+                    ps.setDate(2, date);
+                }
+                rs = ps.executeQuery();
+                sum = 0;
+                while (rs.next()) {
+                    sum = rs.getDouble("total");
+                }
+                return sum;
+        }
+        return 0;
+    }
+    
     public static void main(String[] args) throws SQLException {
 //        System.out.println(new DatabaseAccess().layDoanhThuTrongNgay("thanh-ly"));
 //        System.out.println(new DatabaseAccess().layDoanhThuTrongTuan());
