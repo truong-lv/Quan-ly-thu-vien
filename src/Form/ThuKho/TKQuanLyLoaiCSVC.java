@@ -238,7 +238,6 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
         });
 
         btnRefresh.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/reload.png"))); // NOI18N
         btnRefresh.setText("Tải lại");
         btnRefresh.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

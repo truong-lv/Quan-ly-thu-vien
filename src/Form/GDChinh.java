@@ -12,6 +12,7 @@ import Form.ThuKho.TKQuanLyNXB;
 import Form.ThuKho.TKQuanLySach;
 import Form.ThuKho.TKQuanLyTacGia;
 import Form.ThuKho.TKQuanLyTheLoaiSach;
+import Form.ThuThu.PnQlyDocGiaQuaHan;
 import Form.ThuThu.PnQlyMuonSach;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -55,8 +56,11 @@ public class GDChinh extends javax.swing.JFrame {
                 PnQlyMuonSach qlyMS = new PnQlyMuonSach();
                 addPanel(qlyMS, "QLÝ Mượn sách", "/image/user-icon11.png");
 
-                PnQlyMuonSach qlyMSs = new PnQlyMuonSach();
-                addPanel(qlyMSs, "QLÝ Mượn sách", "/image/user-icon11.png");
+                PnQlyDocGiaQuaHan qlyDGQH = new PnQlyDocGiaQuaHan();
+                addPanel(qlyDGQH, "QLÝ Độc giả quá hạn", "/image/user-icon11.png");
+                
+//                PnQlyMuonSach qlyMSs = new PnQlyMuonSach();
+//                addPanel(qlyMSs, "QLÝ Mượn sách", "/image/user-icon11.png");
 
                 break;
 

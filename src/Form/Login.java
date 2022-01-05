@@ -100,7 +100,7 @@ public class Login extends javax.swing.JFrame {
         pnLogin.add(lbErorrLogin);
         lbErorrLogin.setBounds(170, 400, 330, 33);
 
-        btnDangNhap.setBackground(new java.awt.Color(51, 51, 255));
+        btnDangNhap.setBackground(new java.awt.Color(0, 0, 255));
         btnDangNhap.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         btnDangNhap.setForeground(new java.awt.Color(255, 255, 255));
         btnDangNhap.setText("Đăng Nhập");
