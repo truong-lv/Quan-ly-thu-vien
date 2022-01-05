@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author t0168
  */
-public class ChiPhiTheoThoiGian {
+public class TongChiPhiTheoThoiGian {
     Date date;
     double nhapHang;
     double traLuong;

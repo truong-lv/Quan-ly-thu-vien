@@ -38,26 +38,69 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
     /**
      * Creates new form PnQlyDoanhThu
      */
-    String mode = "";
-
+    String mode = "today";
+    String searchMode = "theo-ngay";
     DefaultTableModel dtm;
 
     public PnQlyDoanhThu() throws SQLException {
         initComponents();
         jRadioButton_HomNay.setSelected(true);
+        jRadioButton_TheoNgay.setSelected(true);
         this.jDateChooser1.setDate(new Date());
         dtm = (DefaultTableModel) this.jTable.getModel();
-        loadIncome(new Date());
+        loadIncome(new Date(), searchMode);
     }
 
-    public void loadIncome(Date date) throws SQLException {
+//    public void loadIncome(Date date) throws SQLException {
+//        DefaultCategoryDataset barChartData = new DefaultCategoryDataset();
+//        barChartData.setValue(new DatabaseAccess().layDoanhThuTheoNgay("muon", date), "Doanh Thu", "Độc giả mượn sách");
+//        barChartData.setValue(new DatabaseAccess().layDoanhThuTheoNgay("thanh-ly", date), "Doanh Thu", "Thanh lý sách");
+//        barChartData.setValue(new DatabaseAccess().layDoanhThuTheoNgay("thanh-toan", date), "Doanh Thu", "Độc giả thanh toán sách");
+//
+//        JFreeChart barChart = ChartFactory.createBarChart("Tổng doanh thu trong ngày " + new SimpleDateFormat("dd/MM/yyyy").format(date), "", "", barChartData);
+//
+//        barChart.setPadding(new RectangleInsets(8, 8, 8, 8));
+//
+//        CategoryPlot categoryPlot = barChart.getCategoryPlot();
+//        ((BarRenderer) categoryPlot.getRenderer()).setBarPainter(new StandardBarPainter());
+//        categoryPlot.setRangeGridlinePaint(Color.red);
+//
+//        ChartPanel barPanel = new ChartPanel(barChart);
+//
+//        jPanel1.removeAll();
+//
+//        jPanel1.add(barPanel, BorderLayout.CENTER);
+//
+//        dtm.setRowCount(0);
+//
+//        for (ChiTietDoanhThuTheoThoiGian ct_dtttg : new DatabaseAccess().layCTDoanhThuTheoNgay(date)) {
+//            dtm.addRow(new Object[]{new SimpleDateFormat("dd/MM/yyyy").format(ct_dtttg.getDate()),
+//                ct_dtttg.getNguon(), ct_dtttg.getLoai(), ct_dtttg.getTongThu()});
+//        }
+//    }
+    public void loadIncome(Date date, String searchMode) throws SQLException {
         DefaultCategoryDataset barChartData = new DefaultCategoryDataset();
-        barChartData.setValue(new DatabaseAccess().layDoanhThuTheoNgay("muon", date), "Doanh Thu", "Độc giả mượn sách");
-        barChartData.setValue(new DatabaseAccess().layDoanhThuTheoNgay("thanh-ly", date), "Doanh Thu", "Thanh lý sách");
-        barChartData.setValue(new DatabaseAccess().layDoanhThuTheoNgay("thanh-toan", date), "Doanh Thu", "Độc giả thanh toán sách");
+        double tongMuon = new DatabaseAccess().layDoanhThu("muon", date, searchMode);
+        double tongThanhLy = new DatabaseAccess().layDoanhThu("thanh-ly", date, searchMode);
+        double tongThanhToan = new DatabaseAccess().layDoanhThu("thanh-toan", date, searchMode);
+        barChartData.setValue(tongMuon, "Doanh Thu", "Độc giả mượn sách");
+        barChartData.setValue(tongThanhLy, "Doanh Thu", "Thanh lý sách");
+        barChartData.setValue(tongThanhToan, "Doanh Thu", "Độc giả thanh toán sách");
+        String chartTitle = "";
+        if (searchMode.equalsIgnoreCase("theo-ngay")) {
+            chartTitle = "Tổng doanh thu trong ngày " + new SimpleDateFormat("dd/MM/yyyy").format(date);
+        } else if (searchMode.equalsIgnoreCase("theo-thang")) {
+            chartTitle = "Tổng doanh thu trong tháng " + new SimpleDateFormat("MM/yyyy").format(date);
+        } else if (searchMode.equalsIgnoreCase("theo-nam")) {
+            chartTitle = "Tổng doanh thu trong năm " + new SimpleDateFormat("yyyy").format(date);
+        }
 
-        JFreeChart barChart = ChartFactory.createBarChart("Tổng doanh thu trong ngày " + new SimpleDateFormat("dd/MM/yyyy").format(date), "", "", barChartData);
-
+        JFreeChart barChart = ChartFactory.createBarChart(chartTitle, "", "", barChartData);
+        
+        //nếu k có doanh thu thì cột y từ 0-500000, nếu có thì từ 0 đến auto
+        if(tongMuon==0&&tongThanhLy==0&&tongThanhToan==0){
+                    barChart.getCategoryPlot().getRangeAxis().setRange (0, 500000);
+        }
         barChart.setPadding(new RectangleInsets(8, 8, 8, 8));
 
         CategoryPlot categoryPlot = barChart.getCategoryPlot();
@@ -79,7 +122,7 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
     }
 
     public void loadIncome(String mode) throws SQLException {
-        List<DoanhThuTheoThoiGian> list = new ArrayList<>();
+        List<TongDoanhThuTheoThoiGian> list = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat();
         String title = "";
         String range = "";
@@ -105,7 +148,7 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
         Collections.reverse(list);
         String date = "";
 
-        for (DoanhThuTheoThoiGian dttn : list) {
+        for (TongDoanhThuTheoThoiGian dttn : list) {
 
             date = sdf.format(dttn.getDate());
             barChatData.addValue(dttn.getMuon(), "Mượn", date);
@@ -157,18 +200,72 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
         jRadioButton_HomNay = new javax.swing.JRadioButton();
         jRadioButton_TuanNay = new javax.swing.JRadioButton();
         jRadioButton_6Thang = new javax.swing.JRadioButton();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jButton_Xem = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        jRadioButton_TheoNam = new javax.swing.JRadioButton();
+        jRadioButton_TheoNgay = new javax.swing.JRadioButton();
+        jRadioButton_TheoThang = new javax.swing.JRadioButton();
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 755, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Ngày", "Nguồn", "Loại", "Tổng Thu"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable);
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         buttonGroup1.add(jRadioButton_HomNay);
-        jRadioButton_HomNay.setSelected(true);
         jRadioButton_HomNay.setText("Hôm nay");
         jRadioButton_HomNay.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -202,22 +299,36 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
             }
         });
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabel1.setText("Thống kê nhanh");
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jRadioButton_HomNay)
+                    .addComponent(jRadioButton_TuanNay)
+                    .addComponent(jRadioButton_6Thang)
+                    .addComponent(jLabel1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(10, 10, 10)
+                .addComponent(jRadioButton_HomNay)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jRadioButton_TuanNay)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jRadioButton_6Thang)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 755, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jDateChooser1.setDateFormatString("dd/MM/yyyy");
 
@@ -228,33 +339,79 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
             }
         });
 
-        jTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Ngày", "Nguồn", "Loại", "Tổng Thu"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
+        jLabel2.setText("Tìm kiếm ");
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        buttonGroup2.add(jRadioButton_TheoNam);
+        jRadioButton_TheoNam.setText("Theo năm");
+        jRadioButton_TheoNam.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton_TheoNamMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable);
+        jRadioButton_TheoNam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton_TheoNamActionPerformed(evt);
+            }
+        });
+
+        buttonGroup2.add(jRadioButton_TheoNgay);
+        jRadioButton_TheoNgay.setSelected(true);
+        jRadioButton_TheoNgay.setText("Theo ngày");
+        jRadioButton_TheoNgay.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton_TheoNgayMouseClicked(evt);
+            }
+        });
+
+        buttonGroup2.add(jRadioButton_TheoThang);
+        jRadioButton_TheoThang.setText("Theo tháng");
+        jRadioButton_TheoThang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton_TheoThangMouseClicked(evt);
+            }
+        });
+        jRadioButton_TheoThang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton_TheoThangActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jRadioButton_TheoThang)
+                    .addComponent(jLabel2)
+                    .addComponent(jRadioButton_TheoNgay)
+                    .addComponent(jRadioButton_TheoNam))
+                .addGap(44, 44, 44)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jButton_Xem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(127, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButton_TheoNgay)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jRadioButton_TheoThang)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButton_TheoNam))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton_Xem)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -263,18 +420,12 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRadioButton_HomNay)
-                        .addGap(18, 18, 18)
-                        .addComponent(jRadioButton_TuanNay)
-                        .addGap(18, 18, 18)
-                        .addComponent(jRadioButton_6Thang)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton_Xem, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(10, 10, 10)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -283,18 +434,14 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jButton_Xem, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRadioButton_HomNay)
-                        .addComponent(jRadioButton_TuanNay)
-                        .addComponent(jRadioButton_6Thang)))
-                .addGap(16, 16, 16))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -302,9 +449,9 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (!mode.equalsIgnoreCase("today")) {
             mode = "today";
-
+            searchMode = "theo-ngay";
             try {
-                loadIncome(new Date());
+                loadIncome(new Date(), searchMode);
                 this.invalidate();
                 this.validate();
                 this.repaint();
@@ -360,33 +507,64 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
 
     private void jButton_XemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_XemActionPerformed
         // TODO add your handling code here:
-            mode = "day";
-            try {
-                loadIncome(this.jDateChooser1.getDate());
-                // refresh jFrame
-                this.invalidate();
-                this.validate();
-                this.repaint();
-            } catch (SQLException ex) {
-                Logger.getLogger(PnQlyDoanhThu.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            }
+//        mode = "day";
+        try {
+            loadIncome(this.jDateChooser1.getDate(), searchMode);
+            // refresh jFrame
+            this.invalidate();
+            this.validate();
+            this.repaint();
+        } catch (SQLException ex) {
+            Logger.getLogger(PnQlyDoanhThu.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton_XemActionPerformed
+
+    private void jRadioButton_TheoThangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton_TheoThangMouseClicked
+        // TODO add your handling code here:
+        searchMode = "theo-thang";
+    }//GEN-LAST:event_jRadioButton_TheoThangMouseClicked
+
+    private void jRadioButton_TheoThangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_TheoThangActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton_TheoThangActionPerformed
+
+    private void jRadioButton_TheoNamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton_TheoNamMouseClicked
+        // TODO add your handling code here:
+        searchMode = "theo-nam";
+    }//GEN-LAST:event_jRadioButton_TheoNamMouseClicked
+
+    private void jRadioButton_TheoNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_TheoNamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton_TheoNamActionPerformed
+
+    private void jRadioButton_TheoNgayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton_TheoNgayMouseClicked
+        // TODO add your handling code here:
+        searchMode = "theo-ngay";
+    }//GEN-LAST:event_jRadioButton_TheoNgayMouseClicked
     public static void main(String[] args) throws SQLException {
         JFrame f = new JFrame();
-        f.setSize(1200, 640);
+        f.setSize(1200, 600);
         f.add(new PnQlyDoanhThu());
         f.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton_Xem;
     private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JRadioButton jRadioButton_6Thang;
     private javax.swing.JRadioButton jRadioButton_HomNay;
+    private javax.swing.JRadioButton jRadioButton_TheoNam;
+    private javax.swing.JRadioButton jRadioButton_TheoNgay;
+    private javax.swing.JRadioButton jRadioButton_TheoThang;
     private javax.swing.JRadioButton jRadioButton_TuanNay;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable;

@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author t0168
  */
-public class DoanhThuTheoThoiGian {
+public class TongDoanhThuTheoThoiGian {
     Date date;
     double muon;
     double thanhToan;
