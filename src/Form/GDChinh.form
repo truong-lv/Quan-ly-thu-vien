@@ -37,12 +37,8 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="pnInfor" min="-2" pref="114" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-<<<<<<< HEAD
-              <Component id="tbPnMenu" pref="700" max="32767" attributes="0"/>
-=======
               <Component id="tbPnMenu" pref="703" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
->>>>>>> 69847318b3dd39f7fe973cef045bd0cab090e904
           </Group>
       </Group>
     </DimensionLayout>

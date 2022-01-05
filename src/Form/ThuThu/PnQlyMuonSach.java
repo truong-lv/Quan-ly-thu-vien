@@ -33,12 +33,15 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
     /**
      * Creates new form PnQlyMuonSach
      */
+    double tiLeCoc=0.7;
+    HamXuLyBang xlbang;
     DataBaseAccess dbAccess;
     Connection ketNoi = KetNoi.layKetNoi();
     String maPhieuMuon="";
     public PnQlyMuonSach() {
         initComponents();
         dbAccess=new DataBaseAccess();
+        xlbang=new HamXuLyBang();
         ngayTra.setMinSelectableDate( new Date());
         loadData();
     }
@@ -108,6 +111,34 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         dbAccess.Update(sql2);
     }
      
+    public void loadSachVaoBang(){
+        String sql = "SELECT maISBN, tenSach, giaBia FROM SACH WHERE maISBN='"+jComboBox_maSach.getSelectedItem().toString()+"'";
+        ResultSet rs =dbAccess.Query(sql);
+        try {
+            if(rs.next()){
+                DefaultTableModel dtm=(DefaultTableModel)jTable_CTmuon.getModel();
+                Vector vt=new Vector();
+                vt.add(rs.getString(1));
+                vt.add(rs.getString(2));
+                vt.add(rs.getString(3).substring(0,rs.getString(3).indexOf(".")));
+                vt.add(jTextField_ngayMuon.getText());
+                vt.add(((JTextField)ngayTra.getDateEditor().getUiComponent()).getText());
+                vt.add(jSpinner_soLuong.getValue());
+                //tính tổng tiền cọc/1 sách
+                double tongCoc=(Double.parseDouble(rs.getString(3))*tiLeCoc)*Double.parseDouble( jSpinner_soLuong.getValue().toString());
+                vt.add(String.valueOf(tongCoc).substring(0,String.valueOf(tongCoc).indexOf(".")));
+                dtm.addRow(vt);
+                jTable_CTmuon.setModel(dtm);
+                
+                //Tính tổng cọc cho tất cả sách ĐG mượn và hiện thị
+                double tongTienCoc=Double.parseDouble(lbTongTien.getText())+tongCoc;
+                lbTongTien.setText(String.valueOf(tongTienCoc).substring(0,String.valueOf(tongTienCoc).indexOf(".")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PnQlyMuonSach.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -217,13 +248,13 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Tổng tiền:");
         add(jLabel6);
-        jLabel6.setBounds(950, 560, 71, 17);
+        jLabel6.setBounds(900, 560, 71, 17);
 
         lbTongTien.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         lbTongTien.setForeground(new java.awt.Color(51, 204, 0));
-        lbTongTien.setText("800000");
+        lbTongTien.setText("00");
         add(lbTongTien);
-        lbTongTien.setBounds(1030, 560, 60, 19);
+        lbTongTien.setBounds(980, 560, 160, 19);
 
         btnThem.setBackground(new java.awt.Color(0, 255, 0));
         btnThem.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -234,7 +265,7 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
             }
         });
         add(btnThem);
-        btnThem.setBounds(350, 310, 115, 47);
+        btnThem.setBounds(390, 310, 115, 47);
 
         btnHuy.setBackground(new java.awt.Color(255, 102, 102));
         btnHuy.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -245,7 +276,7 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
             }
         });
         add(btnHuy);
-        btnHuy.setBounds(510, 310, 115, 47);
+        btnHuy.setBounds(590, 310, 115, 47);
 
         btnXacNhan.setBackground(new java.awt.Color(51, 51, 255));
         btnXacNhan.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -319,7 +350,7 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
         // TODO add your handling code here:
         themPhieuMuon();
-        HamXuLyBang xlbang=new HamXuLyBang();
+        
         for(int i=0;i<jTable_CTmuon.getRowCount();i++){
             them1CTPhieuMuon(xlbang.getRow(jTable_CTmuon, i,0), xlbang.getRow(jTable_CTmuon, i, 4),Integer.parseInt(xlbang.getRow(jTable_CTmuon, i, 5)));
         }
@@ -331,7 +362,11 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn SÁCH cần xóa trong bảng");
             return;
         }
+        double tongCoc=Double.parseDouble(jTable_CTmuon.getValueAt(jTable_CTmuon.getSelectedRow(), 6).toString());
         ((DefaultTableModel)jTable_CTmuon.getModel()).removeRow(jTable_CTmuon.getSelectedRow());
+        //Tính lại tổng cọc cho tất cả sách ĐG mượn và hiện thị
+        double tongTienCoc=Double.parseDouble(lbTongTien.getText())-tongCoc;
+        lbTongTien.setText(String.valueOf(tongTienCoc).substring(0,String.valueOf(tongTienCoc).indexOf(".")));
     }//GEN-LAST:event_btnHuyActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
@@ -344,17 +379,11 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Số lượng không hợp lệ", "Thông báo", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        DefaultTableModel dtm=(DefaultTableModel)jTable_CTmuon.getModel();
-        Vector vt=new Vector();
-        vt.add(jComboBox_maSach.getSelectedItem().toString());
-        vt.add(jLabel_tenSach.getText());
-        vt.add("20000");
-        vt.add(jTextField_ngayMuon.getText());
-        vt.add(((JTextField)ngayTra.getDateEditor().getUiComponent()).getText());
-        vt.add(jSpinner_soLuong.getValue());
-        vt.add("15000");
-        dtm.addRow(vt);
-        jTable_CTmuon.setModel(dtm);
+        
+        //thêm dữ liệu vào bảng
+        loadSachVaoBang();
+        
+        
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void jComboBox_maSachItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_maSachItemStateChanged
@@ -370,6 +399,9 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
             Logger.getLogger(PnQlyMuonSach.class.getName()).log(Level.SEVERE, null, ex);
         }
         jSpinner_soLuong.setModel(new javax.swing.SpinnerNumberModel(0, 0, Integer.parseInt(jLabel_slTon.getText()), 1));
+//        if(jLabel_slTon.getText().equalsIgnoreCase("0")){
+//            JOptionPane.showMessageDialog(this, "Sách đã được mượn hết. Vui lòng chọn sách khác", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//        }
     }//GEN-LAST:event_jComboBox_maSachItemStateChanged
 
     private void jComboBox_maDGItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_maDGItemStateChanged

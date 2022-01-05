@@ -8,9 +8,7 @@ package Form.ThuThu;
 import Code.DataBaseAccess;
 import Code.HamXuLyBang;
 import Code.Sender;
-import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -255,8 +253,15 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
 
     private void btnGuiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuiActionPerformed
         // TODO add your handling code here:
-        Sender sender=new Sender();
-        sender.sendSms(txtSDT.getText(), txtNoiDung.getText());
+        try {
+            Sender sender=new Sender();
+            sender.sendSms(txtSDT.getText(), txtNoiDung.getText());
+            JOptionPane.showMessageDialog(this, "Gửi tin nhắn thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gửi tin nhắn thất bại", "Thông báo", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
     }//GEN-LAST:event_btnGuiActionPerformed
 
     private void jTable_DSDGMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_DSDGMouseClicked
@@ -268,6 +273,13 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
         txtMaDG.setText((String) jTable_DSDG.getValueAt(rowSelect, 0));
         txtTenDG.setText((String) jTable_DSDG.getValueAt(rowSelect, 1));
         txtSDT.setText((String) jTable_DSDG.getValueAt(rowSelect, 2));
+        HamXuLyBang xlyBang=new HamXuLyBang();
+        String chiTietMuon="";
+        for(int i=0;i<jTable_DSSach.getRowCount();i++){
+            chiTietMuon+=" - "+xlyBang.getRow(jTable_DSSach, i, 1)+"(số lượng: "+xlyBang.getRow(jTable_DSSach, i, 2)+", hạn trả: "+xlyBang.getRow(jTable_DSSach, i, 4)+")\n";
+        }
+        String defaultMes="Xin chào "+txtTenDG.getText()+", hiện tại hệ thống của THƯ VIỆN 10Đ đang ghi nhận độc giả mượn sách quá hạn, chi tiết gồm:\n"+chiTietMuon;
+        txtNoiDung.setText(defaultMes);
     }//GEN-LAST:event_jTable_DSDGMouseClicked
 
 
