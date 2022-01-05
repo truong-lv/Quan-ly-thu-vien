@@ -85,7 +85,15 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
             new String [] {
                 "Mã độc giả", "Tên độc giả", "SĐT", "Email", "Địa chỉ"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable_DSDG.setRowHeight(25);
         jTable_DSDG.setRowMargin(3);
         jTable_DSDG.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -123,7 +131,15 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
             new String [] {
                 "Mã sách", "Tên sách", "Số lượng", "Giá tiền", "Hạn trả"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable_DSSach.setRowHeight(25);
         jTable_DSSach.setRowMargin(3);
         jTable_DSSach.setRowSelectionAllowed(false);
@@ -247,7 +263,6 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
         // TODO add your handling code here:
         //if(jTable_DSSach.getSelectionModel().isSelectionEmpty()){return;}
         int rowSelect=jTable_DSDG.getSelectedRow();
-        System.out.println((String) jTable_DSDG.getValueAt(rowSelect, 0));
         loadCtMuon((String) jTable_DSDG.getValueAt(rowSelect, 0));
         
         txtMaDG.setText((String) jTable_DSDG.getValueAt(rowSelect, 0));
