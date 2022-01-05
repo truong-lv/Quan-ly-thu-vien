@@ -6,6 +6,8 @@
 package Form.ThuKho;
 
 import Entities.KeSach;
+import Entities.Khu;
+import Entities.LoaiCoSoVatChat;
 import Entities.NganKeSach;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -21,7 +23,9 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
 
     private List<KeSach> bookshelfList = null;
     private List<NganKeSach> bookshelfCompartmentList = null;
+    private List<Khu> areaList = null;
     String button = "";
+    KeSach selectedKeSach = null;
 
     /**
      * Creates new form PnQlyMuonSach
@@ -30,7 +34,12 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
         initComponents();
 
         bookshelfList = KeSach.getList();
-        updateTable();
+        bookshelfCompartmentList = NganKeSach.getList(bookshelfList.get(0).getMaKe());
+        areaList = Khu.getList();
+        updateBookshelfTable(bookshelfList);
+        updateBookshelfCompartmentTable(bookshelfCompartmentList);
+        updateAreaCombobox(areaList);
+        updateBookshelfCombobox(bookshelfList);
 
         DocumentListener dl = new DocumentListener() {
             @Override
@@ -56,7 +65,7 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
                     bookshelfList = KeSach.search(keyword);
                 }
 
-                updateTable();
+                updateBookshelfTable(bookshelfList);
             }
         };
         txtSearch.getDocument().addDocumentListener(dl);
@@ -84,24 +93,82 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
                 } else {
                     bookshelfCompartmentList = NganKeSach.search(keyword);
                 }
-
-                updateTable();
+                updateBookshelfCompartmentTable(bookshelfCompartmentList);
             }
         };
 
         txtSearchNganKe.getDocument().addDocumentListener(dl2);
     }
 
-    private void updateTable() {
+    private void updateBookshelfTable(List<KeSach> bookshelfList) {
         DefaultTableModel dtm = (DefaultTableModel) BookShelfTable.getModel();
         dtm.setRowCount(0);
 
+        for (KeSach keSach : bookshelfList) {
+            String data[] = {keSach.getMaKe(), keSach.getTenKe(), keSach.getThongTin(), keSach.getKhu().getTenKhu()};
+            dtm.addRow(data);
+        }
+    }
+
+    private void updateBookshelfCompartmentTable(List<NganKeSach> bookshelfCompartmentList) {
         DefaultTableModel dtm2 = (DefaultTableModel) BookshelfCompartmentTable.getModel();
         dtm2.setRowCount(0);
 
-        for (KeSach keSach : bookshelfList) {
-            String data[] = {keSach.getMaKe(), keSach.getTenKe(), keSach.getThongTin(), keSach.getKhu().getTenKhu()};
+        for (NganKeSach nganKeSach : bookshelfCompartmentList) {
+            String data[] = {nganKeSach.getMaNganKe(), nganKeSach.getTenNgan()};
             dtm2.addRow(data);
+        }
+    }
+
+    private void updateAreaCombobox(List<Khu> areaList) {
+        for (Khu khu : areaList) {
+            cbxKhu.addItem(khu.getTenKhu());
+        }
+    }
+
+    private void updateBookshelfCombobox(List<KeSach> bookshelfList) {
+        for (KeSach keSach : bookshelfList) {
+            cbxKeSach.addItem(keSach.getTenKe());
+        }
+    }
+
+    private Khu getSelectedArea() {
+        String selected = cbxKhu.getItemAt(cbxKhu.getSelectedIndex());
+        for (Khu khu : areaList) {
+            if (khu.getTenKhu().equals(selected)) {
+                return khu;
+            }
+        }
+        return null;
+    }
+
+    private KeSach getSelectedBookShelf() {
+        String selected = cbxKeSach.getItemAt(cbxKeSach.getSelectedIndex());
+        for (KeSach keSach : bookshelfList) {
+            if (keSach.getTenKe().equals(selected)) {
+                return keSach;
+            }
+        }
+        return null;
+    }
+
+    private String generateBookshelfId() {
+        List<KeSach> bookshelves = KeSach.getList();
+        if (bookshelves.size() == 0) {
+            return Integer.toString(bookshelves.size());
+        } else {
+            KeSach theLastOne = bookshelves.get(bookshelves.size() - 1);
+            return Integer.toString(Integer.parseInt(theLastOne.getMaKe()) + 1);
+        }
+    }
+
+    private String generateBookshelfCompartmentId() {
+        List<NganKeSach> list = NganKeSach.getList();
+        if (list.size() == 0) {
+            return Integer.toString(list.size());
+        } else {
+            NganKeSach theLastOne = list.get(list.size() - 1);
+            return Integer.toString(Integer.parseInt(theLastOne.getMaNganKe()) + 1);
         }
     }
 
@@ -153,6 +220,11 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         btnSearch1 = new javax.swing.JLabel();
         txtSearchNganKe = new javax.swing.JTextField();
+        btnSaveNganKe = new javax.swing.JButton();
+        btnCancelNganKe = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        cbxKeSach = new javax.swing.JComboBox<>();
 
         setPreferredSize(new java.awt.Dimension(1155, 500));
 
@@ -353,7 +425,7 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -495,6 +567,54 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
             .addComponent(txtSearchNganKe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        btnSaveNganKe.setBackground(new java.awt.Color(0, 102, 102));
+        btnSaveNganKe.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnSaveNganKe.setForeground(new java.awt.Color(255, 255, 255));
+        btnSaveNganKe.setText("Lưu");
+        btnSaveNganKe.setBorderPainted(false);
+        btnSaveNganKe.setEnabled(false);
+        btnSaveNganKe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveNganKeActionPerformed(evt);
+            }
+        });
+
+        btnCancelNganKe.setBackground(new java.awt.Color(204, 0, 51));
+        btnCancelNganKe.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnCancelNganKe.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelNganKe.setText("Hủy");
+        btnCancelNganKe.setBorderPainted(false);
+        btnCancelNganKe.setEnabled(false);
+        btnCancelNganKe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelNganKeActionPerformed(evt);
+            }
+        });
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel16.setText("Kệ Sách:");
+
+        cbxKeSach.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn Kệ sách" }));
+        cbxKeSach.setEnabled(false);
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbxKeSach, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(cbxKeSach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel16))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -537,70 +657,90 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
                             .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(443, 443, 443))
-                            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(55, 55, 55)
-                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 50, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addGap(443, 443, 443))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(btnSaveNganKe, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(55, 55, 55)
+                                        .addComponent(btnCancelNganKe, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jPanel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(jLabel1)
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnSaveNganKe)
+                        .addComponent(btnCancelNganKe))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnAdd)
-                                .addComponent(btnEdit)
-                                .addComponent(btnDelete)
-                                .addComponent(btnRefresh)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnAddNganKe)
-                                    .addComponent(btnEditNganKe)
-                                    .addComponent(btnDeleteNganKe))
-                                .addGap(1, 1, 1)))
-                        .addGap(14, 14, 14)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(17, 17, 17)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(38, 38, 38))
-                            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(btnAdd)
+                                            .addComponent(btnEdit)
+                                            .addComponent(btnDelete)
+                                            .addComponent(btnRefresh)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(btnAddNganKe)
+                                            .addComponent(btnEditNganKe)
+                                            .addComponent(btnDeleteNganKe))
+                                        .addGap(1, 1, 1)))
+                                .addGap(14, 14, 14)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnSave)
-                            .addComponent(btnCancel))))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnSave))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnCancel))
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(38, 38, 38))
+                                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(21, 21, 21)
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -610,7 +750,7 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
         if (selectedRow < 0) {
             return;
         }
-        onTableClick(selectedRow);
+        handleBookshelfCompartmentTableClick(selectedRow);
     }//GEN-LAST:event_BookshelfCompartmentTableMouseClicked
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -620,22 +760,24 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
 
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
         // TODO add your handling code here:
-        editState();
+        editBookShelfTableState();
         txtMaKe.setText("");
         txtTenKe.setText("");
         txtThongTin.setText("");
+        cbxKhu.setSelectedIndex(0);
         button = "add";
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
         // TODO add your handling code here:
-        editState();
+        editBookShelfTableState();
         button = "edit";
     }//GEN-LAST:event_btnEditMouseClicked
 
-    private void editState() {
+    private void editBookShelfTableState() {
         txtTenKe.setEditable(true);
         txtThongTin.setEditable(true);
+        cbxKhu.setEnabled(true);
 
         btnSave.setEnabled(true);
         btnCancel.setEnabled(true);
@@ -643,12 +785,27 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
         btnAdd.setEnabled(false);
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
+        btnRefresh.setEnabled(false);
+        BookShelfTable.setEnabled(false);
+    }
+
+    private void editBookShelfCompartmentTableState() {
+        txtTenNganKe.setEditable(true);
+        cbxKeSach.setEnabled(true);
+
+        btnSaveNganKe.setEnabled(true);
+        btnCancelNganKe.setEnabled(true);
+
+        btnAddNganKe.setEnabled(false);
+        btnEditNganKe.setEnabled(false);
+        btnDeleteNganKe.setEnabled(false);
+        btnRefresh.setEnabled(false);
         BookshelfCompartmentTable.setEnabled(false);
     }
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
         // TODO add your handling code here:
-        if (JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa khu này?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+        if (JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa kệ sách này?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
             boolean i = KeSach.delete(txtMaKe.getText());
             if (i == true) {
                 showMessage("Xóa thành công");
@@ -664,67 +821,129 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
 
         if (txtTenKe.getText().isEmpty()) {
             showMessage("Tên khu không được để trống");
+        } else if (cbxKhu.getSelectedIndex() == 0) {
+            showMessage("Xin hãy chọn Khu");
         } else {
-//            if (button.equals("add")) {
-//                boolean i = KeSach.insert(Integer.toString(bookshelfList.size()), txtTenKe.getText(), txtThongTin.getText(), txtTang.getText());
-//                if (i == true) {
-//                    showMessage("Thêm thành công");
-//                    normalState();
-//                } else {
-//                    showMessage("Thêm thất bại");
-//                }
-//            } else if (button.equals("edit")) {
-//                boolean i = KeSach.update(txtMaKe.getText(), txtTenKe.getText(), txtThongTin.getText(), txtTang.getText());
-//                if (i == true) {
-//                    showMessage("Sửa thành công");
-//                    normalState();
-//                } else {
-//                    showMessage("Sửa thất bại");
-//                }
-//            }
+            if (button.equals("add")) {
+                boolean i = KeSach.insert(generateBookshelfId(), txtTenKe.getText(), txtThongTin.getText(), getSelectedArea().getMaKhu());
+                if (i == true) {
+                    showMessage("Thêm thành công");
+                    normalState();
+                } else {
+                    showMessage("Thêm thất bại");
+                }
+            } else if (button.equals("edit")) {
+                boolean i = KeSach.update(txtMaKe.getText(), txtTenKe.getText(), txtThongTin.getText(), getSelectedArea().getMaKhu());
+                if (i == true) {
+                    showMessage("Sửa thành công");
+                    normalState();
+                } else {
+                    showMessage("Sửa thất bại");
+                }
+            }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
         // TODO add your handling code here:
         bookshelfList = KeSach.getList();
-        updateTable();
-        onTableClick(0);
+        bookshelfCompartmentList = NganKeSach.getList(bookshelfList.get(0).getMaKe());
+        updateBookshelfTable(bookshelfList);
+        updateBookshelfCompartmentTable(bookshelfCompartmentList);
+        handleBookshelfTableClick(0);
     }//GEN-LAST:event_btnRefreshMouseClicked
 
-    private void onTableClick(int selectedRow) {
+    private void handleBookshelfTableClick(int selectedRow) {
         KeSach keSach = bookshelfList.get(selectedRow);
+        selectedKeSach = keSach;
         txtMaKe.setText(keSach.getMaKe());
         txtTenKe.setText(keSach.getTenKe());
         txtThongTin.setText(keSach.getThongTin());
 
         for (int i = 0; i < cbxKhu.getItemCount(); i++) {
-            if (cbxKhu.getItemAt(i).equals(keSach.getTenKe())) {
+            if (cbxKhu.getItemAt(i).equals(keSach.getKhu().getTenKhu())) {
                 cbxKhu.setSelectedIndex(i);
             }
         }
+
+        bookshelfCompartmentList = NganKeSach.getList(keSach.getMaKe());
+        updateBookshelfCompartmentTable(bookshelfCompartmentList);
+    }
+
+    private void handleBookshelfCompartmentTableClick(int selectedRow) {
+        NganKeSach nganKeSach = bookshelfCompartmentList.get(selectedRow);
+        txtMaNganKe.setText(nganKeSach.getMaNganKe());
+        txtTenNganKe.setText(nganKeSach.getTenNgan());
     }
 
     private void BookShelfTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BookShelfTableMouseClicked
         // TODO add your handling code here:
-        int selectedRow = BookshelfCompartmentTable.getSelectedRow();
+        int selectedRow = BookShelfTable.getSelectedRow();
         if (selectedRow < 0) {
             return;
         }
-        onTableClick(selectedRow);
+        handleBookshelfTableClick(selectedRow);
     }//GEN-LAST:event_BookShelfTableMouseClicked
 
     private void btnDeleteNganKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteNganKeMouseClicked
         // TODO add your handling code here:
+        if (JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa ngăn kệ sách này?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+            boolean i = NganKeSach.delete(txtMaNganKe.getText());
+            if (i == true) {
+                showMessage("Xóa thành công");
+                normalState();
+            } else {
+                showMessage("Xóa thất bại");
+            }
+        }
     }//GEN-LAST:event_btnDeleteNganKeMouseClicked
 
     private void btnEditNganKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditNganKeMouseClicked
         // TODO add your handling code here:
+        editBookShelfCompartmentTableState();
+        button = "editNganKe";
     }//GEN-LAST:event_btnEditNganKeMouseClicked
 
     private void btnAddNganKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddNganKeMouseClicked
         // TODO add your handling code here:
+        txtMaNganKe.setText("");
+        txtTenNganKe.setText("");
+        cbxKeSach.setSelectedIndex(0);
+        editBookShelfCompartmentTableState();
+        button = "addNganKe";
     }//GEN-LAST:event_btnAddNganKeMouseClicked
+
+    private void btnSaveNganKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveNganKeActionPerformed
+        // TODO add your handling code here:
+        if (txtTenNganKe.getText().isEmpty()) {
+            showMessage("Tên ngăn kệ không được để trống");
+        } else if (cbxKeSach.getSelectedIndex() == 0) {
+            showMessage("Xin hãy chọn Kệ sách");
+        } else {
+            if (button.equals("addNganKe")) {
+                boolean i = NganKeSach.insert(generateBookshelfCompartmentId(), txtTenNganKe.getText(), getSelectedBookShelf().getMaKe());
+                if (i == true) {
+                    showMessage("Thêm thành công");
+                    normalState();
+                } else {
+                    showMessage("Thêm thất bại");
+                }
+            } else if (button.equals("editNganKe")) {
+                boolean i = NganKeSach.update(txtMaNganKe.getText(), txtTenNganKe.getText(), getSelectedBookShelf().getMaKe());
+                if (i == true) {
+                    showMessage("Sửa thành công");
+                    normalState();
+                } else {
+                    showMessage("Sửa thất bại");
+                }
+            }
+        }
+    }//GEN-LAST:event_btnSaveNganKeActionPerformed
+
+    private void btnCancelNganKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelNganKeActionPerformed
+        // TODO add your handling code here:
+        normalState();
+    }//GEN-LAST:event_btnCancelNganKeActionPerformed
 
     private void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -734,17 +953,31 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
         btnAdd.setEnabled(true);
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
+        BookShelfTable.setEnabled(true);
+
+        btnAddNganKe.setEnabled(true);
+        btnEditNganKe.setEnabled(true);
+        btnDeleteNganKe.setEnabled(true);
         BookshelfCompartmentTable.setEnabled(true);
 
         txtMaKe.setEditable(false);
         txtTenKe.setEditable(false);
         txtThongTin.setEditable(false);
+        cbxKhu.setEnabled(true);
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
 
+        txtMaNganKe.setEditable(false);
+        txtTenNganKe.setEditable(true);
+        cbxKeSach.setEnabled(true);
+        btnSaveNganKe.setEnabled(true);
+        btnCancelNganKe.setEnabled(true);
+
+        btnRefresh.setEnabled(true);
+
         bookshelfList = KeSach.getList();
-        updateTable();
-        onTableClick(0);
+        updateBookshelfTable(bookshelfList);
+        handleBookshelfTableClick(0);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -753,23 +986,28 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
     private javax.swing.JLabel btnAdd;
     private javax.swing.JLabel btnAddNganKe;
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnCancelNganKe;
     private javax.swing.JLabel btnDelete;
     private javax.swing.JLabel btnDeleteNganKe;
     private javax.swing.JLabel btnEdit;
     private javax.swing.JLabel btnEditNganKe;
     private javax.swing.JLabel btnRefresh;
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnSaveNganKe;
     private javax.swing.JLabel btnSearch;
     private javax.swing.JLabel btnSearch1;
+    private javax.swing.JComboBox<String> cbxKeSach;
     private javax.swing.JComboBox<String> cbxKhu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
