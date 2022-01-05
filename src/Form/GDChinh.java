@@ -9,6 +9,7 @@ import Form.ThuKho.TKQuanLyLoaiCSVC;
 import Form.ThuKho.TKQuanLyNXB;
 import Form.ThuKho.TKQuanLyTacGia;
 import Form.ThuKho.TKQuanLyTheLoaiSach;
+import Form.ThuThu.PnQlyDocGiaQuaHan;
 import Form.ThuThu.PnQlyMuonSach;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -52,8 +53,11 @@ public class GDChinh extends javax.swing.JFrame {
                 PnQlyMuonSach qlyMS = new PnQlyMuonSach();
                 addPanel(qlyMS, "QLÝ Mượn sách", "/image/user-icon11.png");
 
-                PnQlyMuonSach qlyMSs = new PnQlyMuonSach();
-                addPanel(qlyMSs, "QLÝ Mượn sách", "/image/user-icon11.png");
+                PnQlyDocGiaQuaHan qlyDGQH = new PnQlyDocGiaQuaHan();
+                addPanel(qlyDGQH, "QLÝ Độc giả quá hạn", "/image/user-icon11.png");
+                
+//                PnQlyMuonSach qlyMSs = new PnQlyMuonSach();
+//                addPanel(qlyMSs, "QLÝ Mượn sách", "/image/user-icon11.png");
 
                 break;
 
@@ -206,8 +210,7 @@ public class GDChinh extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnInfor, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tbPnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(tbPnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE))
         );
 
         tbPnMenu.getAccessibleContext().setAccessibleName("QLÝ VÉ XE");
