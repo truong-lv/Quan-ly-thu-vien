@@ -78,6 +78,24 @@ public class LoaiCoSoVatChat {
         return cacLoaiCSVC;
     }
 
+    public static LoaiCoSoVatChat retrieve(String maLoaiCSVC) {
+        LoaiCoSoVatChat loaiCSVC = null;
+
+        try {
+            String query = "SELECT * FROM LoaiCoSoVatChat WHERE maLoaiCSVC = '" + maLoaiCSVC + "'";
+            DBAccess dba = new DBAccess();
+            ResultSet rs = dba.Query(query);
+            if (rs.next()) {
+                loaiCSVC = new LoaiCoSoVatChat();
+                loaiCSVC.setMaLoaiCSVC(rs.getNString("maLoaiCSVC"));
+                loaiCSVC.setTenLoaiCSVC(rs.getNString("tenLoaiCSVC"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LoaiCoSoVatChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return loaiCSVC;
+    }
+
     public static boolean insert(String maLoaiCSVC, String tenLoaiCSVC) {
         String query = "INSERT INTO LoaiCoSoVatChat VALUES(N'" + maLoaiCSVC + "', N'" + tenLoaiCSVC + "')";
         DBAccess dba = new DBAccess();
