@@ -179,7 +179,8 @@ public class Sach {
         List<Sach> cacSach = new ArrayList<>();
 
         try {
-            String query = "SELECT * FROM Sach";
+            String query = "SELECT * FROM Sach s JOIN TacGia tg ON s.maTacGia = tg.maTacGia JOIN NhaXuatBan nxb ON s.maNXB = nxb.maNXB JOIN TheLoaiSach tls ON s.maTheLoai = tls.maTheLoai WHERE s.maISBN LIKE N'%" + keyword + "%' OR s.tenSach LIKE N'%" + keyword + "%' OR tg.tenTacGia LIKE N'%" + keyword + "%' OR nxb.tenNXB LIKE N'%" + keyword + "%' OR s.namXB LIKE N'%" + keyword + "%' OR s.giaBia LIKE N'%" + keyword + "%' OR s.soTrang LIKE N'%" + keyword + "%' OR s.moTa LIKE N'%" + keyword + "%' OR tls.tenTheLoai LIKE N'%" + keyword + "%' OR s.soLuong LIKE N'%" + keyword + "%' OR s.soLuongCon LIKE N'%" + keyword + "%'";
+            System.out.println(query);
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             while (rs.next()) {
@@ -215,11 +216,11 @@ public class Sach {
         return cacSach;
     }
 
-    public static Sach retrieve(String maSach) {
+    public static Sach retrieve(String maISBN) {
         Sach sach = null;
 
         try {
-            String query = "SELECT * FROM Sach WHERE maSach = '" + maSach + "'";
+            String query = "SELECT * FROM Sach WHERE maISBN = '" + maISBN + "'";
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             if (rs.next()) {
@@ -262,7 +263,7 @@ public class Sach {
 
     public static boolean update(String maISBN, String tenSach, String maTacGia, String maNXB, Date namXB, float giaBia, int soTrang, String moTa, String maTheLoai, int soLuong, int soLuongCon, String maNganKe) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String query = "UPDATE maSach SET tenSach = N'" + tenSach + "', maTacGia = N'" + maTacGia + "', maNXB = N'" + dateFormat.format(namXB) + "', giaBia = N'" + giaBia + "', soTrang = N'" + soTrang + "', moTa = N'" + moTa + "', maTheLoai = N'" + maTheLoai + "', soLuong = N'" + soLuong + "', soLuongCon = N'" + soLuongCon + "', maNganKe = N'" + maNganKe + "' WHERE maISBN = N'" + maISBN + "'";
+        String query = "UPDATE Sach SET tenSach = N'" + tenSach + "', maTacGia = N'" + maTacGia + "', maNXB = N'" + maNXB + "', namXB = N'" + dateFormat.format(namXB) + "', giaBia = N'" + giaBia + "', soTrang = N'" + soTrang + "', moTa = N'" + moTa + "', maTheLoai = N'" + maTheLoai + "', soLuong = N'" + soLuong + "', soLuongCon = N'" + soLuongCon + "', maNganKe = N'" + maNganKe + "' WHERE maISBN = N'" + maISBN + "'";
         DBAccess dba = new DBAccess();
         boolean i = dba.Update(query);
         return i;
