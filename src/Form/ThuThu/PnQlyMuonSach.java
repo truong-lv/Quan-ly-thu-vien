@@ -295,9 +295,8 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         jLabel8.setBounds(600, 140, 66, 17);
 
         jLabel_tenSach.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel_tenSach.setText("Đắt nhân tâm");
         add(jLabel_tenSach);
-        jLabel_tenSach.setBounds(670, 140, 170, 19);
+        jLabel_tenSach.setBounds(670, 140, 170, 0);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setText("Ngày mượn:");
@@ -315,9 +314,8 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         jLabel12.setBounds(570, 70, 84, 17);
 
         jLabel_tenDG.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel_tenDG.setText("Lù Vĩnh Trường");
         add(jLabel_tenDG);
-        jLabel_tenDG.setBounds(660, 70, 170, 19);
+        jLabel_tenDG.setBounds(660, 70, 170, 0);
 
         ngayTra.setDateFormatString("yyyy-MM-dd");
         ngayTra.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
