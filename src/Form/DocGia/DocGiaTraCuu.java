@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Form.ThuKho;
+package Form.DocGia;
 
+import Form.ThuKho.*;
 import Entities.KeSach;
 import Entities.Khu;
 import Entities.LoaiCoSoVatChat;
@@ -29,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Phat
  */
-public class TKQuanLySach extends javax.swing.JPanel {
+public class DocGiaTraCuu extends javax.swing.JPanel {
 
     private List<Sach> listSach = null;
     private List<TacGia> listTacGia = null;
@@ -43,7 +44,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
     /**
      * Creates new form PnQlyMuonSach
      */
-    public TKQuanLySach() {
+    public DocGiaTraCuu() {
         initComponents();
 
         listSach = Sach.getList();
@@ -138,9 +139,6 @@ public class TKQuanLySach extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         txtMaISBN = new javax.swing.JTextField();
-        btnAdd = new javax.swing.JLabel();
-        btnEdit = new javax.swing.JLabel();
-        btnDelete = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         btnCancel = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
@@ -185,7 +183,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1155, 600));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("Quản lý Sách");
+        jLabel1.setText("Tra cứu sách");
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -269,34 +267,6 @@ public class TKQuanLySach extends javax.swing.JPanel {
                 .addComponent(jLabel9)
                 .addComponent(txtMaISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-
-        btnAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_add_25px_2.png"))); // NOI18N
-        btnAdd.setText("Thêm");
-        btnAdd.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnAddMouseClicked(evt);
-            }
-        });
-
-        btnEdit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_edit_25px.png"))); // NOI18N
-        btnEdit.setText("Sửa");
-        btnEdit.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnEditMouseClicked(evt);
-            }
-        });
-
-        btnDelete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_delete_25px_1.png"))); // NOI18N
-        btnDelete.setText("Xóa");
-        btnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnDeleteMouseClicked(evt);
-            }
-        });
 
         btnCancel.setBackground(new java.awt.Color(204, 0, 51));
         btnCancel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -607,24 +577,13 @@ public class TKQuanLySach extends javax.swing.JPanel {
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(511, 511, 511))))
+                        .addComponent(jLabel1)
+                        .addGap(511, 511, 511))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(btnAdd)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnEdit)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnDelete)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnRefresh))
                             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
@@ -644,7 +603,11 @@ public class TKQuanLySach extends javax.swing.JPanel {
                                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28)
                                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(55, 55, 55)))
+                        .addGap(55, 55, 55))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnRefresh)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -654,14 +617,10 @@ public class TKQuanLySach extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnAdd)
-                        .addComponent(btnEdit)
-                        .addComponent(btnDelete)
-                        .addComponent(btnRefresh)))
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRefresh))
                 .addGap(14, 14, 14)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -764,37 +723,6 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
     }
 
-    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
-        normalState();
-    }//GEN-LAST:event_btnCancelActionPerformed
-
-    private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
-        // TODO add your handling code here:
-        editState();
-        txtMaISBN.setText("");
-        txtTenSach.setText("");
-        txtMoTa.setText("");
-        txtGiaBia.setText("");
-        txtSoLuong.setText("");
-        txtSoLuongCon.setText("");
-        txtSoTrang.setText("");
-        dpNamXB.setYear(2022);
-        cbxTacGia.setSelectedIndex(0);
-        cbxTheLoai.setSelectedIndex(0);
-        cbxKeSach.setSelectedIndex(0);
-        cbxNganKe.setSelectedIndex(0);
-        cbxNXB.setSelectedIndex(0);
-        button = "add";
-    }//GEN-LAST:event_btnAddMouseClicked
-
-    private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
-        // TODO add your handling code here:
-        editState();
-        cbxNganKe.setEnabled(true);
-        button = "edit";
-    }//GEN-LAST:event_btnEditMouseClicked
-
     private void editState() {
         txtMaISBN.setEditable(true);
         txtTenSach.setEditable(true);
@@ -812,25 +740,12 @@ public class TKQuanLySach extends javax.swing.JPanel {
         btnSave.setEnabled(true);
         btnCancel.setEnabled(true);
 
-        btnAdd.setEnabled(false);
-        btnEdit.setEnabled(false);
-        btnDelete.setEnabled(false);
+//        btnAdd.setEnabled(false);
+//        btnEdit.setEnabled(false);
+//        btnDelete.setEnabled(false);
         btnRefresh.setEnabled(false);
         table.setEnabled(false);
     }
-
-    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
-        // TODO add your handling code here:
-        if (JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa Sách này?", "Cảnh báo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-            boolean i = Sach.delete(txtMaISBN.getText());
-            if (i == true) {
-                showMessage("Xóa thành công");
-                normalState();
-            } else {
-                showMessage("Xóa thất bại");
-            }
-        }
-    }//GEN-LAST:event_btnDeleteMouseClicked
 
     private TacGia getSelectedAuthor() {
         String selectedAuthor = cbxTacGia.getItemAt(cbxTacGia.getSelectedIndex());
@@ -886,47 +801,6 @@ public class TKQuanLySach extends javax.swing.JPanel {
 
     }
 
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
-        if (txtMaISBN.getText().isEmpty()) {
-            showMessage("Mã ISBN được để trống");
-        } else if (txtTenSach.getText().isEmpty()) {
-            showMessage("Tên sách không được để trống");
-        } else {
-            Date d = null;
-            try {
-                d = new SimpleDateFormat("yyyy").parse(Integer.toString(dpNamXB.getYear()));
-
-                if (button.equals("add")) {
-                    boolean i = Sach.insert(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
-                            d, Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
-                            getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuong.getText()), getSelectedBookshelfCapartment().getMaNganKe()
-                    );
-                    if (i == true) {
-                        showMessage("Thêm thành công");
-                        normalState();
-                    } else {
-                        showMessage("Thêm thất bại");
-                    }
-                } else if (button.equals("edit")) {
-                    boolean i = Sach.update(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
-                            d, Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
-                            getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuongCon.getText()), getSelectedBookshelfCapartment().getMaNganKe()
-                    );
-                    if (i == true) {
-                        showMessage("Sửa thành công");
-                        normalState();
-                    } else {
-                        showMessage("Sửa thất bại");
-                    }
-                }
-            } catch (ParseException ex) {
-                Logger.getLogger(TKQuanLySach.class.getName()).log(Level.SEVERE, null, ex);
-                showMessage("NamXB không hợp lệ");
-            }
-        }
-    }//GEN-LAST:event_btnSaveActionPerformed
-
     private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
         // TODO add your handling code here:
         listSach = Sach.getList();
@@ -950,14 +824,60 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_cbxKeSachItemStateChanged
 
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        normalState();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        if (txtMaISBN.getText().isEmpty()) {
+            showMessage("Mã ISBN được để trống");
+        } else if (txtTenSach.getText().isEmpty()) {
+            showMessage("Tên sách không được để trống");
+        } else {
+            Date d = null;
+            try {
+                d = new SimpleDateFormat("yyyy").parse(Integer.toString(dpNamXB.getYear()));
+
+                if (button.equals("add")) {
+                    boolean i = Sach.insert(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
+                        d, Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
+                        getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuong.getText()), getSelectedBookshelfCapartment().getMaNganKe()
+                    );
+                    if (i == true) {
+                        showMessage("Thêm thành công");
+                        normalState();
+                    } else {
+                        showMessage("Thêm thất bại");
+                    }
+                } else if (button.equals("edit")) {
+                    boolean i = Sach.update(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
+                        d, Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
+                        getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuongCon.getText()), getSelectedBookshelfCapartment().getMaNganKe()
+                    );
+                    if (i == true) {
+                        showMessage("Sửa thành công");
+                        normalState();
+                    } else {
+                        showMessage("Sửa thất bại");
+                    }
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(DocGiaTraCuu.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("NamXB không hợp lệ");
+            }
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
     private void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void normalState() {
-        btnAdd.setEnabled(true);
-        btnEdit.setEnabled(true);
-        btnDelete.setEnabled(true);
+//        btnAdd.setEnabled(true);
+//        btnEdit.setEnabled(true);
+//        btnDelete.setEnabled(true);
         btnRefresh.setEnabled(true);
         table.setEnabled(true);
 
@@ -984,10 +904,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel btnAdd;
     private javax.swing.JButton btnCancel;
-    private javax.swing.JLabel btnDelete;
-    private javax.swing.JLabel btnEdit;
     private javax.swing.JLabel btnRefresh;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel btnSearch;
