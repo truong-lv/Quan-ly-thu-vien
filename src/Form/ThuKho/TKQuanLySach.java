@@ -13,9 +13,13 @@ import Entities.NhaXuatBan;
 import Entities.Sach;
 import Entities.TacGia;
 import Entities.TheLoaiSach;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -26,14 +30,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Phat
  */
 public class TKQuanLySach extends javax.swing.JPanel {
-    
+
     private List<Sach> listSach = null;
     private List<TacGia> listTacGia = null;
     private List<TheLoaiSach> listTheLoaiSach = null;
     private List<KeSach> listKeSach = null;
     private List<NganKeSach> listNganKeSach = null;
     private List<NhaXuatBan> listNXB = null;
-    
+
     String button = "";
 
     /**
@@ -41,27 +45,27 @@ public class TKQuanLySach extends javax.swing.JPanel {
      */
     public TKQuanLySach() {
         initComponents();
-        
+
         listSach = Sach.getList();
         updateTable();
         updateCombobox();
-        
+
         DocumentListener dl = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 updateFieldState();
             }
-            
+
             @Override
             public void removeUpdate(DocumentEvent e) {
                 updateFieldState();
             }
-            
+
             @Override
             public void changedUpdate(DocumentEvent e) {
                 updateFieldState();
             }
-            
+
             protected void updateFieldState() {
                 String keyword = txtSearch.getText();
                 if (keyword.isEmpty()) {
@@ -69,48 +73,48 @@ public class TKQuanLySach extends javax.swing.JPanel {
                 } else {
                     listSach = Sach.search(keyword);
                 }
-                
+
                 updateTable();
             }
         };
-        
+
         txtSearch.getDocument().addDocumentListener(dl);
     }
-    
+
     private void updateTable() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
         DefaultTableModel dtm = (DefaultTableModel) table.getModel();
         dtm.setRowCount(0);
-        
+
         for (Sach sach : listSach) {
             String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), Float.toString(sach.getGiaBia()), Integer.toString(sach.getSoTrang()), sach.getMoTa(), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuong()), Integer.toString(sach.getSoLuongCon()), sach.getNganKeSach().getTenNgan()};
             dtm.addRow(data);
         }
     }
-    
+
     private void updateCombobox() {
         listTacGia = TacGia.getList();
         listNXB = NhaXuatBan.getList();
         listTheLoaiSach = TheLoaiSach.getList();
         listKeSach = KeSach.getList();
         listNganKeSach = NganKeSach.getList();
-        
+
         for (TacGia tacGia : listTacGia) {
             cbxTacGia.addItem(tacGia.getTenTacGia());
         }
-        
+
         for (NhaXuatBan nxb : listNXB) {
             cbxNXB.addItem(nxb.getTenNXB());
         }
-        
+
         for (TheLoaiSach theLoaiSach : listTheLoaiSach) {
             cbxTheLoai.addItem(theLoaiSach.getTenTheLoai());
         }
-        
+
         for (KeSach keSach : listKeSach) {
             cbxKeSach.addItem(keSach.getTenKe());
         }
-        
+
         for (NganKeSach nganKeSach : listNganKeSach) {
             cbxNganKe.addItem(nganKeSach.getTenNgan());
         }
@@ -164,7 +168,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
         txtSoLuongCon = new javax.swing.JTextField();
         jPanel11 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        dpNamXB = new com.toedter.calendar.JDateChooser();
+        dpNamXB = new com.toedter.calendar.JYearChooser();
         jPanel15 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         cbxTheLoai = new javax.swing.JComboBox<>();
@@ -495,8 +499,8 @@ public class TKQuanLySach extends javax.swing.JPanel {
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel17)
             .addComponent(dpNamXB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jLabel17)
         );
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -688,19 +692,22 @@ public class TKQuanLySach extends javax.swing.JPanel {
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(21, 21, 21)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
+                                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -712,14 +719,49 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
         onTableClick(selectedRow);
     }//GEN-LAST:event_tableMouseClicked
-    
+
     private void onTableClick(int selectedRow) {
         Sach sach = listSach.get(selectedRow);
         txtMaISBN.setText(sach.getMaISBN());
         txtTenSach.setText(sach.getTenSach());
         txtGiaBia.setText(Float.toString(sach.getGiaBia()));
         txtMoTa.setText(sach.getMoTa());
-        
+        txtSoLuong.setText(Integer.toString(sach.getSoLuong()));
+        txtSoLuongCon.setText(Integer.toString(sach.getSoLuongCon()));
+        txtSoTrang.setText(Integer.toString(sach.getSoTrang()));
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
+        dpNamXB.setYear(Integer.parseInt(dateFormat.format(sach.getNamXB())));
+
+        for (int i = 0; i < cbxTacGia.getItemCount(); i++) {
+            if (cbxTacGia.getItemAt(i).equals(sach.getTacGia().getTenTacGia())) {
+                cbxTacGia.setSelectedIndex(i);
+            }
+        }
+
+        for (int i = 0; i < cbxNXB.getItemCount(); i++) {
+            if (cbxNXB.getItemAt(i).equals(sach.getNhaXuatBan().getTenNXB())) {
+                cbxNXB.setSelectedIndex(i);
+            }
+        }
+
+        for (int i = 0; i < cbxTheLoai.getItemCount(); i++) {
+            if (cbxTheLoai.getItemAt(i).equals(sach.getTheLoaiSach().getTenTheLoai())) {
+                cbxTheLoai.setSelectedIndex(i);
+            }
+        }
+
+        for (int i = 0; i < cbxNganKe.getItemCount(); i++) {
+            if (cbxNganKe.getItemAt(i).equals(sach.getNganKeSach().getTenNgan())) {
+                cbxNganKe.setSelectedIndex(i);
+            }
+        }
+
+        for (int i = 0; i < cbxKeSach.getItemCount(); i++) {
+            if (cbxKeSach.getItemAt(i).equals(sach.getNganKeSach().getKeSach().getTenKe())) {
+                cbxKeSach.setSelectedIndex(i);
+            }
+        }
     }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -733,15 +775,26 @@ public class TKQuanLySach extends javax.swing.JPanel {
         txtMaISBN.setText("");
         txtTenSach.setText("");
         txtMoTa.setText("");
+        txtGiaBia.setText("");
+        txtSoLuong.setText("");
+        txtSoLuongCon.setText("");
+        txtSoTrang.setText("");
+        dpNamXB.setYear(2022);
+        cbxTacGia.setSelectedIndex(0);
+        cbxTheLoai.setSelectedIndex(0);
+        cbxKeSach.setSelectedIndex(0);
+        cbxNganKe.setSelectedIndex(0);
+        cbxNXB.setSelectedIndex(0);
         button = "add";
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
         // TODO add your handling code here:
         editState();
+        cbxNganKe.setEnabled(true);
         button = "edit";
     }//GEN-LAST:event_btnEditMouseClicked
-    
+
     private void editState() {
         txtMaISBN.setEditable(true);
         txtTenSach.setEditable(true);
@@ -750,24 +803,19 @@ public class TKQuanLySach extends javax.swing.JPanel {
         txtMoTa.setEditable(true);
         txtSoTrang.setEditable(true);
         dpNamXB.setEnabled(true);
-        
+
         cbxTacGia.setEnabled(true);
-        cbxTacGia.setSelectedIndex(0);
         cbxTheLoai.setEnabled(true);
-        cbxTheLoai.setSelectedIndex(0);
         cbxKeSach.setEnabled(true);
-        cbxKeSach.setSelectedIndex(0);
-        cbxNganKe.setEnabled(true);
-        cbxNganKe.setSelectedIndex(0);
         cbxNXB.setEnabled(true);
-        cbxNXB.setSelectedIndex(0);
-        
+
         btnSave.setEnabled(true);
         btnCancel.setEnabled(true);
-        
+
         btnAdd.setEnabled(false);
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
+        btnRefresh.setEnabled(false);
         table.setEnabled(false);
     }
 
@@ -783,7 +831,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnDeleteMouseClicked
-    
+
     private TacGia getSelectedAuthor() {
         String selectedAuthor = cbxTacGia.getItemAt(cbxTacGia.getSelectedIndex());
         for (TacGia tacGia : listTacGia) {
@@ -793,7 +841,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
         return null;
     }
-    
+
     private TheLoaiSach getSelectedCategory() {
         String selectedCategory = cbxTheLoai.getItemAt(cbxTheLoai.getSelectedIndex());
         for (TheLoaiSach theLoaiSach : listTheLoaiSach) {
@@ -803,7 +851,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
         return null;
     }
-    
+
     private NhaXuatBan getSelectedPublishingHouse() {
         String selectedPublishingHouse = cbxNXB.getItemAt(cbxNXB.getSelectedIndex());
         for (NhaXuatBan nxb : listNXB) {
@@ -813,7 +861,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
         return null;
     }
-    
+
     private KeSach getSelectedBookshelf() {
         String selectedBookshelf = cbxKeSach.getItemAt(cbxKeSach.getSelectedIndex());
         for (KeSach keSach : listKeSach) {
@@ -823,7 +871,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
         }
         return null;
     }
-    
+
     private NganKeSach getSelectedBookshelfCapartment() {
         String selected = cbxNganKe.getItemAt(cbxNganKe.getSelectedIndex());
         for (NganKeSach nganKeSach : listNganKeSach) {
@@ -834,6 +882,10 @@ public class TKQuanLySach extends javax.swing.JPanel {
         return null;
     }
 
+    private void convertYeartoDate(int year) {
+
+    }
+
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         if (txtMaISBN.getText().isEmpty()) {
@@ -841,28 +893,36 @@ public class TKQuanLySach extends javax.swing.JPanel {
         } else if (txtTenSach.getText().isEmpty()) {
             showMessage("Tên sách không được để trống");
         } else {
-            if (button.equals("add")) {
-                boolean i = Sach.insert(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
-                        dpNamXB.getDate(), Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
-                        getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuong.getText()), getSelectedBookshelfCapartment().getMaNganKe()
-                );
-                if (i == true) {
-                    showMessage("Thêm thành công");
-                    normalState();
-                } else {
-                    showMessage("Thêm thất bại");
+            Date d = null;
+            try {
+                d = new SimpleDateFormat("yyyy").parse(Integer.toString(dpNamXB.getYear()));
+
+                if (button.equals("add")) {
+                    boolean i = Sach.insert(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
+                            d, Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
+                            getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuong.getText()), getSelectedBookshelfCapartment().getMaNganKe()
+                    );
+                    if (i == true) {
+                        showMessage("Thêm thành công");
+                        normalState();
+                    } else {
+                        showMessage("Thêm thất bại");
+                    }
+                } else if (button.equals("edit")) {
+                    boolean i = Sach.update(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
+                            d, Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
+                            getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuongCon.getText()), getSelectedBookshelfCapartment().getMaNganKe()
+                    );
+                    if (i == true) {
+                        showMessage("Sửa thành công");
+                        normalState();
+                    } else {
+                        showMessage("Sửa thất bại");
+                    }
                 }
-            } else if (button.equals("edit")) {
-                boolean i = Sach.update(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
-                        dpNamXB.getDate(), Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
-                        getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuong.getText()), getSelectedBookshelfCapartment().getMaNganKe()
-                );
-                if (i == true) {
-                    showMessage("Sửa thành công");
-                    normalState();
-                } else {
-                    showMessage("Sửa thất bại");
-                }
+            } catch (ParseException ex) {
+                Logger.getLogger(TKQuanLySach.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("NamXB không hợp lệ");
             }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -877,24 +937,30 @@ public class TKQuanLySach extends javax.swing.JPanel {
     private void cbxKeSachItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxKeSachItemStateChanged
         // TODO add your handling code here:
         KeSach keSach = getSelectedBookshelf();
-        listNganKeSach = NganKeSach.getList(keSach.getMaKe());
-        cbxNganKe.removeAllItems();
-        
-        for (NganKeSach nganKeSach : listNganKeSach) {
-            cbxNganKe.addItem(nganKeSach.getTenNgan());
+        if (keSach == null) {
+            cbxNganKe.removeAllItems();
+            cbxNganKe.setSelectedIndex(0);
+        } else {
+            listNganKeSach = NganKeSach.getList(keSach.getMaKe());
+            cbxNganKe.removeAllItems();
+
+            for (NganKeSach nganKeSach : listNganKeSach) {
+                cbxNganKe.addItem(nganKeSach.getTenNgan());
+            }
         }
     }//GEN-LAST:event_cbxKeSachItemStateChanged
-    
+
     private void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     private void normalState() {
         btnAdd.setEnabled(true);
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
+        btnRefresh.setEnabled(true);
         table.setEnabled(true);
-        
+
         txtMaISBN.setEditable(false);
         txtTenSach.setEditable(false);
         txtGiaBia.setEditable(false);
@@ -902,15 +968,16 @@ public class TKQuanLySach extends javax.swing.JPanel {
         txtMoTa.setEditable(false);
         txtSoTrang.setEditable(false);
         dpNamXB.setEnabled(false);
-        
+
         cbxTacGia.setEnabled(false);
         cbxTheLoai.setEnabled(false);
         cbxKeSach.setEnabled(false);
         cbxNXB.setEnabled(false);
-        
+        cbxNganKe.setEnabled(false);
+
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
-        
+
         listSach = Sach.getList();
         updateTable();
         onTableClick(0);
@@ -929,7 +996,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbxNganKe;
     private javax.swing.JComboBox<String> cbxTacGia;
     private javax.swing.JComboBox<String> cbxTheLoai;
-    private com.toedter.calendar.JDateChooser dpNamXB;
+    private com.toedter.calendar.JYearChooser dpNamXB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
