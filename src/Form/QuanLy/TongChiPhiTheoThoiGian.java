@@ -14,7 +14,6 @@ import java.util.Date;
 public class TongChiPhiTheoThoiGian {
     Date date;
     double nhapHang;
-    double traLuong;
     
     public Date getDate() {
         return date;
@@ -31,14 +30,4 @@ public class TongChiPhiTheoThoiGian {
     public void setNhapHang(double nhapHang) {
         this.nhapHang = nhapHang;
     }
-
-    public double getTraLuong() {
-        return traLuong;
-    }
-
-    public void setTraLuong(double traLuong) {
-        this.traLuong = traLuong;
-    }
-
-    
 }
