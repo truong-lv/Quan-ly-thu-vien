@@ -51,33 +51,107 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
         loadIncome(new Date(), searchMode);
     }
 
-//    public void loadIncome(Date date) throws SQLException {
-//        DefaultCategoryDataset barChartData = new DefaultCategoryDataset();
-//        barChartData.setValue(new DatabaseAccess().layDoanhThuTheoNgay("muon", date), "Doanh Thu", "Độc giả mượn sách");
-//        barChartData.setValue(new DatabaseAccess().layDoanhThuTheoNgay("thanh-ly", date), "Doanh Thu", "Thanh lý sách");
-//        barChartData.setValue(new DatabaseAccess().layDoanhThuTheoNgay("thanh-toan", date), "Doanh Thu", "Độc giả thanh toán sách");
-//
-//        JFreeChart barChart = ChartFactory.createBarChart("Tổng doanh thu trong ngày " + new SimpleDateFormat("dd/MM/yyyy").format(date), "", "", barChartData);
-//
-//        barChart.setPadding(new RectangleInsets(8, 8, 8, 8));
-//
-//        CategoryPlot categoryPlot = barChart.getCategoryPlot();
-//        ((BarRenderer) categoryPlot.getRenderer()).setBarPainter(new StandardBarPainter());
-//        categoryPlot.setRangeGridlinePaint(Color.red);
-//
-//        ChartPanel barPanel = new ChartPanel(barChart);
-//
-//        jPanel1.removeAll();
-//
-//        jPanel1.add(barPanel, BorderLayout.CENTER);
-//
-//        dtm.setRowCount(0);
-//
-//        for (ChiTietDoanhThuTheoThoiGian ct_dtttg : new DatabaseAccess().layCTDoanhThuTheoNgay(date)) {
-//            dtm.addRow(new Object[]{new SimpleDateFormat("dd/MM/yyyy").format(ct_dtttg.getDate()),
-//                ct_dtttg.getNguon(), ct_dtttg.getLoai(), ct_dtttg.getTongThu()});
-//        }
-//    }
+    public void loadCompareIncomeAndOutcome(String mode) throws SQLException {
+        DefaultCategoryDataset barChartData = new DefaultCategoryDataset();
+        double tongMuon = -1;
+        double tongThanhLy = -1;
+        double tongThanhToan = -1;
+        List<TongChiPhiTheoThoiGian> list = new ArrayList<>();
+        List<TongDoanhThuTheoThoiGian> listDoanhThu = new ArrayList<>();
+        if (mode.equalsIgnoreCase("today")) {
+            tongMuon = new DatabaseAccess().layDoanhThu("muon", new Date(), "theo-ngay");
+            tongThanhLy = new DatabaseAccess().layDoanhThu("thanh-ly", new Date(), "theo-ngay");
+            tongThanhToan = new DatabaseAccess().layDoanhThu("thanh-toan", new Date(), "theo-ngay");
+
+            barChartData.setValue(tongMuon + tongThanhLy + tongThanhToan, "Doanh Thu", new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+            
+            list = new DatabaseAccess().layChiPhiTheoNgay(new Date());
+            Collections.reverse(list);
+            
+            for (TongChiPhiTheoThoiGian tcp : list) {
+                barChartData.setValue(tcp.getNhapHang(), "Chi Phí", new SimpleDateFormat("dd/MM/yyyy").format(tcp.getDate()));
+            }
+            
+        } else if (mode.equalsIgnoreCase("lastweek")) {
+            
+            listDoanhThu = new DatabaseAccess().layDoanhThuTrongTuan();
+            Collections.reverse(listDoanhThu);
+            for (TongDoanhThuTheoThoiGian tdt : listDoanhThu) {
+                barChartData.setValue(tdt.getMuon() + tdt.getThanhLy() + tdt.getThanhToan(), "Doanh Thu", new SimpleDateFormat("dd/MM/yyyy").format(tdt.getDate()));
+            }
+            
+            list = new DatabaseAccess().layChiPhiTheoTuanGanNhat();
+            Collections.reverse(list);
+            
+            for (TongChiPhiTheoThoiGian tcp : list) {
+                barChartData.setValue(tcp.getNhapHang(), "Chi Phí", new SimpleDateFormat("dd/MM/yyyy").format(tcp.getDate()));
+            }
+        } else if (mode.equalsIgnoreCase("last6month")) {
+            
+            listDoanhThu = new DatabaseAccess().layDoanhThuTrong6Thang();
+            Collections.reverse(listDoanhThu);
+            
+            for (TongDoanhThuTheoThoiGian tdt : listDoanhThu) {
+                barChartData.setValue(tdt.getMuon() + tdt.getThanhLy() + tdt.getThanhToan(), "Doanh Thu", new SimpleDateFormat("MM/yyyy").format(tdt.getDate()));
+            }
+            
+            list = new DatabaseAccess().layChiPhiTheo6ThangGanNhat();
+            Collections.reverse(list);
+            
+            for (TongChiPhiTheoThoiGian tcp : list) {
+                barChartData.setValue(tcp.getNhapHang(), "Chi Phí", new SimpleDateFormat("MM/yyyy").format(tcp.getDate()));
+            }
+        }
+
+        String chartTitle = "";
+        if (mode.equalsIgnoreCase("today")) {
+            chartTitle = "Doanh thu và chi phí trong ngày " + new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+        } else if (mode.equalsIgnoreCase("lastweek")) {
+            chartTitle = "Doanh thu và chi phí trong tuần ";
+        } else if (mode.equalsIgnoreCase("last6month")) {
+            chartTitle = "Doanh thu và chi phí  trong 6 tháng gần nhất";
+        }
+
+        JFreeChart barChart = ChartFactory.createBarChart(chartTitle, "", "", barChartData, PlotOrientation.VERTICAL, true, true, false);
+
+        //nếu k có doanh thu thì cột y từ 0-500000, nếu có thì từ 0 đến auto
+        if (tongMuon == 0 && tongThanhLy == 0 && tongThanhToan == 0) {
+            barChart.getCategoryPlot().getRangeAxis().setRange(0, 700000);
+        }
+        barChart.setPadding(new RectangleInsets(8, 8, 8, 8));
+
+        CategoryPlot categoryPlot = barChart.getCategoryPlot();
+        ((BarRenderer) categoryPlot.getRenderer()).setBarPainter(new StandardBarPainter());
+        categoryPlot.setRangeGridlinePaint(Color.red);
+        BarRenderer renderer = (BarRenderer) categoryPlot.getRenderer();
+        renderer.setItemMargin(0);
+        ChartPanel barPanel = new ChartPanel(barChart);
+
+        jPanel1.removeAll();
+
+        jPanel1.add(barPanel, BorderLayout.CENTER);
+
+        dtm.setRowCount(0);
+        if (mode.equalsIgnoreCase("today")) {
+
+            for (ChiTietDoanhThuTheoThoiGian ct_dtttg : new DatabaseAccess().layCTDoanhThuTheoNgay(new Date())) {
+                dtm.addRow(new Object[]{new SimpleDateFormat("dd/MM/yyyy").format(ct_dtttg.getDate()),
+                    ct_dtttg.getNguon(), ct_dtttg.getLoai(), ct_dtttg.getTongThu()});
+            }
+        } else if (mode.equalsIgnoreCase("lastweek")) {
+            for (ChiTietDoanhThuTheoThoiGian ct_dtttg : new DatabaseAccess().layCTDoanhThuTheoTuanGanNhat()) {
+                dtm.addRow(new Object[]{new SimpleDateFormat("dd/MM/yyyy").format(ct_dtttg.getDate()),
+                    ct_dtttg.getNguon(), ct_dtttg.getLoai(), ct_dtttg.getTongThu()});
+            }
+        } else if (mode.equalsIgnoreCase("last6month")) {
+            for (ChiTietDoanhThuTheoThoiGian ct_dtttg : new DatabaseAccess().layCTDoanhThuTheo6ThangGanNhat()) {
+                dtm.addRow(new Object[]{new SimpleDateFormat("dd/MM/yyyy").format(ct_dtttg.getDate()),
+                    ct_dtttg.getNguon(), ct_dtttg.getLoai(), ct_dtttg.getTongThu()});
+            }
+        }
+
+    }
+
     public void loadIncome(Date date, String searchMode) throws SQLException {
         DefaultCategoryDataset barChartData = new DefaultCategoryDataset();
         double tongMuon = new DatabaseAccess().layDoanhThu("muon", date, searchMode);
@@ -96,10 +170,10 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
         }
 
         JFreeChart barChart = ChartFactory.createBarChart(chartTitle, "", "", barChartData);
-        
+
         //nếu k có doanh thu thì cột y từ 0-500000, nếu có thì từ 0 đến auto
-        if(tongMuon==0&&tongThanhLy==0&&tongThanhToan==0){
-                    barChart.getCategoryPlot().getRangeAxis().setRange (0, 500000);
+        if (tongMuon == 0 && tongThanhLy == 0 && tongThanhToan == 0) {
+            barChart.getCategoryPlot().getRangeAxis().setRange(0, 500000);
         }
         barChart.setPadding(new RectangleInsets(8, 8, 8, 8));
 
@@ -136,7 +210,7 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
 
         }
         if (mode.equalsIgnoreCase("last6month")) {
-            list = new DatabaseAccess().layDoanhThuTrongThang();
+            list = new DatabaseAccess().layDoanhThuTrong6Thang();
 
             sdf = new SimpleDateFormat("MM/yyyy");
 
@@ -210,6 +284,7 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
         jRadioButton_TuanNay = new javax.swing.JRadioButton();
         jRadioButton_6Thang = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton_SoSanhNhanh = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jButton_Xem = new javax.swing.JButton();
@@ -301,6 +376,13 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
 
         jLabel1.setText("Thống kê nhanh");
 
+        jButton_SoSanhNhanh.setText("So sánh với chi phí");
+        jButton_SoSanhNhanh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_SoSanhNhanhActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -310,9 +392,12 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jRadioButton_HomNay)
                     .addComponent(jRadioButton_TuanNay)
-                    .addComponent(jRadioButton_6Thang)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jRadioButton_6Thang)
+                        .addGap(92, 92, 92)
+                        .addComponent(jButton_SoSanhNhanh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,7 +409,9 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRadioButton_TuanNay)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton_6Thang)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton_6Thang)
+                    .addComponent(jButton_SoSanhNhanh))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -408,7 +495,7 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
                         .addComponent(jRadioButton_TheoNam))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton_Xem)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -434,14 +521,15 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -542,6 +630,18 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
         // TODO add your handling code here:
         searchMode = "theo-ngay";
     }//GEN-LAST:event_jRadioButton_TheoNgayMouseClicked
+
+    private void jButton_SoSanhNhanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_SoSanhNhanhActionPerformed
+        // TODO add your handling code here:
+        try {
+            loadCompareIncomeAndOutcome(mode);
+            this.invalidate();
+            this.validate();
+            this.repaint();
+        } catch (SQLException ex) {
+            Logger.getLogger(PnQlyDoanhThu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton_SoSanhNhanhActionPerformed
     public static void main(String[] args) throws SQLException {
         JFrame f = new JFrame();
         f.setSize(1200, 600);
@@ -552,6 +652,7 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JButton jButton_SoSanhNhanh;
     private javax.swing.JButton jButton_Xem;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;

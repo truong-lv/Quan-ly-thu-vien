@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class DatabaseAccess {
 
-    public List<TongDoanhThuTheoThoiGian> layDoanhThuTrongThang() throws SQLException {
+    public List<TongDoanhThuTheoThoiGian> layDoanhThuTrong6Thang() throws SQLException {
         List<TongDoanhThuTheoThoiGian> list = new ArrayList<>();
         Connection connect = Code.KetNoi.layKetNoi();
         PreparedStatement ps = null;
@@ -130,40 +130,106 @@ public class DatabaseAccess {
         return list;
     }
 
-    public double layDoanhThuTheoNgay(String loai, java.util.Date dateToCheck) throws SQLException {
+//    public double layDoanhThuTheoNgay(String loai, java.util.Date dateToCheck) throws SQLException {
+//        Connection connect = Code.KetNoi.layKetNoi();
+//        PreparedStatement ps = null;
+//        java.sql.Date date = new Date(dateToCheck.getTime());
+//        switch (loai) {
+//            case "muon":
+//                ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM PhieuMuon WHERE ngayMuon=?");
+//                ps.setDate(1, date);
+//                ResultSet rs = ps.executeQuery();
+//                double sum = 0;
+//                while (rs.next()) {
+//                    sum = rs.getDouble("total");
+//                }
+//                return sum;
+//            case "thanh-toan":
+//                ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE ngayThanhToan=?");
+//                ps.setDate(1, date);
+//                rs = ps.executeQuery();
+//                sum = 0;
+//                while (rs.next()) {
+//                    sum = rs.getDouble("total");
+//                }
+//                return sum;
+//            case "thanh-ly":
+//                ps = connect.prepareStatement("SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE ngayThanhLy=?");
+//                ps.setDate(1, date);
+//                rs = ps.executeQuery();
+//                sum = 0;
+//                while (rs.next()) {
+//                    sum = rs.getDouble("total");
+//                }
+//                return sum;
+//        }
+//        return 0;
+//    }
+    public List<TongChiPhiTheoThoiGian> layChiPhiTheoNgay(java.util.Date dateToCheck) throws SQLException {
+        List<TongChiPhiTheoThoiGian> list = new ArrayList<>();
         Connection connect = Code.KetNoi.layKetNoi();
         PreparedStatement ps = null;
         java.sql.Date date = new Date(dateToCheck.getTime());
-        switch (loai) {
-            case "muon":
-                ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM PhieuMuon WHERE ngayMuon=?");
-                ps.setDate(1, date);
-                ResultSet rs = ps.executeQuery();
-                double sum = 0;
-                while (rs.next()) {
-                    sum = rs.getDouble("total");
-                }
-                return sum;
-            case "thanh-toan":
-                ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE ngayThanhToan=?");
-                ps.setDate(1, date);
-                rs = ps.executeQuery();
-                sum = 0;
-                while (rs.next()) {
-                    sum = rs.getDouble("total");
-                }
-                return sum;
-            case "thanh-ly":
-                ps = connect.prepareStatement("SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE ngayThanhLy=?");
-                ps.setDate(1, date);
-                rs = ps.executeQuery();
-                sum = 0;
-                while (rs.next()) {
-                    sum = rs.getDouble("total");
-                }
-                return sum;
+        ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM CT_PhieuNhapHang INNER JOIN PhieuNhapHang ON CT_PhieuNhapHang.maPhieuNhapHang = PhieuNhapHang.maPhieuNhapHang WHERE ngayNhap=?");
+        ps.setDate(1, date);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            TongChiPhiTheoThoiGian chiPhi = new TongChiPhiTheoThoiGian();
+            chiPhi.setDate(dateToCheck);
+            chiPhi.setNhapHang(rs.getDouble("total"));
+            list.add(chiPhi);
         }
-        return 0;
+        return list;
+    }
+
+    public List<TongChiPhiTheoThoiGian> layChiPhiTheoTuanGanNhat() throws SQLException {
+        List<TongChiPhiTheoThoiGian> list = new ArrayList<>();
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        java.util.Date utilDate = new java.util.Date();
+        LocalDate localDate = LocalDate.now();
+        double sum = -1;
+        for (int i = 0; i < 7; i++) {
+            localDate = LocalDate.now().minusDays(i);
+            utilDate = java.util.Date.from(localDate.atStartOfDay().toInstant(ZoneOffset.UTC));
+            java.sql.Date date = new java.sql.Date(utilDate.getTime());
+            ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM CT_PhieuNhapHang INNER JOIN PhieuNhapHang ON CT_PhieuNhapHang.maPhieuNhapHang = PhieuNhapHang.maPhieuNhapHang WHERE ngayNhap=?");
+            ps.setDate(1, date);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                TongChiPhiTheoThoiGian chiPhi = new TongChiPhiTheoThoiGian();
+                chiPhi.setDate(date);
+                chiPhi.setNhapHang(rs.getDouble("total"));
+                list.add(chiPhi);
+            }
+        }
+        return list;
+    }
+
+    public List<TongChiPhiTheoThoiGian> layChiPhiTheo6ThangGanNhat() throws SQLException {
+        List<TongChiPhiTheoThoiGian> list = new ArrayList<>();
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        PreparedStatement ps_layNgayNhap = null;
+        java.util.Date utilDate = new java.util.Date();
+        LocalDate localDate = LocalDate.now();
+        for (int i = 0; i < 6; i++) {
+            localDate = LocalDate.now().minusMonths(i);
+            utilDate = java.util.Date.from(localDate.atStartOfDay().toInstant(ZoneOffset.UTC));
+            java.sql.Date date = new java.sql.Date(utilDate.getTime());
+            ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM CT_PhieuNhapHang INNER JOIN PhieuNhapHang ON CT_PhieuNhapHang.maPhieuNhapHang = PhieuNhapHang.maPhieuNhapHang WHERE MONTH(ngayNhap)=MONTH(?) AND YEAR(ngayNhap)=YEAR(?)");
+            ps.setDate(1, date);
+            ps.setDate(2, date);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                TongChiPhiTheoThoiGian chiPhi = new TongChiPhiTheoThoiGian();
+                chiPhi.setDate(date);
+                chiPhi.setNhapHang(rs.getDouble("total"));
+                list.add(chiPhi);
+            }
+
+        }
+        return list;
     }
 
     public List<ChiTietDoanhThuTheoThoiGian> layCTDoanhThuTheoNgay(java.util.Date dateToCheck) throws SQLException {
@@ -332,17 +398,17 @@ public class DatabaseAccess {
             queryDoanhThuThanhToan = "SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE MONTH(ngayThanhToan)= MONTH(?) AND YEAR(ngayThanhToan)= YEAR(?)";
             queryDoanhThuThanhLy = "SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE MONTH(ngayThanhLy)= MONTH(?) AND YEAR(ngayThanhLy)= YEAR(?)";
         } else if (searchMode == "theo-nam") {
-                        queryDoanhThuMuon = "SELECT SUM(tongTien) as total FROM PhieuMuon WHERE YEAR(ngayMuon)= YEAR(?)";
+            queryDoanhThuMuon = "SELECT SUM(tongTien) as total FROM PhieuMuon WHERE YEAR(ngayMuon)= YEAR(?)";
             queryDoanhThuThanhToan = "SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE YEAR(ngayThanhToan)= YEAR(?)";
             queryDoanhThuThanhLy = "SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE YEAR(ngayThanhLy)= YEAR(?)";
         }
-        
+
         java.sql.Date date = new Date(dateToCheck.getTime());
         switch (loai) {
             case "muon":
                 ps = connect.prepareStatement(queryDoanhThuMuon);
                 ps.setDate(1, date);
-                if(searchMode.equalsIgnoreCase("theo-thang")){
+                if (searchMode.equalsIgnoreCase("theo-thang")) {
                     ps.setDate(2, date);
                 }
                 ResultSet rs = ps.executeQuery();
@@ -354,7 +420,7 @@ public class DatabaseAccess {
             case "thanh-toan":
                 ps = connect.prepareStatement(queryDoanhThuThanhToan);
                 ps.setDate(1, date);
-                if(searchMode.equalsIgnoreCase("theo-thang")){
+                if (searchMode.equalsIgnoreCase("theo-thang")) {
                     ps.setDate(2, date);
                 }
                 rs = ps.executeQuery();
@@ -366,7 +432,7 @@ public class DatabaseAccess {
             case "thanh-ly":
                 ps = connect.prepareStatement(queryDoanhThuThanhLy);
                 ps.setDate(1, date);
-                if(searchMode.equalsIgnoreCase("theo-thang")){
+                if (searchMode.equalsIgnoreCase("theo-thang")) {
                     ps.setDate(2, date);
                 }
                 rs = ps.executeQuery();
@@ -378,10 +444,10 @@ public class DatabaseAccess {
         }
         return 0;
     }
-    
+
     public static void main(String[] args) throws SQLException {
 //        System.out.println(new DatabaseAccess().layDoanhThuTrongNgay("thanh-ly"));
 //        System.out.println(new DatabaseAccess().layDoanhThuTrongTuan());
-        System.out.println(new DatabaseAccess().layDoanhThuTrongThang());
+//        System.out.println(new DatabaseAccess().layDoanhThuTrongThang());
     }
 }
