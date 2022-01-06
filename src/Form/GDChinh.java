@@ -15,6 +15,7 @@ import Form.ThuKho.TKQuanLyTheLoaiSach;
 import Form.ThuThu.LamTheTV;
 import Form.ThuThu.PnQlyDocGiaQuaHan;
 import Form.ThuThu.PnQlyMuonSach;
+import Form.ThuThu.PnQlyMuonTruoc;
 import Form.ThuThu.ThanhToanSach;
 import Form.ThuThu.Trasach;
 import java.sql.SQLException;
@@ -57,10 +58,13 @@ public class GDChinh extends javax.swing.JFrame {
 
             case "Thủ thư":
                 PnQlyMuonSach qlyMS = new PnQlyMuonSach();
-                addPanel(qlyMS, "QLÝ Mượn sách", "/image/user-icon11.png");
+                addPanel(qlyMS, "QLÝ Mượn sách", "/image/ticket_purchase_30px.png");
 
+                PnQlyMuonTruoc qlyMST = new PnQlyMuonTruoc();
+                addPanel(qlyMST, "QLÝ Mượn trước", "/image/elections_30px.png");
+                
                 PnQlyDocGiaQuaHan qlyDGQH = new PnQlyDocGiaQuaHan();
-                addPanel(qlyDGQH, "QLÝ Độc giả quá hạn", "/image/user-icon11.png");
+                addPanel(qlyDGQH, "QLÝ Độc giả quá hạn", "/image/users_30px.png");
                 
                 LamTheTV lt = new LamTheTV();
                 addPanel(lt, "Làm Thẻ Thư viện", "/image/user-icon11.png");

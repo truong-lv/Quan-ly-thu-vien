@@ -67,7 +67,6 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
         jLabel13 = new javax.swing.JLabel();
         txtSDT = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(255, 255, 255));
         setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -126,7 +125,7 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
         jLabel8.setBounds(309, 307, 78, 17);
 
         txtMaDG.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtMaDG.setText("Đắt nhân tâm");
+        txtMaDG.setText("     ");
         add(txtMaDG);
         txtMaDG.setBounds(391, 307, 170, 19);
 
@@ -136,7 +135,7 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
         jLabel12.setBounds(568, 307, 84, 17);
 
         txtTenDG.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtTenDG.setText("Lù Vĩnh Trường");
+        txtTenDG.setText("     ");
         add(txtTenDG);
         txtTenDG.setBounds(658, 307, 170, 19);
 
@@ -188,7 +187,7 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
         jLabel13.setBounds(309, 344, 34, 17);
 
         txtSDT.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        txtSDT.setText("Lù Vĩnh Trường");
+        txtSDT.setText("     ");
         add(txtSDT);
         txtSDT.setBounds(349, 344, 170, 19);
     }// </editor-fold>//GEN-END:initComponents
@@ -225,7 +224,7 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
         for(int i=0;i<jTable_DSSach.getRowCount();i++){
             chiTietMuon+=" - "+xlyBang.getRow(jTable_DSSach, i, 1)+"(số lượng: "+xlyBang.getRow(jTable_DSSach, i, 2)+", hạn trả: "+xlyBang.getRow(jTable_DSSach, i, 4)+")\n";
         }
-        String defaultMes="Xin chào "+txtTenDG.getText()+", hiện tại hệ thống của THƯ VIỆN 10Đ đang ghi nhận độc giả mượn sách quá hạn, chi tiết gồm:\n"+chiTietMuon;
+        String defaultMes="Xin chào "+txtTenDG.getText()+", hiện tại hệ thống của THƯ VIỆN 10Đ đang ghi nhận độc giả mượn sách quá hạn, chi tiết gồm:\n"+chiTietMuon+"Độc giả xin vui lòng sắp xếp thời gian để hoàn trả sách";
         txtNoiDung.setText(defaultMes);
     }//GEN-LAST:event_jTable_DSDGMouseClicked
 
