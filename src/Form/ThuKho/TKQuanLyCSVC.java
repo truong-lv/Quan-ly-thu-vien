@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Phat
  */
 public class TKQuanLyCSVC extends javax.swing.JPanel {
-    
+
     private List<CoSoVatChat> listCSVC = null;
     private List<LoaiCoSoVatChat> listLoaiCSVC = null;
     String button = "";
@@ -30,28 +30,28 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
      */
     public TKQuanLyCSVC() {
         initComponents();
-        
+
         listCSVC = CoSoVatChat.getList();
         listLoaiCSVC = LoaiCoSoVatChat.getList();
         updateTable();
         updateCombobox();
-        
+
         DocumentListener dl = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 updateFieldState();
             }
-            
+
             @Override
             public void removeUpdate(DocumentEvent e) {
                 updateFieldState();
             }
-            
+
             @Override
             public void changedUpdate(DocumentEvent e) {
                 updateFieldState();
             }
-            
+
             protected void updateFieldState() {
                 String keyword = txtSearch.getText();
                 if (keyword.isEmpty()) {
@@ -59,25 +59,25 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
                 } else {
                     listCSVC = CoSoVatChat.search(keyword);
                 }
-                
+
                 updateTable();
             }
         };
-        
+
         txtSearch.getDocument().addDocumentListener(dl);
     }
-    
+
     private void updateTable() {
         DefaultTableModel dtm = (DefaultTableModel) table.getModel();
         dtm.setRowCount(0);
-        
+
         for (CoSoVatChat csvc : listCSVC) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             String data[] = {csvc.getMaCSVC(), csvc.getTenCSVC(), Float.toString(csvc.getGia()), csvc.getLoaiCSVC().getTenLoaiCSVC(), dateFormat.format(csvc.getNgaySanXuat()), Integer.toString(csvc.getTrangThai())};
             dtm.addRow(data);
         }
     }
-    
+
     private void updateCombobox() {
         for (LoaiCoSoVatChat loaiCSVC : listLoaiCSVC) {
             cbxLoaiCSVC.addItem(loaiCSVC.getTenLoaiCSVC());
@@ -470,16 +470,16 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
         }
         onTableClick(selectedRow);
     }//GEN-LAST:event_tableMouseClicked
-    
+
     private void onTableClick(int selectedRow) {
         CoSoVatChat csvc = listCSVC.get(selectedRow);
         txtMaCSVC.setText(csvc.getMaCSVC());
         txtTenCSVC.setText(csvc.getTenCSVC());
         txtGia.setText(Float.toString(csvc.getGia()));
         txtTrangThai.setText(Integer.toString(csvc.getTrangThai()));
-        
+
         dpNgaySanXuat.setDate(csvc.getNgaySanXuat());
-        
+
         for (int i = 0; i < cbxLoaiCSVC.getItemCount(); i++) {
             if (cbxLoaiCSVC.getItemAt(i).equals(csvc.getLoaiCSVC().getTenLoaiCSVC())) {
                 cbxLoaiCSVC.setSelectedIndex(i);
@@ -508,7 +508,7 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
         editState();
         button = "edit";
     }//GEN-LAST:event_btnEditMouseClicked
-    
+
     private void editState() {
         txtTenCSVC.setEditable(true);
         txtGia.setEditable(true);
@@ -521,6 +521,7 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
         btnAdd.setEnabled(false);
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
+        btnRefresh.setEnabled(false);
         table.setEnabled(false);
     }
 
@@ -536,7 +537,7 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnDeleteMouseClicked
-    
+
     private LoaiCoSoVatChat getSelectedFacilityType() {
         String selectedFacilityType = cbxLoaiCSVC.getItemAt(cbxLoaiCSVC.getSelectedIndex());
         for (LoaiCoSoVatChat loaiCSVC : listLoaiCSVC) {
@@ -578,7 +579,7 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
-    
+
 
     private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
         // TODO add your handling code here:
@@ -588,27 +589,28 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
         updateCombobox();
         onTableClick(0);
     }//GEN-LAST:event_btnRefreshMouseClicked
-    
+
     private void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     private void normalState() {
         btnAdd.setEnabled(true);
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
+        btnRefresh.setEnabled(true);
         table.setEnabled(true);
-        
+
         txtMaCSVC.setEditable(false);
         txtTenCSVC.setEditable(false);
         txtGia.setEditable(false);
         txtTrangThai.setEditable(false);
         dpNgaySanXuat.setEnabled(false);
         cbxLoaiCSVC.setEnabled(false);
-        
+
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
-        
+
         listCSVC = CoSoVatChat.getList();
         updateTable();
         onTableClick(0);

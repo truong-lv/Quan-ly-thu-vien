@@ -3,6 +3,7 @@ package Form;
 import Code.HamXuLyBang;
 import Code.LoadThoiGian;
 import Code.ThuVien;
+import Form.DocGia.DocGiaTraCuu;
 import Form.QuanLy.PnQlyDoanhThu;
 import Form.ThuKho.TKQuanLyCSVC;
 import Form.ThuKho.TKQuanLyKeVaNganKe;
@@ -44,8 +45,7 @@ public class GDChinh extends javax.swing.JFrame {
         switch (ThuVien.quyen) {
 
             case "Độc giả":
-//            PnDatVe datVe =new PnDatVe();
-//            addPanel(datVe, "ĐẶT VÉ", "/image/payment-icon.png");
+                
                 break;
 
             case "Quản lý":
@@ -78,6 +78,9 @@ public class GDChinh extends javax.swing.JFrame {
                 break;
 
             case "Thủ kho":
+                DocGiaTraCuu docGiaTraCuu2 = new DocGiaTraCuu();
+                addPanel(docGiaTraCuu2, "Tra Cứu Sách", "/image/user-icon11.png");
+                
                 TKQuanLyKeVaNganKe tKQuanLyKeVaNganKe = new TKQuanLyKeVaNganKe();
                 addPanel(tKQuanLyKeVaNganKe, "QLÝ Kệ và Ngăn Kệ", "/image/user-icon11.png");
                 
