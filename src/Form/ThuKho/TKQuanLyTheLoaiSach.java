@@ -372,6 +372,7 @@ public class TKQuanLyTheLoaiSach extends javax.swing.JPanel {
         txtTenTheLoai.setEditable(true);
         btnSave.setEnabled(true);
         btnCancel.setEnabled(true);
+        btnRefresh.setEnabled(false);
 
         btnAdd.setEnabled(false);
         btnEdit.setEnabled(false);
@@ -433,11 +434,13 @@ public class TKQuanLyTheLoaiSach extends javax.swing.JPanel {
         btnAdd.setEnabled(true);
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
+        
         table.setEnabled(true);
 
         txtMaTheLoai.setEditable(false);
         txtTenTheLoai.setEditable(false);
         btnSave.setEnabled(false);
+        btnRefresh.setEnabled(true);
         btnCancel.setEnabled(false);
 
         list = TheLoaiSach.getList();

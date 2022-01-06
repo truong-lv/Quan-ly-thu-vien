@@ -169,7 +169,6 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         jLabel = new javax.swing.JLabel();
         jLabel_slTon = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(255, 255, 255));
         addHierarchyListener(new java.awt.event.HierarchyListener() {
             public void hierarchyChanged(java.awt.event.HierarchyEvent evt) {
                 formHierarchyChanged(evt);
@@ -295,7 +294,7 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         jLabel8.setBounds(600, 140, 66, 17);
 
         jLabel_tenSach.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel_tenSach.setText("Đắt nhân tâm");
+        jLabel_tenSach.setText("       ");
         add(jLabel_tenSach);
         jLabel_tenSach.setBounds(670, 140, 170, 19);
 
@@ -315,7 +314,7 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         jLabel12.setBounds(570, 70, 84, 17);
 
         jLabel_tenDG.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel_tenDG.setText("Lù Vĩnh Trường");
+        jLabel_tenDG.setText("      ");
         add(jLabel_tenDG);
         jLabel_tenDG.setBounds(660, 70, 170, 19);
 
@@ -410,6 +409,7 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         DefaultTableModel dtm=(DefaultTableModel)jTable_CTmuon.getModel();
         dtm.setNumRows(0);
         jTable_CTmuon.setModel(dtm);
+        lbTongTien.setText("00");
     }//GEN-LAST:event_jComboBox_maDGItemStateChanged
 
 

@@ -3,6 +3,7 @@ package Form;
 import Code.HamXuLyBang;
 import Code.LoadThoiGian;
 import Code.ThuVien;
+import Form.DocGia.DocGiaTraCuu;
 import Form.QuanLy.PnQlyDoanhThu;
 import Form.ThuKho.TKQuanLyCSVC;
 import Form.ThuKho.TKQuanLyKeVaNganKe;
@@ -15,6 +16,7 @@ import Form.ThuKho.TKQuanLyTheLoaiSach;
 import Form.ThuThu.LamTheTV;
 import Form.ThuThu.PnQlyDocGiaQuaHan;
 import Form.ThuThu.PnQlyMuonSach;
+import Form.ThuThu.PnQlyMuonTruoc;
 import Form.ThuThu.ThanhToanSach;
 import Form.ThuThu.Trasach;
 import java.sql.SQLException;
@@ -28,75 +30,91 @@ public class GDChinh extends javax.swing.JFrame {
 
     public GDChinh() throws SQLException {
         initComponents();
+        if(ThuVien.Account.isEmpty()){
+            jBtnCancelGDNhanVien.setText("Đăng nhập");
+        }
+        
         LbUserAcc.setText(ThuVien.Account);
         LbUserName.setText(ThuVien.hoTen);
+        
+        
+        
         loadGiaoDien();
 
         LoadThoiGian tg = new LoadThoiGian(lbClock, lbDate);
         tg.start();
+        
     }
 
     // LOAD TỪNG PANEL CHỨC NĂNG  VÀO GIAO DIỆN CHÍNH DỰA THEO QUYỀN TRUY CẬP CỦA TỪNG ĐỐI TƯỢNG
-    private void loadGiaoDien() throws SQLException {
-
+    public void loadGiaoDien() throws SQLException {
+        
+        //Load chức năng Tra cứu (dùng chung)
+        DocGiaTraCuu docGiaTraCuu2 = new DocGiaTraCuu();
+        addPanel(docGiaTraCuu2, "Tra Cứu", "/image/search_30px.png");
         // CHỨC NĂNG CHO KHÁCH
         switch (ThuVien.quyen) {
 
             case "Độc giả":
-//            PnDatVe datVe =new PnDatVe();
-//            addPanel(datVe, "ĐẶT VÉ", "/image/payment-icon.png");
+                
                 break;
 
             case "Quản lý":
 //            PnQLyNhanVien qlyNV =new PnQLyNhanVien();
 //            addPanel(qlyNV, "QLÝ NHÂN VIÊN", "/image/user-icon11.png");
                 PnQlyDoanhThu qlyDT = new PnQlyDoanhThu();
-                addPanel(qlyDT, "QLÝ DOANH THU", "/image/user-icon11.png");
+                addPanel(qlyDT, "QLÝ DOANH THU", "/image/bar_chart_30px.png");
 
                 break;
 
             case "Thủ thư":
                 PnQlyMuonSach qlyMS = new PnQlyMuonSach();
-                addPanel(qlyMS, "QLÝ Mượn sách", "/image/user-icon11.png");
+                addPanel(qlyMS, "QLÝ Mượn sách", "/image/ticket_purchase_30px.png");
 
+                PnQlyMuonTruoc qlyMST = new PnQlyMuonTruoc();
+                addPanel(qlyMST, "QLÝ Mượn trước", "/image/elections_30px.png");
+                
                 PnQlyDocGiaQuaHan qlyDGQH = new PnQlyDocGiaQuaHan();
-                addPanel(qlyDGQH, "QLÝ Độc giả quá hạn", "/image/user-icon11.png");
+                addPanel(qlyDGQH, "QLÝ Độc giả quá hạn", "/image/man_window_lock_30px.png");
                 
                 LamTheTV lt = new LamTheTV();
-                addPanel(lt, "Làm Thẻ Thư viện", "/image/user-icon11.png");
+                addPanel(lt, "Làm Thẻ Thư viện", "/image/users_30px.png");
                 
                 ThanhToanSach tts = new ThanhToanSach();
-                addPanel(tts, "Thanh toán sách", "/image/user-icon11.png");
+                addPanel(tts, "Thanh toán sách", "/image/refund_30px.png");
                 
                 Trasach ts = new Trasach();
-                addPanel(ts, "Trả sách", "/image/user-icon11.png");
+                addPanel(ts, "Trả sách", "/image/read_online_30px.png");
 
                 break;
 
             case "Thủ kho":
+//                DocGiaTraCuu docGiaTraCuu2 = new DocGiaTraCuu();
+//                addPanel(docGiaTraCuu2, "Tra Cứu Sách", "/image/user-icon11.png");
+                
                 TKQuanLyKeVaNganKe tKQuanLyKeVaNganKe = new TKQuanLyKeVaNganKe();
-                addPanel(tKQuanLyKeVaNganKe, "QLÝ Kệ và Ngăn Kệ", "/image/user-icon11.png");
+                addPanel(tKQuanLyKeVaNganKe, "QLÝ Kệ và Ngăn Kệ", "/image/book_shelfs_30px.png");
                 
                 TKQuanLySach tKQuanLySach = new TKQuanLySach();
-                addPanel(tKQuanLySach, "QLÝ Sách", "/image/user-icon11.png");
+                addPanel(tKQuanLySach, "QLÝ Sách", "/image/book_30px.png");
                 
                 TKQuanLyCSVC tKQuanLyCSVC = new TKQuanLyCSVC();
-                addPanel(tKQuanLyCSVC, "QLÝ CSVC", "/image/user-icon11.png");
+                addPanel(tKQuanLyCSVC, "QLÝ CSVC", "/image/administrative_tools_30px.png");
                 
                 TKQuanLyLoaiCSVC tKQuanLyLoaiCSVC = new TKQuanLyLoaiCSVC();
-                addPanel(tKQuanLyLoaiCSVC, "QLÝ Loại CSVC", "/image/user-icon11.png");
+                addPanel(tKQuanLyLoaiCSVC, "QLÝ Loại CSVC", "/image/window_tools_30px.png");
                 
                 TKQuanLyKhu tKQuanLyKhu = new TKQuanLyKhu();
-                addPanel(tKQuanLyKhu, "QLÝ Khu", "/image/user-icon11.png");
+                addPanel(tKQuanLyKhu, "QLÝ Khu", "/image/book_shelf_30px.png");
 
                 TKQuanLyNXB tKQuanLyNXB = new TKQuanLyNXB();
-                addPanel(tKQuanLyNXB, "QLÝ NXB", "/image/user-icon11.png");
+                addPanel(tKQuanLyNXB, "QLÝ NXB", "/image/company_30px.png");
 
                 TKQuanLyTheLoaiSach tKQuanLyTheLoaiSach = new TKQuanLyTheLoaiSach();
-                addPanel(tKQuanLyTheLoaiSach, "QLÝ Thể Loại Sách", "/image/user-icon11.png");
+                addPanel(tKQuanLyTheLoaiSach, "QLÝ Thể Loại Sách", "/image/books_30px.png");
 
                 TKQuanLyTacGia tKQuanLyTacGia = new TKQuanLyTacGia();
-                addPanel(tKQuanLyTacGia, "QLÝ Tác giả", "/image/user-icon11.png");
+                addPanel(tKQuanLyTacGia, "QLÝ Tác giả", "/image/user_typing_using_typewriter_30px.png");
                 break;
 
             default:
@@ -153,7 +171,7 @@ public class GDChinh extends javax.swing.JFrame {
 
         LbUserAcc.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         LbUserAcc.setForeground(new java.awt.Color(51, 255, 0));
-        LbUserAcc.setText("Tài khoản");
+        LbUserAcc.setText("Chưa xác định");
         pnInfor.add(LbUserAcc);
         LbUserAcc.setBounds(460, 10, 180, 40);
 
@@ -207,7 +225,7 @@ public class GDChinh extends javax.swing.JFrame {
 
         LbUserName.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         LbUserName.setForeground(new java.awt.Color(51, 255, 0));
-        LbUserName.setText("Tên");
+        LbUserName.setText("Chưa xác định");
         pnInfor.add(LbUserName);
         LbUserName.setBounds(460, 60, 180, 40);
 
@@ -240,6 +258,7 @@ public class GDChinh extends javax.swing.JFrame {
 
     private void jBtnCancelGDNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelGDNhanVienActionPerformed
         // TODO add your handling code here:
+        
         this.dispose();
         new Login().setVisible(true);
     }//GEN-LAST:event_jBtnCancelGDNhanVienActionPerformed

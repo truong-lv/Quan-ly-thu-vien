@@ -375,6 +375,7 @@ public class TKQuanLyNXB extends javax.swing.JPanel {
         btnAdd.setEnabled(false);
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
+        btnRefresh.setEnabled(false);
         table.setEnabled(false);
     }
 
@@ -432,6 +433,7 @@ public class TKQuanLyNXB extends javax.swing.JPanel {
         btnAdd.setEnabled(true);
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
+        btnRefresh.setEnabled(true);
         table.setEnabled(true);
 
         txtMaNXB.setEditable(false);
