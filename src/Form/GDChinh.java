@@ -39,7 +39,7 @@ public class GDChinh extends javax.swing.JFrame {
         initComponents();
 
         this.setLocationRelativeTo(null);
-        if(ThuVien.Account.isEmpty()){
+        if (ThuVien.Account.isEmpty()) {
             jBtnCancelGDNhanVien.setText("Đăng nhập");
         }
 
@@ -71,12 +71,17 @@ public class GDChinh extends javax.swing.JFrame {
             case "Quản lý":
 //            PnQLyNhanVien qlyNV =new PnQLyNhanVien();
 //            addPanel(qlyNV, "QLÝ NHÂN VIÊN", "/image/user-icon11.png");
-                PnQlyDoanhThu qlyDT =new PnQlyDoanhThu();
+                PnQlyDoanhThu qlyDT = new PnQlyDoanhThu();
                 addPanel(qlyDT, "QLÝ DOANH THU", "/image/user-icon11.png");
-                
-                PnQuanLyNhapHang qlyNH =new PnQuanLyNhapHang();
+
+                PnQuanLyNhapHang qlyNH = new PnQuanLyNhapHang();
                 addPanel(qlyNH, "QLÝ Nhập hàng", "/image/user-icon11.png");
 
+                TKQuanLySach qlySach = new TKQuanLySach();
+                addPanel(qlySach, "QLÝ Sách", "/image/user-icon11.png");
+
+                TKQuanLyCSVC qlyCSVC = new TKQuanLyCSVC();
+                addPanel(qlyCSVC, "QLÝ CSVC", "/image/user-icon11.png");
                 break;
 
             case "Thủ thư":
