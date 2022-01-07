@@ -176,9 +176,9 @@ public class KeSach {
         }
     }
 
-    public static boolean insert(String maKe, String tenKe, String thongTin, String maKhu) {
-        String query = "INSERT INTO KeSach VALUES(N'" + maKe + "', N'" + tenKe + "', N'" + thongTin + "', N'" + maKhu + "')";
+    public static boolean insert(String tenKe, String thongTin, String maKhu) {
         DBAccess dba = new DBAccess();
+        String query = "INSERT INTO KeSach VALUES(N'" + dba.generateId("9") + "', N'" + tenKe + "', N'" + thongTin + "', N'" + maKhu + "')";
         boolean i = dba.Update(query);
         return i;
     }
