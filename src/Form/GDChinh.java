@@ -6,6 +6,7 @@ import Code.ThuVien;
 import Form.DocGia.DocGiaDKMuonTruoc;
 import Form.DocGia.DocGiaTraCuu;
 import Form.QuanLy.PnQlyDoanhThu;
+import Form.QuanLy.PnQuanLyNhapHang;
 import Form.ThuKho.TKQuanLyCSVC;
 import Form.ThuKho.TKQuanLyKeVaNganKe;
 import Form.ThuKho.TKQuanLyKhu;
@@ -70,8 +71,11 @@ public class GDChinh extends javax.swing.JFrame {
             case "Quản lý":
 //            PnQLyNhanVien qlyNV =new PnQLyNhanVien();
 //            addPanel(qlyNV, "QLÝ NHÂN VIÊN", "/image/user-icon11.png");
-                PnQlyDoanhThu qlyDT = new PnQlyDoanhThu();
-                addPanel(qlyDT, "QLÝ DOANH THU", "/image/bar_chart_30px.png");
+                PnQlyDoanhThu qlyDT =new PnQlyDoanhThu();
+                addPanel(qlyDT, "QLÝ DOANH THU", "/image/user-icon11.png");
+                
+                PnQuanLyNhapHang qlyNH =new PnQuanLyNhapHang();
+                addPanel(qlyNH, "QLÝ Nhập hàng", "/image/user-icon11.png");
 
                 break;
 
