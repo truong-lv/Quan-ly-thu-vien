@@ -108,16 +108,17 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
         add(jScrollPane2);
         jScrollPane2.setBounds(22, 111, 606, 152);
 
-        btnGui.setBackground(new java.awt.Color(51, 51, 255));
+        btnGui.setBackground(new java.awt.Color(255, 204, 0));
         btnGui.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnGui.setText("Gửi");
+        btnGui.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/received_32px.png"))); // NOI18N
+        btnGui.setText("Gửi tin nhắn");
         btnGui.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuiActionPerformed(evt);
             }
         });
         add(btnGui);
-        btnGui.setBounds(548, 591, 115, 47);
+        btnGui.setBounds(508, 591, 180, 47);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setText("Mã độc giả:");
