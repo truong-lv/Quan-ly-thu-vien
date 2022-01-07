@@ -3,6 +3,7 @@ package Form;
 import Code.HamXuLyBang;
 import Code.LoadThoiGian;
 import Code.ThuVien;
+import Form.DocGia.DocGiaDKMuonTruoc;
 import Form.DocGia.DocGiaTraCuu;
 import Form.QuanLy.PnQlyDoanhThu;
 import Form.ThuKho.TKQuanLyCSVC;
@@ -19,9 +20,14 @@ import Form.ThuThu.PnQlyMuonSach;
 import Form.ThuThu.PnQlyMuonTruoc;
 import Form.ThuThu.ThanhToanSach;
 import Form.ThuThu.Trasach;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GDChinh extends javax.swing.JFrame {
@@ -30,34 +36,35 @@ public class GDChinh extends javax.swing.JFrame {
 
     public GDChinh() throws SQLException {
         initComponents();
+
         this.setLocationRelativeTo(null);
         if(ThuVien.Account.isEmpty()){
             jBtnCancelGDNhanVien.setText("Đăng nhập");
         }
-        
+
         LbUserAcc.setText(ThuVien.Account);
         LbUserName.setText(ThuVien.hoTen);
-        
-        
-        
+
         loadGiaoDien();
 
         LoadThoiGian tg = new LoadThoiGian(lbClock, lbDate);
         tg.start();
-        
+
     }
 
     // LOAD TỪNG PANEL CHỨC NĂNG  VÀO GIAO DIỆN CHÍNH DỰA THEO QUYỀN TRUY CẬP CỦA TỪNG ĐỐI TƯỢNG
     public void loadGiaoDien() throws SQLException {
-        
+
         //Load chức năng Tra cứu (dùng chung)
         DocGiaTraCuu docGiaTraCuu2 = new DocGiaTraCuu();
         addPanel(docGiaTraCuu2, "Tra Cứu", "/image/search_30px.png");
+
         // CHỨC NĂNG CHO KHÁCH
         switch (ThuVien.quyen) {
 
             case "Độc giả":
-                
+                DocGiaDKMuonTruoc docGiaDKMuonTruoc = new DocGiaDKMuonTruoc();
+                addPanel(docGiaDKMuonTruoc, "Đăng ký mượn trước", "/image/icons8_edit_25px.png");
                 break;
 
             case "Quản lý":
@@ -74,16 +81,16 @@ public class GDChinh extends javax.swing.JFrame {
 
                 PnQlyMuonTruoc qlyMST = new PnQlyMuonTruoc();
                 addPanel(qlyMST, "QLÝ Mượn trước", "/image/elections_30px.png");
-                
+
                 PnQlyDocGiaQuaHan qlyDGQH = new PnQlyDocGiaQuaHan();
                 addPanel(qlyDGQH, "QLÝ Độc giả quá hạn", "/image/man_window_lock_30px.png");
-                
+
                 LamTheTV lt = new LamTheTV();
                 addPanel(lt, "Làm Thẻ Thư viện", "/image/users_30px.png");
-                
+
                 ThanhToanSach tts = new ThanhToanSach();
                 addPanel(tts, "Thanh toán sách", "/image/refund_30px.png");
-                
+
                 Trasach ts = new Trasach();
                 addPanel(ts, "Trả sách", "/image/read_online_30px.png");
 
@@ -92,19 +99,19 @@ public class GDChinh extends javax.swing.JFrame {
             case "Thủ kho":
 //                DocGiaTraCuu docGiaTraCuu2 = new DocGiaTraCuu();
 //                addPanel(docGiaTraCuu2, "Tra Cứu Sách", "/image/user-icon11.png");
-                
+
                 TKQuanLyKeVaNganKe tKQuanLyKeVaNganKe = new TKQuanLyKeVaNganKe();
                 addPanel(tKQuanLyKeVaNganKe, "QLÝ Kệ và Ngăn Kệ", "/image/book_shelfs_30px.png");
-                
+
                 TKQuanLySach tKQuanLySach = new TKQuanLySach();
                 addPanel(tKQuanLySach, "QLÝ Sách", "/image/book_30px.png");
-                
+
                 TKQuanLyCSVC tKQuanLyCSVC = new TKQuanLyCSVC();
                 addPanel(tKQuanLyCSVC, "QLÝ CSVC", "/image/administrative_tools_30px.png");
-                
+
                 TKQuanLyLoaiCSVC tKQuanLyLoaiCSVC = new TKQuanLyLoaiCSVC();
                 addPanel(tKQuanLyLoaiCSVC, "QLÝ Loại CSVC", "/image/window_tools_30px.png");
-                
+
                 TKQuanLyKhu tKQuanLyKhu = new TKQuanLyKhu();
                 addPanel(tKQuanLyKhu, "QLÝ Khu", "/image/book_shelf_30px.png");
 
@@ -259,7 +266,7 @@ public class GDChinh extends javax.swing.JFrame {
 
     private void jBtnCancelGDNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelGDNhanVienActionPerformed
         // TODO add your handling code here:
-        
+
         this.dispose();
         new Login().setVisible(true);
     }//GEN-LAST:event_jBtnCancelGDNhanVienActionPerformed
