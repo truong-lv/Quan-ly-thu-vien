@@ -396,7 +396,7 @@ public class TKQuanLyLoaiCSVC extends javax.swing.JPanel {
             showMessage("Tên loại CSVC không được để trống");
         } else {
             if (button.equals("add")) {
-                boolean i = LoaiCoSoVatChat.insert(Integer.toString(list.size()), txtTenLoaiCSVC.getText());
+                boolean i = LoaiCoSoVatChat.insert(txtTenLoaiCSVC.getText());
                 if (i == true) {
                     showMessage("Thêm thành công");
                     normalState();

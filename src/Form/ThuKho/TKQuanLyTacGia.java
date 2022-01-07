@@ -397,7 +397,7 @@ public class TKQuanLyTacGia extends javax.swing.JPanel {
             showMessage("Tên tác giả không được để trống");
         } else {
             if (button.equals("add")) {
-                boolean i = TacGia.insert(Integer.toString(list.size()), txtTenTacGia.getText());
+                boolean i = TacGia.insert(txtTenTacGia.getText());
                 if (i == true) {
                     showMessage("Thêm thành công");
                     normalState();
