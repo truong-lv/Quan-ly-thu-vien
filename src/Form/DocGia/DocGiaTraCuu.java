@@ -15,6 +15,7 @@ import Entities.Sach;
 import Entities.TacGia;
 import Entities.TheLoaiSach;
 import com.toedter.calendar.JYearChooser;
+import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,6 +43,10 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
     private List<NganKeSach> listNganKeSach = null;
     private List<NhaXuatBan> listNXB = null;
     private Sach sach = new Sach();
+
+    private Khu khu = null;
+    private KeSach keSach = null;
+    private NganKeSach nganKeSach = null;
 
     String button = "";
 
@@ -83,7 +88,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
             }
         };
 
-        txtSearch.getDocument().addDocumentListener(dl);
+        //txtSearch.getDocument().addDocumentListener(dl);
     }
 
     private void updateTable() {
@@ -92,7 +97,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         dtm.setRowCount(0);
 
         for (Sach sach : listSach) {
-            String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuongCon()), sach.getNganKeSach().getKeSach().getKhu().getTenKhu(), sach.getNganKeSach().getKeSach().getTenKe(), sach.getNganKeSach().getTenNgan()};
+            String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuongCon()), sach.getNganKeSach().getKeSach().getTenKe(), sach.getNganKeSach().getTenNgan(), sach.getNganKeSach().getKeSach().getKhu().getTenKhu(), sach.getNganKeSach().getKeSach().getKhu().getTang()};
             dtm.addRow(data);
         }
     }
@@ -125,9 +130,9 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
             cbxKeSach.addItem(keSach.getTenKe());
         }
 
-        for (NganKeSach nganKeSach : listNganKeSach) {
-            cbxNganKe.addItem(nganKeSach.getTenNgan());
-        }
+//        for (NganKeSach nganKeSach : listNganKeSach) {
+//            cbxNganKe.addItem(nganKeSach.getTenNgan());
+//        }
     }
 
     /**
@@ -139,6 +144,9 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel17 = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        cbxNganKe = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
@@ -159,12 +167,36 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         jPanel16 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         cbxKeSach = new javax.swing.JComboBox<>();
-        jPanel17 = new javax.swing.JPanel();
-        jLabel23 = new javax.swing.JLabel();
-        cbxNganKe = new javax.swing.JComboBox<>();
         jPanel18 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         cbxKhu = new javax.swing.JComboBox<>();
+
+        jLabel23.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel23.setText("Ngăn kệ:");
+
+        cbxNganKe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn ngăn kệ" }));
+        cbxNganKe.setEnabled(false);
+        cbxNganKe.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxNganKeItemStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addComponent(jLabel23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cbxNganKe, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(cbxNganKe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         setPreferredSize(new java.awt.Dimension(1155, 600));
 
@@ -176,11 +208,11 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã ISBN", "Tên sách", "Tác giả", "NXB", "năm XB", "Thể loại", "SL còn", "Khu", "Kệ Sách", "Ngăn kệ"
+                "Mã ISBN", "Tên sách", "Tác giả", "NXB", "năm XB", "Thể loại", "SL còn", "Kệ Sách", "Ngăn kệ", "Khu", "Tầng"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -201,14 +233,16 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
             table.getColumnModel().getColumn(2).setResizable(false);
             table.getColumnModel().getColumn(3).setResizable(false);
             table.getColumnModel().getColumn(4).setResizable(false);
-            table.getColumnModel().getColumn(4).setPreferredWidth(40);
+            table.getColumnModel().getColumn(4).setPreferredWidth(20);
             table.getColumnModel().getColumn(5).setResizable(false);
             table.getColumnModel().getColumn(6).setResizable(false);
-            table.getColumnModel().getColumn(6).setPreferredWidth(40);
+            table.getColumnModel().getColumn(6).setPreferredWidth(20);
             table.getColumnModel().getColumn(7).setResizable(false);
-            table.getColumnModel().getColumn(7).setPreferredWidth(120);
             table.getColumnModel().getColumn(8).setResizable(false);
             table.getColumnModel().getColumn(9).setResizable(false);
+            table.getColumnModel().getColumn(9).setPreferredWidth(120);
+            table.getColumnModel().getColumn(10).setResizable(false);
+            table.getColumnModel().getColumn(10).setPreferredWidth(20);
         }
 
         btnRefresh.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -222,21 +256,28 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
 
         btnSearch.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/search-icon.png"))); // NOI18N
+        btnSearch.setText("Tìm kiếm");
+        btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSearchMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addComponent(btnSearch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSearch))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnSearch, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSearch))
         );
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -321,6 +362,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         jLabel22.setText("Kệ sách:");
 
         cbxKeSach.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn kệ sách" }));
+        cbxKeSach.setEnabled(false);
         cbxKeSach.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbxKeSachItemStateChanged(evt);
@@ -343,31 +385,10 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
             .addComponent(cbxKeSach, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        jLabel23.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel23.setText("Ngăn kệ:");
-
-        cbxNganKe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn ngăn kệ" }));
-
-        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
-        jPanel17.setLayout(jPanel17Layout);
-        jPanel17Layout.setHorizontalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel17Layout.createSequentialGroup()
-                .addComponent(jLabel23)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cbxNganKe, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel17Layout.setVerticalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(cbxNganKe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel24.setText("Khu:");
 
-        cbxKhu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn Khu" }));
+        cbxKhu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn khu" }));
         cbxKhu.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbxKhuItemStateChanged(evt);
@@ -403,16 +424,9 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(547, 547, 547))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnRefresh)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -421,7 +435,11 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(0, 362, Short.MAX_VALUE)))
+                        .addGap(0, 362, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnRefresh)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -430,7 +448,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
                 .addGap(29, 29, 29)
                 .addComponent(jLabel1)
                 .addGap(28, 28, 28)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -447,10 +465,8 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
                     .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(67, 67, 67))
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -559,6 +575,16 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         return null;
     }
 
+    private Khu getSelectedArea() {
+        String selected = cbxKhu.getItemAt(cbxKhu.getSelectedIndex());
+        for (Khu khu : listKhu) {
+            if (khu.getTenKhu().equals(selected)) {
+                return khu;
+            }
+        }
+        return null;
+    }
+
     private KeSach getSelectedBookshelf() {
         String selectedBookshelf = cbxKeSach.getItemAt(cbxKeSach.getSelectedIndex());
         for (KeSach keSach : listKeSach) {
@@ -569,45 +595,93 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         return null;
     }
 
-    private NganKeSach getSelectedBookshelfCapartment() {
-        String selected = cbxNganKe.getItemAt(cbxNganKe.getSelectedIndex());
-        for (NganKeSach nganKeSach : listNganKeSach) {
-            if (nganKeSach.getTenNgan().equals(selected)) {
-                return nganKeSach;
-            }
-        }
-        return null;
-    }
+//    private NganKeSach getSelectedBookshelfCapartment() {
+//        String selected = cbxNganKe.getItemAt(cbxNganKe.getSelectedIndex());
+//        for (NganKeSach nganKeSach : listNganKeSach) {
+//            if (nganKeSach.getTenNgan().equals(selected)) {
+//                return nganKeSach;
+//            }
+//        }
+//        return null;
+//    }
 
     private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
-        // TODO add your handling code here:
-        listSach = Sach.getList();
-        updateTable();
-        onTableClick(0);
+        // TODO add your handling code here:  
+        boolean flag = true;
+
+        if (cbxTacGia.getSelectedIndex() != 0) {
+            cbxTacGia.setSelectedIndex(0);
+            flag = false;
+        }
+
+        if (cbxTheLoai.getSelectedIndex() != 0) {
+            cbxTheLoai.setSelectedIndex(0);
+            flag = false;
+        }
+
+        if (cbxNXB.getSelectedIndex() != 0) {
+            cbxNXB.setSelectedItem(0);
+            flag = false;
+        }
+
+        if (cbxKhu.getSelectedIndex() != 0) {
+            cbxKhu.setSelectedIndex(0);
+            flag = false;
+        }
+        txtSearch.setText("");
+        if (flag == true) {
+            listSach = Sach.getList();
+            updateTable();
+        }
     }//GEN-LAST:event_btnRefreshMouseClicked
 
     private void cbxKeSachItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxKeSachItemStateChanged
         // TODO add your handling code here:
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-            KeSach keSach = getSelectedBookshelf();
-            if (keSach == null) {
-                cbxNganKe.removeAllItems();
-                cbxNganKe.setSelectedIndex(0);
-            } else {
-                listNganKeSach = NganKeSach.getList(keSach.getMaKe());
-                cbxNganKe.removeAllItems();
+            keSach = getSelectedBookshelf();
+//            if (keSach == null) {
+//                cbxNganKe.removeAllItems();
+//                cbxNganKe.addItem("Chọn ngăn kệ");
+//                cbxNganKe.setSelectedIndex(0);
+//                cbxNganKe.setEnabled(false);
+//            } else {
+//                cbxNganKe.setEnabled(true);
+//                listNganKeSach = NganKeSach.getList(keSach.getMaKe());
+//                cbxNganKe.removeAllItems();
+//
+//                cbxNganKe.addItem("Chọn ngăn kệ");
+//                for (NganKeSach nganKeSach : listNganKeSach) {
+//                    cbxNganKe.addItem(nganKeSach.getTenNgan());
+//                }
+//            }
 
-                for (NganKeSach nganKeSach : listNganKeSach) {
-                    cbxNganKe.addItem(nganKeSach.getTenNgan());
-                }
-            }
+            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
+            updateTable();
         }
     }//GEN-LAST:event_cbxKeSachItemStateChanged
 
     private void cbxKhuItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxKhuItemStateChanged
         // TODO add your handling code here:
         if (evt.getStateChange() == ItemEvent.SELECTED) {
+            khu = getSelectedArea();
+            if (khu == null) {
+                cbxKeSach.removeAllItems();
+                cbxKeSach.addItem("Chọn kệ sách");
+                cbxKeSach.setSelectedIndex(0);
+                cbxKeSach.setEnabled(false);
+            } else {
+                cbxKeSach.setEnabled(true);
+                listKeSach = KeSach.getList(khu.getMaKhu());
+                cbxKeSach.removeAllItems();
 
+                cbxKeSach.addItem("Chọn kệ sách");
+                for (KeSach keSach : listKeSach) {
+                    cbxKeSach.addItem(keSach.getTenKe());
+                }
+            }
+
+            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
+            updateTable();
         }
     }//GEN-LAST:event_cbxKhuItemStateChanged
 
@@ -616,7 +690,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             TheLoaiSach theLoaiSach = getSelectedCategory();
             sach.setTheLoaiSach(theLoaiSach);
-            listSach = Sach.search(sach, new KeSach(), txtSearch.getText());
+            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
             updateTable();
         }
     }//GEN-LAST:event_cbxTheLoaiItemStateChanged
@@ -626,7 +700,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             TacGia tacGia = getSelectedAuthor();
             sach.setTacGia(tacGia);
-            listSach = Sach.search(sach, new KeSach(), txtSearch.getText());
+            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
             updateTable();
         }
     }//GEN-LAST:event_cbxTacGiaItemStateChanged
@@ -636,10 +710,31 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             NhaXuatBan nxb = getSelectedPublishingHouse();
             sach.setNhaXuatBan(nxb);
-            listSach = Sach.search(sach, new KeSach(), txtSearch.getText());
+            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
             updateTable();
         }
     }//GEN-LAST:event_cbxNXBItemStateChanged
+
+    private void cbxNganKeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxNganKeItemStateChanged
+        // TODO add your handling code here:
+//        if (evt.getStateChange() == ItemEvent.SELECTED) {
+//            nganKeSach = getSelectedBookshelfCapartment();
+//            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
+//            updateTable();
+//        }
+    }//GEN-LAST:event_cbxNganKeItemStateChanged
+
+    private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
+        // TODO add your handling code here:
+        String keyword = txtSearch.getText();
+        if (keyword.isEmpty()) {
+            listSach = Sach.getList();
+        } else {
+            listSach = Sach.search(keyword);
+        }
+
+        updateTable();
+    }//GEN-LAST:event_btnSearchMouseClicked
 
     private void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
