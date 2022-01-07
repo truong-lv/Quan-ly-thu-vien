@@ -5,7 +5,6 @@
  */
 package Form;
 
-
 import Code.ThuVien;
 import Code.MaHoa;
 import java.awt.event.KeyEvent;
@@ -17,7 +16,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  *
  * @author n18dc
@@ -27,31 +25,38 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         txtTK.setText(ThuVien.Account);
-        
+
     }
-    public  void loadAccount() throws SQLException{
-        boolean checkLogin=false;
-        Connection connect=Code.KetNoi.layKetNoi();
-        String tk=txtTK.getText();
+
+    public void loadAccount() throws SQLException {
+        boolean checkLogin = false;
+        Connection connect = Code.KetNoi.layKetNoi();
+        String tk = txtTK.getText();
         //String mk=new MaHoa(psMatkhau.getText()).maHoa();
-        String mk=psMatkhau.getText();
+        String mk = psMatkhau.getText();
         //=========================LOAD TÀI KHOẢN TỪ DATABASE============================
         try {
             //CallableStatement command = connect.prepareCall("{call SP_LOAD_LOGIN (?,?)}");
-            PreparedStatement command=connect.prepareStatement("{call SP_LOAD_LOGIN (?,?)}");
-             //cung cap gia tri cho bien
+            PreparedStatement command = connect.prepareStatement("{call SP_LOAD_LOGIN (?,?)}");
+            //cung cap gia tri cho bien
             command.setString(1, tk);
             command.setString(2, mk);
             ResultSet rs = command.executeQuery();
-            
+            PreparedStatement command2 = connect.prepareStatement("SELECT maNV FROM NhanVien WHERE maTK = ?");
+            command2.setString(1, tk);
+            ResultSet rs2 = command2.executeQuery();
             // duyet ket qua
             while (rs.next()) {
-                ThuVien.Account=tk;
-                ThuVien.pass=mk;
-                ThuVien.primaryKey=rs.getString(1);
-                ThuVien.hoTen=rs.getString(2);
-                ThuVien.quyen=rs.getString(3);
-                checkLogin= true;
+                ThuVien.Account = tk;
+                ThuVien.pass = mk;
+                ThuVien.primaryKey = rs.getString(1);
+                ThuVien.hoTen = rs.getString(2);
+                ThuVien.quyen = rs.getString(3);
+                if (rs2.next()) {
+                    ThuVien.maNV = rs.getString("maNV");
+                }
+
+                checkLogin = true;
             }
             // dong ket noi
             rs.close();
@@ -60,14 +65,15 @@ public class Login extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         //====================KT NẾU LOAD ĐƯỢC TÀI KHOẢN THÌ CHUYỂN GIAO DIỆN=========================
-        if(checkLogin){
-                new GDChinh().setVisible(true);
-                this.dispose();
-  
-        }else {
+        if (checkLogin) {
+            new GDChinh().setVisible(true);
+            this.dispose();
+
+        } else {
             lbErorrLogin.setVisible(true);
         }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -169,7 +175,7 @@ public class Login extends javax.swing.JFrame {
 
     private void psMatkhauKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_psMatkhauKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             try {
                 loadAccount();
             } catch (SQLException ex) {
@@ -180,7 +186,7 @@ public class Login extends javax.swing.JFrame {
 
     private void btnDangNhapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDangNhapKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             try {
                 loadAccount();
             } catch (SQLException ex) {
@@ -196,7 +202,7 @@ public class Login extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_btnDangNhapActionPerformed
 
     /**

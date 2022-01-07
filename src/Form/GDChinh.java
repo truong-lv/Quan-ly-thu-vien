@@ -5,6 +5,7 @@ import Code.HamXuLyBang;
 import Code.LoadThoiGian;
 import Code.ThuVien;
 import Form.QuanLy.PnQlyDoanhThu;
+import Form.QuanLy.PnQuanLyNhapHang;
 import Form.ThuThu.PnQlyMuonSach;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -41,6 +42,8 @@ public class GDChinh extends javax.swing.JFrame {
                 PnQlyDoanhThu qlyDT =new PnQlyDoanhThu();
                 addPanel(qlyDT, "QLÝ DOANH THU", "/image/user-icon11.png");
                 
+                PnQuanLyNhapHang qlyNH =new PnQuanLyNhapHang();
+                addPanel(qlyNH, "QLÝ Nhập hàng", "/image/user-icon11.png");
                 break;
                 
             case "Thủ thư":
