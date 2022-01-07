@@ -6,9 +6,15 @@
 package Form.ThuThu;
 
 
+import Code.DataBaseAccess;
 import Code.HamXuLyBang;
 import Code.KetNoi;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -16,11 +22,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Admin
  */
 public class Trasach extends javax.swing.JPanel {
-
+   
     HamXuLyBang xlyBang;
+    DataBaseAccess dbAccess;
+    Connection ketNoi = KetNoi.layKetNoi();
     public Trasach() {
         initComponents();
         xlyBang = new HamXuLyBang();
+        dbAccess=new DataBaseAccess();
         laydulieumuon();
     }
 
@@ -31,24 +40,159 @@ public class Trasach extends javax.swing.JPanel {
      */
     
     public void laydulieumuon(){
-        String sql = "select PM.maDocGia, DG.tenDG, S.tenSach, CTPM.soLuong, PM.ngayMuon, CTPM.ngayTra, (SELECT DATEDIFF(day, PM.ngayMuon, CTPM.ngayTra)) AS NGAY ,PM.tongTien\n" +
-                "from PHIEUMUON PM, DOCGIA DG, Sach S, CT_PhieuMuon CTPM\n" +
-                " WHERE PM.maDocGia = DG.maDocGia \n" +
-                " AND S.maISBN = CTPM.maSach\n" +
-                " AND PM.maPhieuMuon = CTPM.maPhieuMuon";
+        String sql = "select PM.maDocGia, DG.tenDG, S.tenSach, CTPM.soLuong, PM.ngayMuon, CTPM.ngayTra, (SELECT DATEDIFF(day, CTPM.ngayTra, GETDATE())) AS NGAY , S.giaBia, PM.tongTien\n" +
+"                from PHIEUMUON PM, DOCGIA DG, Sach S, CT_PhieuMuon CTPM \n" +
+"                 WHERE PM.maDocGia = DG.maDocGia\n" +
+"                 AND S.maISBN = CTPM.maSach\n" +
+"                 AND PM.maPhieuMuon = CTPM.maPhieuMuon";
         
         xlyBang.loadDuLieuVaoBang(t_sach, sql); 
     }
     
     public void laydulieumuon(String maDG){
-        String sql = "select PM.maDocGia, DG.tenDG, S.tenSach, CTPM.soLuong, PM.ngayMuon, CTPM.ngayTra, (SELECT DATEDIFF(day, PM.ngayMuon, CTPM.ngayTra)) AS NGAY ,PM.tongTien\n" +
-                "from PHIEUMUON PM, DOCGIA DG, Sach S, CT_PhieuMuon CTPM\n" +
-                " WHERE PM.maDocGia = DG.maDocGia \n" +
-                " AND S.maISBN = CTPM.maSach\n" +
-                " AND PM.maPhieuMuon = CTPM.maPhieuMuon" + 
+        String sql = "select PM.maDocGia, DG.tenDG, S.tenSach, CTPM.soLuong, PM.ngayMuon, CTPM.ngayTra, (SELECT DATEDIFF(day, CTPM.ngayTra, GETDATE())) AS NGAY, S.giaBia, PM.tongTien\n" +
+"                from PHIEUMUON PM, DOCGIA DG, Sach S, CT_PhieuMuon CTPM \n" +
+"                 WHERE PM.maDocGia = DG.maDocGia\n" +
+"                 AND S.maISBN = CTPM.maSach\n" +
+"                 AND PM.maPhieuMuon = CTPM.maPhieuMuon" + 
                 " AND PM.maDocGia LIKE %'" + maDG + "'%";
         
         xlyBang.loadDuLieuVaoBang(t_sach, sql); 
+    }
+    
+    public float layGiaSach(String ten)
+    {
+        float gia = 0;
+        try {
+            PreparedStatement command = ketNoi.prepareStatement("select * from SACH where tenSach = N'"+ ten + "'");
+            ResultSet rs = command.executeQuery();
+            if(rs.next())
+            {
+                gia = rs.getFloat(6);
+            }
+        } catch (Exception e) {
+        }
+        return gia;
+    }
+    
+    public void upDateSL(int SoLuong, String tenSach)
+    {
+        String sql = "UPDATE SACH set soLuongCon = soLuongCon +" + SoLuong + "where tenSach = N'" + tenSach + "'"; 
+        dbAccess.Update(sql);
+    }
+    
+    public String layMaPhieuTraMax()
+    {
+        int maPT = 0;
+        try {
+            PreparedStatement command = ketNoi.prepareStatement("select maPhieuTra from PhieuTra");
+            ResultSet rs = command.executeQuery();
+            while(rs.next())
+            {
+                if(Integer.parseInt(rs.getString(1)) > maPT)
+                {
+                    maPT = Integer.parseInt(rs.getString(1));
+                }
+            }
+        } catch (Exception e) {
+        }
+        return String.valueOf(maPT);
+    }
+    
+    public void insertPhieuTra(String maPT, String ngayMuon, double gia, String maDG, boolean traQH, String maNV, String trangThai)
+    {
+        String sql = "insert into PhieuTra(maPhieuTra, ngayMuon, tongTien, maDocGia, traQuaHan, maNV, trangThai)" +
+                "values ('" + maPT + "', '" + ngayMuon + "'," + gia + ",'" + maDG + "','" + traQH + "', '" + maNV + "', '" + trangThai + "')";
+        dbAccess.Update(sql);
+    }
+    
+    public void insertCTPhieuTra(String maPT, String maSach, String ngayTra, String soLuong)
+    {
+        int SL = Integer.parseInt(soLuong);
+        String sql = "insert into CT_PhieuTra(maPhieuTra, maSach, ngayTra, soLuong)" +
+                    "values ('" + maPT + "','" + maSach + "','" + ngayTra + "'," + SL + ")";
+        dbAccess.Update(sql);
+    }
+    
+    public void deleteCTPhieuMuon(String maPM)
+    {
+        String sql = "delete from CT_PhieuMuon where maPhieuMuon = '" + maPM + "'";
+        dbAccess.Update(sql);
+    }
+    
+    public void deletePhieuMuon(String maPM)
+    {
+        String sql = "delete from PhieuMuon where maPhieuMuon = '" + maPM + "'";
+        dbAccess.Update(sql);
+    }
+    
+    public String layMaNV(String maDG, String ngayMuon)
+    {
+        String maNV = "";
+        String sql = "select maNV from PhieuMuon PM where PM.maDocGia = '" + maDG + "' and PM.ngayMuon = '" + ngayMuon + "'";
+        try {
+            PreparedStatement command = ketNoi.prepareStatement(sql);
+            ResultSet rs = command.executeQuery();
+            if(rs.next())
+            {
+                maNV = rs.getString(1);
+            }
+        } catch (Exception e) {
+        }
+        return maNV;
+    }
+    
+    public String layMaSach(String tenSach)
+    {
+        String maSach = "";
+        try {
+            PreparedStatement command = ketNoi.prepareStatement("select maISBN from Sach where tenSach = N'" + tenSach + "'");
+            ResultSet rs = command.executeQuery();
+            if(rs.next())
+            {
+                maSach = rs.getString(1);
+            }
+        } catch (Exception e) {
+        }
+        return maSach;
+    }
+    
+    public String layMaPhieuMuon(String maDG, String ngayMuon, String maSach)
+    {
+        String maPM = "";
+        String sql = "select PM.maPhieuMuon from PhieuMuon PM, CT_PhieuMuon CTPM " +
+                    "where PM.maPhieuMuon = CTPM.maPhieuMuon " +
+                    "and PM.maDocGia = '"+ maDG + "' " +
+                    "and PM.ngayMuon = '" + ngayMuon + "' " +
+                    "and CTPM.maSach = '" + maSach + "'";
+        try {
+            PreparedStatement command = ketNoi.prepareStatement(sql);
+            ResultSet rs = command.executeQuery();
+            if(rs.next())
+            {
+                maPM = rs.getString(1);
+            }
+        } catch (Exception e) {
+        }
+        return maPM;
+    }
+    
+    public long xuLyNgay(String ngayMuon, String hanTra)
+    {
+        long ngay = -1;
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+
+        // Định nghĩa 2 mốc thời gian ban đầu
+        Date date1 = Date.valueOf(ngayMuon);
+        Date date2 = Date.valueOf(hanTra);
+
+        c1.setTime(date1);
+        c2.setTime(date2);
+
+        // Công thức tính số ngày giữa 2 mốc thời gian:
+        ngay = (c2.getTime().getTime() - c1.getTime().getTime()) / (24 * 3600 * 1000);
+        return ngay;
     }
     
     @SuppressWarnings("unchecked")
@@ -62,6 +206,7 @@ public class Trasach extends javax.swing.JPanel {
         t_sach = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        btnReload = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1159, 635));
 
@@ -73,9 +218,9 @@ public class Trasach extends javax.swing.JPanel {
         jLabel2.setText("Nhập mã độc giả");
 
         txtMaDG.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtMaDG.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMaDGActionPerformed(evt);
+        txtMaDG.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMaDGKeyReleased(evt);
             }
         });
 
@@ -84,29 +229,47 @@ public class Trasach extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã độc giả", "Tên độc giả", "Tên sách mượn", "Số lượng mượn", "Ngày mượn", "Hạn trả", "Số ngày quá hạn", "Số tiền đã cọc"
+                "Mã độc giả", "Tên độc giả", "Tên sách mượn", "Số lượng mượn", "Ngày mượn", "Hạn trả", "Số ngày quá hạn", "Giá bìa", "Số tiền đã cọc"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(t_sach);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/ok_32px.png"))); // NOI18N
         jButton1.setText("Xác nhận trả");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/money_circulation_32px.png"))); // NOI18N
         jButton2.setText("Thanh toán sách");
 
+        btnReload.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/process_32px.png"))); // NOI18N
+        btnReload.setText("Reload");
+        btnReload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReloadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(464, 464, 464)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(183, Short.MAX_VALUE)
+                .addContainerGap(69, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -114,13 +277,21 @@ public class Trasach extends javax.swing.JPanel {
                         .addComponent(txtMaDG, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(286, 286, 286))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1050, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40))))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(464, 464, 464)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(193, 193, 193)
                         .addComponent(jButton1)
-                        .addGap(202, 202, 202)
+                        .addGap(143, 143, 143)
                         .addComponent(jButton2)
-                        .addGap(283, 283, 283))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 840, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(136, 136, 136))))
+                        .addGap(147, 147, 147)
+                        .addComponent(btnReload)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,20 +305,86 @@ public class Trasach extends javax.swing.JPanel {
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(btnReload))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtMaDGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaDGActionPerformed
+    private void txtMaDGKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaDGKeyReleased
         String maDG = txtMaDG.getText();
         xlyBang.locTatCa(t_sach, maDG, 0);
-    }//GEN-LAST:event_txtMaDGActionPerformed
+    }//GEN-LAST:event_txtMaDGKeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        int row = t_sach.getSelectedRow();
+        if(row == -1)
+        {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn thông tin độc giả trả sách!!!");
+            return;
+        }
+        else
+        {
+            int rett = JOptionPane.showConfirmDialog(this, "Xác nhận độc giả trả sách?");
+            if(rett == JOptionPane.OK_OPTION)
+            {
+                long millis=System.currentTimeMillis();   
+                Date date1 = new java.sql.Date(millis);
+                String ngayTra = date1.toString();
+                String maDG = (String) t_sach.getValueAt(row, 0);
+                String tenSach = (String) t_sach.getValueAt(row, 2);
+                String soLuong = (String) t_sach.getValueAt(row, 3);
+                String ngayMuon = (String) t_sach.getValueAt(row, 4);
+                String hanTra = (String) t_sach.getValueAt(row, 5);
+                String maNV = layMaNV(maDG, ngayMuon);
+                String maSach = layMaSach(tenSach);
+                String maPM = layMaPhieuMuon(maDG, ngayMuon, maSach);
+                int SL = Integer.parseInt(soLuong);
+                String soNgayQuaHan = (String) t_sach.getValueAt(row, 6);
+                int soNgayQH = Integer.parseInt(soNgayQuaHan);
+                int maPhieTra = Integer.parseInt(layMaPhieuTraMax()) + 1;
+                String maPT = String.valueOf(maPhieTra);
+                boolean traQH = false;
+                if(soNgayQH < 0)
+                {
+                    soNgayQH = 0;
+                }
+                else
+                {
+                    traQH = true;
+                }
+                
+                long soNgayMuon = xuLyNgay(ngayMuon, hanTra);
+                float giaSach = layGiaSach(tenSach);
+                double giaMuon = giaSach * 0.01 * soNgayMuon;
+                double giaQH = giaSach * 0.02 * soNgayQH;
+                JOptionPane.showMessageDialog(this, "Số tiền mượn: \t" + giaMuon + "\nSố tiền quá hạn: \t" + giaQH + "\nTổng tiền: \t" + (giaMuon + giaQH));
+                upDateSL(SL, tenSach);
+                insertPhieuTra(maPT, ngayMuon, (giaMuon + giaQH), maDG, traQH, maNV, "1");
+                insertCTPhieuTra(maPT, maSach, ngayTra, soLuong);
+                deleteCTPhieuMuon(maPM);
+                deletePhieuMuon(maPM);
+                laydulieumuon();
+                JOptionPane.showMessageDialog(this, "Trả sách thành công!!");
+            }
+            else
+            {
+                return;
+            }
+            
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadActionPerformed
+        laydulieumuon();
+    }//GEN-LAST:event_btnReloadActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnReload;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

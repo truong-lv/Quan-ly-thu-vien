@@ -30,6 +30,7 @@ public class GDChinh extends javax.swing.JFrame {
 
     public GDChinh() throws SQLException {
         initComponents();
+        this.setLocationRelativeTo(null);
         if(ThuVien.Account.isEmpty()){
             jBtnCancelGDNhanVien.setText("Đăng nhập");
         }

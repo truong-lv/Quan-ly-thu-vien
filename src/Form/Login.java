@@ -27,6 +27,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         //txtTK.setText(ThuVien.Account);
+        this.setLocationRelativeTo(null);
         
     }
     public  void loadAccount() throws SQLException{
