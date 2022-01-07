@@ -62,7 +62,7 @@ public class GDChinh extends javax.swing.JFrame {
         // CHỨC NĂNG CHO KHÁCHS
         switch (ThuVien.quyen) {
 
-            case "Độc giả":
+            case "Độc Giả":
                 DocGiaDKMuonTruoc docGiaDKMuonTruoc = new DocGiaDKMuonTruoc();
                 addPanel(docGiaDKMuonTruoc, "Đăng ký mượn trước", "/image/icons8_edit_25px.png");
                 break;
@@ -156,7 +156,7 @@ public class GDChinh extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("PHẦN MỀM BÁN VÉ XE");
+        setTitle("HỆ THỐNG QUẢN LÝ THƯ VIỆN");
         setLocation(new java.awt.Point(500, 40));
         setResizable(false);
 
@@ -262,6 +262,7 @@ public class GDChinh extends javax.swing.JFrame {
         tbPnMenu.getAccessibleContext().setAccessibleName("QLÝ VÉ XE");
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtnCancelGDNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelGDNhanVienActionPerformed
