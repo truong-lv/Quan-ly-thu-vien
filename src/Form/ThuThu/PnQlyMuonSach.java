@@ -124,6 +124,7 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
                 vt.add(jTextField_ngayMuon.getText());
                 vt.add(((JTextField)ngayTra.getDateEditor().getUiComponent()).getText());
                 vt.add(jSpinner_soLuong.getValue());
+                
                 //tính tổng tiền cọc/1 sách
                 double tongCoc=(Double.parseDouble(rs.getString(3))*tiLeCoc)*Double.parseDouble( jSpinner_soLuong.getValue().toString());
                 vt.add(String.valueOf(tongCoc).substring(0,String.valueOf(tongCoc).indexOf(".")));
