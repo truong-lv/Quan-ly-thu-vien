@@ -1,41 +1,73 @@
-
 package Form;
 
 import Code.HamXuLyBang;
 import Code.LoadThoiGian;
 import Code.ThuVien;
+import Form.DocGia.DocGiaDKMuonTruoc;
+import Form.DocGia.DocGiaTraCuu;
 import Form.QuanLy.PnQlyDoanhThu;
 import Form.QuanLy.PnQuanLyNhapHang;
+import Form.ThuKho.TKQuanLyCSVC;
+import Form.ThuKho.TKQuanLyKeVaNganKe;
+import Form.ThuKho.TKQuanLyKhu;
+import Form.ThuKho.TKQuanLyLoaiCSVC;
+import Form.ThuKho.TKQuanLyNXB;
+import Form.ThuKho.TKQuanLySach;
+import Form.ThuKho.TKQuanLyTacGia;
+import Form.ThuKho.TKQuanLyTheLoaiSach;
+import Form.ThuThu.LamTheTV;
+import Form.ThuThu.PnQlyDocGiaQuaHan;
 import Form.ThuThu.PnQlyMuonSach;
+import Form.ThuThu.PnQlyMuonTruoc;
+import Form.ThuThu.ThanhToanSach;
+import Form.ThuThu.Trasach;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GDChinh extends javax.swing.JFrame {
 
-    HamXuLyBang xLBang=new HamXuLyBang();
+    HamXuLyBang xLBang = new HamXuLyBang();
+
     public GDChinh() throws SQLException {
         initComponents();
+
+        this.setLocationRelativeTo(null);
+        if(ThuVien.Account.isEmpty()){
+            jBtnCancelGDNhanVien.setText("Đăng nhập");
+        }
+
         LbUserAcc.setText(ThuVien.Account);
         LbUserName.setText(ThuVien.hoTen);
+
         loadGiaoDien();
-       
-        LoadThoiGian tg=new LoadThoiGian(lbClock, lbDate);
+
+        LoadThoiGian tg = new LoadThoiGian(lbClock, lbDate);
         tg.start();
+
     }
-    
+
     // LOAD TỪNG PANEL CHỨC NĂNG  VÀO GIAO DIỆN CHÍNH DỰA THEO QUYỀN TRUY CẬP CỦA TỪNG ĐỐI TƯỢNG
-    private void loadGiaoDien() throws SQLException{
-        
-        // CHỨC NĂNG CHO KHÁCH
+    public void loadGiaoDien() throws SQLException {
+
+        //Load chức năng Tra cứu (dùng chung)
+        DocGiaTraCuu docGiaTraCuu2 = new DocGiaTraCuu();
+        addPanel(docGiaTraCuu2, "Tra Cứu", "/image/search_30px.png");
+
+        // CHỨC NĂNG CHO KHÁCHS
         switch (ThuVien.quyen) {
 
-            case "Độc giả":
-//            PnDatVe datVe =new PnDatVe();
-//            addPanel(datVe, "ĐẶT VÉ", "/image/payment-icon.png");
+            case "Độc Giả":
+                DocGiaDKMuonTruoc docGiaDKMuonTruoc = new DocGiaDKMuonTruoc();
+                addPanel(docGiaDKMuonTruoc, "Đăng ký mượn trước", "/image/icons8_edit_25px.png");
                 break;
-                
+
             case "Quản lý":
 //            PnQLyNhanVien qlyNV =new PnQLyNhanVien();
 //            addPanel(qlyNV, "QLÝ NHÂN VIÊN", "/image/user-icon11.png");
@@ -44,33 +76,70 @@ public class GDChinh extends javax.swing.JFrame {
                 
                 PnQuanLyNhapHang qlyNH =new PnQuanLyNhapHang();
                 addPanel(qlyNH, "QLÝ Nhập hàng", "/image/user-icon11.png");
+
                 break;
-                
+
             case "Thủ thư":
-                PnQlyMuonSach qlyMS =new PnQlyMuonSach();
-                addPanel(qlyMS, "QLÝ Mượn sách", "/image/user-icon11.png");
-                
-                PnQlyMuonSach qlyMSs =new PnQlyMuonSach();
-                addPanel(qlyMSs, "QLÝ Mượn sách", "/image/user-icon11.png");
-                
+                PnQlyMuonSach qlyMS = new PnQlyMuonSach();
+                addPanel(qlyMS, "QLÝ Mượn sách", "/image/ticket_purchase_30px.png");
+
+                PnQlyMuonTruoc qlyMST = new PnQlyMuonTruoc();
+                addPanel(qlyMST, "QLÝ Mượn trước", "/image/elections_30px.png");
+
+                PnQlyDocGiaQuaHan qlyDGQH = new PnQlyDocGiaQuaHan();
+                addPanel(qlyDGQH, "QLÝ Độc giả quá hạn", "/image/man_window_lock_30px.png");
+
+                LamTheTV lt = new LamTheTV();
+                addPanel(lt, "Làm Thẻ Thư viện", "/image/users_30px.png");
+
+                ThanhToanSach tts = new ThanhToanSach();
+                addPanel(tts, "Thanh toán sách", "/image/refund_30px.png");
+
+                Trasach ts = new Trasach();
+                addPanel(ts, "Trả sách", "/image/read_online_30px.png");
+
                 break;
-                
-            case "Thủ kho":  
-                
+
+            case "Thủ kho":
+//                DocGiaTraCuu docGiaTraCuu2 = new DocGiaTraCuu();
+//                addPanel(docGiaTraCuu2, "Tra Cứu Sách", "/image/user-icon11.png");
+
+                TKQuanLyKeVaNganKe tKQuanLyKeVaNganKe = new TKQuanLyKeVaNganKe();
+                addPanel(tKQuanLyKeVaNganKe, "QLÝ Kệ và Ngăn Kệ", "/image/book_shelfs_30px.png");
+
+                TKQuanLySach tKQuanLySach = new TKQuanLySach();
+                addPanel(tKQuanLySach, "QLÝ Sách", "/image/book_30px.png");
+
+                TKQuanLyCSVC tKQuanLyCSVC = new TKQuanLyCSVC();
+                addPanel(tKQuanLyCSVC, "QLÝ CSVC", "/image/administrative_tools_30px.png");
+
+                TKQuanLyLoaiCSVC tKQuanLyLoaiCSVC = new TKQuanLyLoaiCSVC();
+                addPanel(tKQuanLyLoaiCSVC, "QLÝ Loại CSVC", "/image/window_tools_30px.png");
+
+                TKQuanLyKhu tKQuanLyKhu = new TKQuanLyKhu();
+                addPanel(tKQuanLyKhu, "QLÝ Khu", "/image/book_shelf_30px.png");
+
+                TKQuanLyNXB tKQuanLyNXB = new TKQuanLyNXB();
+                addPanel(tKQuanLyNXB, "QLÝ NXB", "/image/company_30px.png");
+
+                TKQuanLyTheLoaiSach tKQuanLyTheLoaiSach = new TKQuanLyTheLoaiSach();
+                addPanel(tKQuanLyTheLoaiSach, "QLÝ Thể Loại Sách", "/image/books_30px.png");
+
+                TKQuanLyTacGia tKQuanLyTacGia = new TKQuanLyTacGia();
+                addPanel(tKQuanLyTacGia, "QLÝ Tác giả", "/image/user_typing_using_typewriter_30px.png");
                 break;
-                
+
             default:
                 break;
         }
-        
     }
-    private void addPanel(JPanel pn,String tieuDe, String icon){
+
+    private void addPanel(JPanel pn, String tieuDe, String icon) {
         tbPnMenu.add(tieuDe, pn);
-        tbPnMenu.setIconAt(tbPnMenu.getTabCount()-1, new javax.swing.ImageIcon(getClass().getResource(icon)));
+        tbPnMenu.setIconAt(tbPnMenu.getTabCount() - 1, new javax.swing.ImageIcon(getClass().getResource(icon)));
     }
 
     //=================================HÀM LẤY THÔNG TIN NHÂN VIÊN====================
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -91,7 +160,7 @@ public class GDChinh extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("PHẦN MỀM BÁN VÉ XE");
+        setTitle("HỆ THỐNG QUẢN LÝ THƯ VIỆN");
         setLocation(new java.awt.Point(500, 40));
         setResizable(false);
 
@@ -114,7 +183,7 @@ public class GDChinh extends javax.swing.JFrame {
 
         LbUserAcc.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         LbUserAcc.setForeground(new java.awt.Color(51, 255, 0));
-        LbUserAcc.setText("Tài khoản");
+        LbUserAcc.setText("Chưa xác định");
         pnInfor.add(LbUserAcc);
         LbUserAcc.setBounds(460, 10, 180, 40);
 
@@ -168,7 +237,7 @@ public class GDChinh extends javax.swing.JFrame {
 
         LbUserName.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         LbUserName.setForeground(new java.awt.Color(51, 255, 0));
-        LbUserName.setText("Tên");
+        LbUserName.setText("Chưa xác định");
         pnInfor.add(LbUserName);
         LbUserName.setBounds(460, 60, 180, 40);
 
@@ -190,17 +259,19 @@ public class GDChinh extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnInfor, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tbPnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(tbPnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         tbPnMenu.getAccessibleContext().setAccessibleName("QLÝ VÉ XE");
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtnCancelGDNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelGDNhanVienActionPerformed
         // TODO add your handling code here:
+
         this.dispose();
         new Login().setVisible(true);
     }//GEN-LAST:event_jBtnCancelGDNhanVienActionPerformed

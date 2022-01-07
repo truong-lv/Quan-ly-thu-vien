@@ -24,8 +24,8 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
-        txtTK.setText(ThuVien.Account);
-
+        //txtTK.setText(ThuVien.Account);
+        this.setLocationRelativeTo(null);
     }
 
     public void loadAccount() throws SQLException {
@@ -106,7 +106,7 @@ public class Login extends javax.swing.JFrame {
         pnLogin.add(lbErorrLogin);
         lbErorrLogin.setBounds(170, 400, 330, 33);
 
-        btnDangNhap.setBackground(new java.awt.Color(51, 51, 255));
+        btnDangNhap.setBackground(new java.awt.Color(0, 0, 255));
         btnDangNhap.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         btnDangNhap.setForeground(new java.awt.Color(255, 255, 255));
         btnDangNhap.setText("Đăng Nhập");
@@ -123,6 +123,7 @@ public class Login extends javax.swing.JFrame {
         pnLogin.add(btnDangNhap);
         btnDangNhap.setBounds(160, 340, 350, 50);
 
+        psMatkhau.setText("123456");
         psMatkhau.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 psMatkhauKeyPressed(evt);
@@ -136,6 +137,9 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setText("Đăng Nhập Tài Khoản");
         pnLogin.add(jLabel1);
         jLabel1.setBounds(220, 20, 300, 32);
+
+        txtTK.setText("tk247");
+        txtTK.setToolTipText("");
         pnLogin.add(txtTK);
         txtTK.setBounds(200, 230, 310, 42);
 
@@ -171,6 +175,7 @@ public class Login extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void psMatkhauKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_psMatkhauKeyPressed
