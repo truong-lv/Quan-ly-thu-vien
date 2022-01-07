@@ -62,7 +62,7 @@ public class GDChinh extends javax.swing.JFrame {
         // CHỨC NĂNG CHO KHÁCHS
         switch (ThuVien.quyen) {
 
-            case "Độc giả":
+            case "Độc Giả":
                 DocGiaDKMuonTruoc docGiaDKMuonTruoc = new DocGiaDKMuonTruoc();
                 addPanel(docGiaDKMuonTruoc, "Đăng ký mượn trước", "/image/icons8_edit_25px.png");
                 break;
