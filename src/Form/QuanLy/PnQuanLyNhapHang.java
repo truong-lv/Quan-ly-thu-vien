@@ -636,6 +636,10 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
 
     private void jLabel_XoaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_XoaMouseClicked
         // TODO add your handling code here:
+        if(jSpinField_SLCSVC.getValue()>0||jSpinField_SLSach.getValue()>0){
+            jLabel_BaoLoi.setText("*Phiếu đã nhập, không thể xóa");
+                return;
+        }
         mode = "delete";
         if (mode.equalsIgnoreCase("delete")) {
             if(jTable1.getSelectedRow()==-1){
