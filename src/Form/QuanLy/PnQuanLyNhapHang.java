@@ -375,13 +375,14 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel_Cancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel_THem)
                         .addComponent(jLabel_Sua)
                         .addComponent(jLabel_Xoa)
-                        .addComponent(jLabel_TaiLai)))
+                        .addComponent(jLabel_TaiLai))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel_Cancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -471,9 +472,9 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 pnh.getListCT_PhieuNhapHang().get(0).setMaCSVC((String) jComboBox_MaCSVC.getSelectedItem());
                 pnh.getListCT_PhieuNhapHang().get(0).setSoLuongCSVC(jSpinField_SLCSVC.getValue());
             }
-            if(ThuVien.quyen.equalsIgnoreCase("0")){
+            if(ThuVien.quyen.equalsIgnoreCase("Quản lý")){
                 pnh.setMaNV_QuanLy(ThuVien.maNV);
-            }else if(ThuVien.quyen.equalsIgnoreCase("2")){
+            }else if(ThuVien.quyen.equalsIgnoreCase("Thủ kho")){
                 pnh.setMaNV_ThuKho(ThuVien.maNV);
             }
             pnh.setNgayNhap(jDateChooser2.getDate());
