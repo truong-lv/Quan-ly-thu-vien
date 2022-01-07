@@ -12,6 +12,7 @@ public class ThuVien {
     public static String primaryKey="";
     public static String hoTen="";
     public static String quyen="";
+    public static String maNV;
     
     public ThuVien() {
     }
