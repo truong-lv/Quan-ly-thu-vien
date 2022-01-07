@@ -64,40 +64,40 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
             tongThanhToan = new DatabaseAccess().layDoanhThu("thanh-toan", new Date(), "theo-ngay");
 
             barChartData.setValue(tongMuon + tongThanhLy + tongThanhToan, "Doanh Thu", new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
-            
+
             list = new DatabaseAccess().layChiPhiTheoNgay(new Date());
             Collections.reverse(list);
-            
+
             for (TongChiPhiTheoThoiGian tcp : list) {
                 barChartData.setValue(tcp.getNhapHang(), "Chi Phí", new SimpleDateFormat("dd/MM/yyyy").format(tcp.getDate()));
             }
-            
+
         } else if (mode.equalsIgnoreCase("lastweek")) {
-            
+
             listDoanhThu = new DatabaseAccess().layDoanhThuTrongTuan();
             Collections.reverse(listDoanhThu);
             for (TongDoanhThuTheoThoiGian tdt : listDoanhThu) {
                 barChartData.setValue(tdt.getMuon() + tdt.getThanhLy() + tdt.getThanhToan(), "Doanh Thu", new SimpleDateFormat("dd/MM/yyyy").format(tdt.getDate()));
             }
-            
+
             list = new DatabaseAccess().layChiPhiTheoTuanGanNhat();
             Collections.reverse(list);
-            
+
             for (TongChiPhiTheoThoiGian tcp : list) {
                 barChartData.setValue(tcp.getNhapHang(), "Chi Phí", new SimpleDateFormat("dd/MM/yyyy").format(tcp.getDate()));
             }
         } else if (mode.equalsIgnoreCase("last6month")) {
-            
+
             listDoanhThu = new DatabaseAccess().layDoanhThuTrong6Thang();
             Collections.reverse(listDoanhThu);
-            
+
             for (TongDoanhThuTheoThoiGian tdt : listDoanhThu) {
                 barChartData.setValue(tdt.getMuon() + tdt.getThanhLy() + tdt.getThanhToan(), "Doanh Thu", new SimpleDateFormat("MM/yyyy").format(tdt.getDate()));
             }
-            
+
             list = new DatabaseAccess().layChiPhiTheo6ThangGanNhat();
             Collections.reverse(list);
-            
+
             for (TongChiPhiTheoThoiGian tcp : list) {
                 barChartData.setValue(tcp.getNhapHang(), "Chi Phí", new SimpleDateFormat("MM/yyyy").format(tcp.getDate()));
             }
@@ -607,6 +607,25 @@ public final class PnQlyDoanhThu extends javax.swing.JPanel {
             this.invalidate();
             this.validate();
             this.repaint();
+            if (searchMode.equalsIgnoreCase("theo-ngay")) {
+                dtm.setRowCount(0);
+                for (ChiTietDoanhThuTheoThoiGian ct_dtttg : new DatabaseAccess().layCTDoanhThuTheoNgay(this.jDateChooser1.getDate())) {
+                    dtm.addRow(new Object[]{new SimpleDateFormat("dd/MM/yyyy").format(ct_dtttg.getDate()),
+                        ct_dtttg.getNguon(), ct_dtttg.getLoai(), ct_dtttg.getTongThu()});
+                }
+            } else if (searchMode.equalsIgnoreCase("theo-thang")) {
+                dtm.setRowCount(0);
+                for (ChiTietDoanhThuTheoThoiGian ct_dtttg : new DatabaseAccess().layCTDoanhThuTheoThang(this.jDateChooser1.getDate())) {
+                    dtm.addRow(new Object[]{new SimpleDateFormat("dd/MM/yyyy").format(ct_dtttg.getDate()),
+                        ct_dtttg.getNguon(), ct_dtttg.getLoai(), ct_dtttg.getTongThu()});
+                }
+            } else if (searchMode.equalsIgnoreCase("theo-nam")) {
+                dtm.setRowCount(0);
+                for (ChiTietDoanhThuTheoThoiGian ct_dtttg : new DatabaseAccess().layCTDoanhThuTheoNam(this.jDateChooser1.getDate())) {
+                    dtm.addRow(new Object[]{new SimpleDateFormat("dd/MM/yyyy").format(ct_dtttg.getDate()),
+                        ct_dtttg.getNguon(), ct_dtttg.getLoai(), ct_dtttg.getTongThu()});
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(PnQlyDoanhThu.class
                     .getName()).log(Level.SEVERE, null, ex);

@@ -431,7 +431,7 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
             PhieuNhapHang pnh = new PhieuNhapHang();
             CT_PhieuNhapHang ctpnh = new CT_PhieuNhapHang();
             pnh.setMaNCC((String) jComboBox_MaNCC.getSelectedItem());
-            pnh.listCT_PhieuNhapHang.add(ctpnh);
+            pnh.getListCT_PhieuNhapHang().add(ctpnh);
             ctpnh.setTongTien(Double.parseDouble(jTextField_TongTien.getText()));
             if (jComboBox_MaSach.getSelectedIndex() == 0) {
                 pnh.getListCT_PhieuNhapHang().get(0).setMaSach(null);
@@ -482,7 +482,7 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
             PhieuNhapHang pnh = new PhieuNhapHang();
             CT_PhieuNhapHang ctpnh = new CT_PhieuNhapHang();
             pnh.setMaNCC((String) jComboBox_MaNCC.getSelectedItem());
-            pnh.listCT_PhieuNhapHang.add(ctpnh);
+            pnh.getListCT_PhieuNhapHang().add(ctpnh);
             ctpnh.setTongTien(Double.parseDouble(jTextField_TongTien.getText()));
             if (jComboBox_MaSach.getSelectedIndex() == 0) {
                 pnh.getListCT_PhieuNhapHang().get(0).setMaSach(null);
@@ -498,9 +498,9 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 pnh.getListCT_PhieuNhapHang().get(0).setMaCSVC((String) jComboBox_MaCSVC.getSelectedItem());
                 pnh.getListCT_PhieuNhapHang().get(0).setSoLuongCSVC(jSpinField_SLCSVC.getValue());
             }
-            if(ThuVien.quyen.equalsIgnoreCase("0")){
+            if(ThuVien.quyen.equalsIgnoreCase("Quản lý")){
                 pnh.setMaNV_QuanLy(ThuVien.maNV);
-            }else if(ThuVien.quyen.equalsIgnoreCase("2")){
+            }else if(ThuVien.quyen.equalsIgnoreCase("Thủ kho")){
                 pnh.setMaNV_ThuKho(ThuVien.maNV);
             }
             pnh.setNgayNhap(jDateChooser2.getDate());
@@ -600,9 +600,9 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
         jLabel_BaoLoi.setText("");
         mode = "edit";
         jTable1.setEnabled(false);
-        jComboBox_MaSach.setEnabled(true);
-        jComboBox_MaNCC.setEnabled(true);
-        jComboBox_MaCSVC.setEnabled(true);
+//        jComboBox_MaSach.setEnabled(true);
+//        jComboBox_MaNCC.setEnabled(true);
+//        jComboBox_MaCSVC.setEnabled(true);
         jSpinField_SLSach.setEnabled(true);
         jSpinField_SLCSVC.setEnabled(true);
 
