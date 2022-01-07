@@ -8,22 +8,17 @@ import Form.ThuKho.DBAccess;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  *
  * @author Phat
  */
-@Table(name = "Sach")
+//@Table(name = "Sach")
 public class Sach {
 
     private String maISBN;
@@ -177,7 +172,6 @@ public class Sach {
 
     public static List<Sach> search(String keyword) {
         List<Sach> cacSach = new ArrayList<>();
-
         try {
             String query = "SELECT * FROM Sach s JOIN TacGia tg ON s.maTacGia = tg.maTacGia JOIN NhaXuatBan nxb ON s.maNXB = nxb.maNXB JOIN TheLoaiSach tls ON s.maTheLoai = tls.maTheLoai WHERE s.maISBN LIKE N'%" + keyword + "%' OR s.tenSach LIKE N'%" + keyword + "%' OR tg.tenTacGia LIKE N'%" + keyword + "%' OR nxb.tenNXB LIKE N'%" + keyword + "%' OR s.namXB LIKE N'%" + keyword + "%' OR s.giaBia LIKE N'%" + keyword + "%' OR s.soTrang LIKE N'%" + keyword + "%' OR s.moTa LIKE N'%" + keyword + "%' OR tls.tenTheLoai LIKE N'%" + keyword + "%' OR s.soLuong LIKE N'%" + keyword + "%' OR s.soLuongCon LIKE N'%" + keyword + "%'";
             System.out.println(query);
@@ -211,6 +205,81 @@ public class Sach {
             }
         } catch (SQLException ex) {
             Logger.getLogger(Sach.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return cacSach;
+    }
+
+    public static List<Sach> search(Sach sach, Khu khu, KeSach keSach, NganKeSach nganKeSach, String keyword) {
+        List<Sach> cacSach = new ArrayList<>();
+
+        List<String> conditions = new ArrayList<>();
+        if (sach.getTacGia() != null) {
+            conditions.add("tg.tenTacGia LIKE N'%" + sach.getTacGia().getTenTacGia() + "%'");
+        }
+        if (sach.getNhaXuatBan() != null) {
+            conditions.add("nxb.tenNXB LIKE N'%" + sach.getNhaXuatBan().getTenNXB() + "%'");
+        }
+        if (sach.getTheLoaiSach() != null) {
+            conditions.add("tls.tenTheLoai LIKE N'%" + sach.getTheLoaiSach().getTenTheLoai() + "%'");
+        }
+        if (khu != null) {
+            conditions.add("k.tenKhu LIKE N'%" + khu.getTenKhu() + "%'");
+        }
+        if (keSach != null) {
+            conditions.add("ks.tenKe LIKE N'%" + keSach.getTenKe() + "%'");
+        }
+        if (nganKeSach != null) {
+            conditions.add("nks.tenNgan LIKE N'%" + nganKeSach.getTenNgan() + "%'");
+        }
+
+//        if (keSach != null) {
+//            conditions.add("ks.tenKeSach LIKE N'%" + keSach.getTenKe() + "%'");
+//        }
+        String condition = String.join(" AND ", conditions);
+        if (!keyword.isEmpty()) {
+            condition += "OR s.maISBN LIKE N'%" + keyword + "%' OR s.tenSach LIKE N'%" + keyword + "%' OR s.giaBia LIKE N'%" + keyword + "%' OR s.soTrang LIKE N'%" + keyword + "%' OR s.moTa LIKE N'%" + keyword + "%' OR s.soLuongCon LIKE N'%" + keyword + "%'";
+        }
+
+        try {
+            String query = "SELECT * FROM Sach s JOIN TacGia tg ON s.maTacGia = tg.maTacGia JOIN NhaXuatBan nxb ON s.maNXB = nxb.maNXB JOIN TheLoaiSach tls ON s.maTheLoai = tls.maTheLoai JOIN NganKeSach nks ON s.maNganKe = nks.maNganKe JOIN KeSach ks ON ks.maKe = nks.maKe JOIN Khu k ON ks.maKhu = k.maKhu  WHERE " + condition;
+            System.out.println(query);
+            DBAccess dba = new DBAccess();
+            ResultSet rs = dba.Query(query);
+            if (rs != null) {
+
+                while (rs.next()) {
+                    Sach s = new Sach();
+                    s.setMaISBN(rs.getNString("maISBN"));
+                    s.setTenSach(rs.getNString("tenSach"));
+
+                    TacGia tacGia = TacGia.retrieve(rs.getNString("maTacGia"));
+                    s.setTacGia(tacGia);
+                    NhaXuatBan nxb = NhaXuatBan.retrieve(rs.getNString("maNXB"));
+                    s.setNhaXuatBan(nxb);
+
+                    s.setNamXB(rs.getDate("namXB"));
+                    s.setGiaBia(rs.getFloat("giaBia"));
+                    s.setSoTrang(rs.getInt("soTrang"));
+                    s.setMoTa(rs.getNString("moTa"));
+
+                    TheLoaiSach theLoaiSach = TheLoaiSach.retrieve(rs.getNString("maTheLoai"));
+                    s.setTheLoaiSach(theLoaiSach);
+
+                    s.setSoLuong(rs.getInt("soLuong"));
+                    s.setSoLuongCon(rs.getInt("soLuongCon"));
+
+                    NganKeSach nks = NganKeSach.retrieve(rs.getNString("maNganKe"));
+                    s.setNganKeSach(nks);
+
+                    cacSach.add(s);
+                }
+            } else {
+                cacSach = Sach.getList();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sach.class.getName()).log(Level.SEVERE, null, ex);
+            cacSach = Sach.getList();
         }
 
         return cacSach;
