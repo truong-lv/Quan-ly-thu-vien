@@ -104,9 +104,9 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
                                                     +jComboBox_maDG.getSelectedItem().toString()+"')";
         dbAccess.Update(sql);
     }
-    public void them1CTPhieuMuon(String maSach, String ngaytra,int soluong){
-        String sql = "INSERT INTO CT_PhieuMuon(maPhieuMuon,maSach,ngayTra,soLuong) VALUES ('"+maPhieuMuon+"','"+maSach+"','"+ngaytra+"',"+soluong+")";
-        String sql2="UPDATE Sach SET soLuongCon=soLuongCon-"+soluong+" WHERE maISBN='"+maSach+"'";
+    public void them1CTPhieuMuon(String maSach, String ngaytra){
+        String sql = "INSERT INTO CT_PhieuMuon(maPhieuMuon,maSach,ngayTra, soLuong) VALUES ('"+maPhieuMuon+"','"+maSach+"','"+ngaytra+"',1)";
+        String sql2="UPDATE Sach SET soLuongCon=soLuongCon-1 WHERE maISBN='"+maSach+"'";
         dbAccess.Update(sql);
         dbAccess.Update(sql2);
     }
@@ -123,10 +123,9 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
                 vt.add(rs.getString(3).substring(0,rs.getString(3).indexOf(".")));
                 vt.add(jTextField_ngayMuon.getText());
                 vt.add(((JTextField)ngayTra.getDateEditor().getUiComponent()).getText());
-                vt.add(jSpinner_soLuong.getValue());
                 
                 //tính tổng tiền cọc/1 sách
-                double tongCoc=(Double.parseDouble(rs.getString(3))*tiLeCoc)*Double.parseDouble( jSpinner_soLuong.getValue().toString());
+                double tongCoc=(Double.parseDouble(rs.getString(3))*tiLeCoc);
                 vt.add(String.valueOf(tongCoc).substring(0,String.valueOf(tongCoc).indexOf(".")));
                 dtm.addRow(vt);
                 jTable_CTmuon.setModel(dtm);
@@ -150,7 +149,6 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jComboBox_maSach = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jSpinner_soLuong = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable_CTmuon = new javax.swing.JTable();
@@ -167,7 +165,6 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         jLabel_tenDG = new javax.swing.JLabel();
         ngayTra = new com.toedter.calendar.JDateChooser();
         jTextField_ngayMuon = new javax.swing.JTextField();
-        jLabel = new javax.swing.JLabel();
         jLabel_slTon = new javax.swing.JLabel();
 
         addHierarchyListener(new java.awt.event.HierarchyListener() {
@@ -211,14 +208,9 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         jComboBox_maSach.setBounds(380, 140, 156, 25);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setText("Số lượng:");
+        jLabel4.setText("Số lượng tồn:");
         add(jLabel4);
-        jLabel4.setBounds(300, 210, 67, 17);
-
-        jSpinner_soLuong.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jSpinner_soLuong.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
-        add(jSpinner_soLuong);
-        jSpinner_soLuong.setBounds(370, 200, 57, 30);
+        jLabel4.setBounds(270, 200, 100, 30);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Danh sách mượn:");
@@ -231,16 +223,12 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã sách", "Tên sách", "Giá", "Ngày mượn", "Ngày trả", "Số lượng", "Tiền cọc"
+                "Mã sách", "Tên sách", "Giá", "Ngày mượn", "Ngày trả", "Tiền cọc"
             }
         ));
         jTable_CTmuon.setRowHeight(25);
         jTable_CTmuon.setRowMargin(3);
         jScrollPane2.setViewportView(jTable_CTmuon);
-        if (jTable_CTmuon.getColumnModel().getColumnCount() > 0) {
-            jTable_CTmuon.getColumnModel().getColumn(5).setHeaderValue("Số lượng");
-            jTable_CTmuon.getColumnModel().getColumn(6).setHeaderValue("Tiền cọc");
-        }
 
         add(jScrollPane2);
         jScrollPane2.setBounds(20, 400, 1137, 152);
@@ -329,15 +317,10 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         add(jTextField_ngayMuon);
         jTextField_ngayMuon.setBounds(360, 250, 159, 25);
 
-        jLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel.setText("/");
-        add(jLabel);
-        jLabel.setBounds(430, 190, 10, 50);
-
         jLabel_slTon.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
-        jLabel_slTon.setText("60");
+        jLabel_slTon.setText("   ");
         add(jLabel_slTon);
-        jLabel_slTon.setBounds(440, 200, 70, 30);
+        jLabel_slTon.setBounds(370, 200, 70, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formHierarchyChanged(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_formHierarchyChanged
@@ -352,7 +335,7 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         themPhieuMuon();
         
         for(int i=0;i<jTable_CTmuon.getRowCount();i++){
-            them1CTPhieuMuon(xlbang.getRow(jTable_CTmuon, i,0), xlbang.getRow(jTable_CTmuon, i, 4),Integer.parseInt(xlbang.getRow(jTable_CTmuon, i, 5)));
+            them1CTPhieuMuon(xlbang.getRow(jTable_CTmuon, i,0), xlbang.getRow(jTable_CTmuon, i, 4));
         }
         JOptionPane.showMessageDialog(this, "Mượn sách thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnXacNhanActionPerformed
@@ -375,8 +358,8 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày trả", "Thông báo", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if(jSpinner_soLuong.getValue().toString().equalsIgnoreCase("0")){
-            JOptionPane.showMessageDialog(this, "Số lượng không hợp lệ", "Thông báo", JOptionPane.ERROR_MESSAGE);
+        if(jLabel_slTon.getText().equalsIgnoreCase("0")){
+            JOptionPane.showMessageDialog(this, "Sách đã được mượn hết. Vui lòng chọn sách khác", "Thông báo", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
@@ -398,10 +381,6 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(PnQlyMuonSach.class.getName()).log(Level.SEVERE, null, ex);
         }
-        jSpinner_soLuong.setModel(new javax.swing.SpinnerNumberModel(0, 0, Integer.parseInt(jLabel_slTon.getText()), 1));
-//        if(jLabel_slTon.getText().equalsIgnoreCase("0")){
-//            JOptionPane.showMessageDialog(this, "Sách đã được mượn hết. Vui lòng chọn sách khác", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-//        }
     }//GEN-LAST:event_jComboBox_maSachItemStateChanged
 
     private void jComboBox_maDGItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_maDGItemStateChanged
@@ -420,7 +399,6 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
     private javax.swing.JButton btnXacNhan;
     private javax.swing.JComboBox<String> jComboBox_maDG;
     private javax.swing.JComboBox<String> jComboBox_maSach;
-    private javax.swing.JLabel jLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -435,7 +413,6 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel_tenDG;
     private javax.swing.JLabel jLabel_tenSach;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner_soLuong;
     private javax.swing.JTable jTable_CTmuon;
     private javax.swing.JTextField jTextField_ngayMuon;
     private javax.swing.JLabel lbTongTien;
