@@ -205,7 +205,6 @@ public class Trasach extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         t_sach = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         btnReload = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1159, 635));
@@ -251,10 +250,6 @@ public class Trasach extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/money_circulation_32px.png"))); // NOI18N
-        jButton2.setText("Thanh toán sách");
-
         btnReload.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/process_32px.png"))); // NOI18N
         btnReload.setText("Reload");
@@ -285,13 +280,11 @@ public class Trasach extends javax.swing.JPanel {
                         .addGap(464, 464, 464)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(193, 193, 193)
+                        .addGap(323, 323, 323)
                         .addComponent(jButton1)
-                        .addGap(143, 143, 143)
-                        .addComponent(jButton2)
-                        .addGap(147, 147, 147)
+                        .addGap(191, 191, 191)
                         .addComponent(btnReload)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(373, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,7 +299,6 @@ public class Trasach extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
                     .addComponent(jButton1)
                     .addComponent(btnReload))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -386,7 +378,6 @@ public class Trasach extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnReload;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

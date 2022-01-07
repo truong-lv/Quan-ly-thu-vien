@@ -48,7 +48,7 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
 
     
     public void loadDGMT(){
-        String sql="SELECT PMT.maPhieuMuonTruoc, DG.maDocGia, DG.tenDG, PMT.ngayMuonTruoc, PMT.maNV FROM DocGia DG, (SELECT * FROM PhieuMuonTruoc WHERE  trangThai=1) PMT, CT_PhieuMuonTruoc CTPMT "
+        String sql="SELECT PMT.maPhieuMuonTruoc, DG.maDocGia, DG.tenDG, DG.SDT, PMT.ngayMuonTruoc FROM DocGia DG, (SELECT * FROM PhieuMuonTruoc WHERE  (trangThai=1 OR trangThai=2)) PMT, CT_PhieuMuonTruoc CTPMT "
                                 + "WHERE DG.maDocGia=PMT.maDocGia AND PMT.maPhieuMuonTruoc=CTPMT.maPhieuMuonTruoc";
         xlbang.loadDuLieuVaoBang(jTable_CTmuon1, sql);
     }
@@ -177,12 +177,14 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
         jLabel13 = new javax.swing.JLabel();
         btnXemCT = new javax.swing.JButton();
         btnHuyPhieu = new javax.swing.JButton();
-        btnDuyetPhieu = new javax.swing.JButton();
         txtMaPhieu = new javax.swing.JTextField();
         txtMaDG = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         txtTenDG = new javax.swing.JTextField();
         txtNgayMuon = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        txtSDT = new javax.swing.JTextField();
+        btnHuyPhieu1 = new javax.swing.JButton();
 
         addHierarchyListener(new java.awt.event.HierarchyListener() {
             public void hierarchyChanged(java.awt.event.HierarchyEvent evt) {
@@ -207,7 +209,7 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã phiếu", "Mã độc giả", "Tên Độc giả", "Ngày mượn trước", "Mã NV"
+                "Mã phiếu", "Mã độc giả", "Tên Độc giả", "SĐT", "Ngày mượn trước"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -465,7 +467,7 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
             }
         });
         add(btnXemCT);
-        btnXemCT.setBounds(690, 190, 150, 40);
+        btnXemCT.setBounds(690, 220, 150, 40);
 
         btnHuyPhieu.setBackground(new java.awt.Color(255, 51, 51));
         btnHuyPhieu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/cancel_subscription_35px.png"))); // NOI18N
@@ -476,18 +478,7 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
             }
         });
         add(btnHuyPhieu);
-        btnHuyPhieu.setBounds(1010, 190, 130, 40);
-
-        btnDuyetPhieu.setBackground(new java.awt.Color(51, 255, 51));
-        btnDuyetPhieu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/check_file_35px.png"))); // NOI18N
-        btnDuyetPhieu.setText("Duyệt phiếu");
-        btnDuyetPhieu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDuyetPhieuActionPerformed(evt);
-            }
-        });
-        add(btnDuyetPhieu);
-        btnDuyetPhieu.setBounds(850, 190, 150, 40);
+        btnHuyPhieu.setBounds(1020, 220, 130, 40);
 
         txtMaPhieu.setEditable(false);
         add(txtMaPhieu);
@@ -509,6 +500,26 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
         txtNgayMuon.setEditable(false);
         add(txtNgayMuon);
         txtNgayMuon.setBounds(1010, 70, 130, 30);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel11.setText("SĐT:");
+        add(jLabel11);
+        jLabel11.setBounds(690, 180, 34, 17);
+
+        txtSDT.setEditable(false);
+        add(txtSDT);
+        txtSDT.setBounds(780, 170, 130, 30);
+
+        btnHuyPhieu1.setBackground(new java.awt.Color(51, 255, 255));
+        btnHuyPhieu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/reload.png"))); // NOI18N
+        btnHuyPhieu1.setText("Tải lại");
+        btnHuyPhieu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyPhieu1ActionPerformed(evt);
+            }
+        });
+        add(btnHuyPhieu1);
+        btnHuyPhieu1.setBounds(870, 220, 130, 40);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox_maDGItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_maDGItemStateChanged
@@ -582,17 +593,18 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
         txtMaPhieu.setText(xlbang.selectRow(jTable_CTmuon1, 0));
         txtMaDG.setText(xlbang.selectRow(jTable_CTmuon1, 1));
         txtTenDG.setText(xlbang.selectRow(jTable_CTmuon1, 2));
+        txtSDT.setText(xlbang.selectRow(jTable_CTmuon1, 3));
         txtNgayMuon.setText(xlbang.selectRow(jTable_CTmuon1, 3));
         
     }//GEN-LAST:event_jTable_CTmuon1MouseClicked
 
     private void btnXemCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemCTActionPerformed
         // TODO add your handling code here:
-        if(jTable_CTmuon1.getSelectionModel().isSelectionEmpty()){// kiểm tra người dùng đã click chọn dữ liệu trong bảng chưa
+         if(jTable_CTmuon1.getSelectionModel().isSelectionEmpty()){// kiểm tra người dùng đã click chọn dữ liệu trong bảng chưa
             JOptionPane.showMessageDialog(this, "Vui lòng chọn Phiếu cần xem chi tiết trong bảng");
             return;
         }
-        new frmCTMuonTruoc(txtMaPhieu.getText(), txtNgayMuon.getText(), txtMaDG.getText(), txtTenDG.getText()).setVisible(true);
+        new frmConvertMuonTruocToMuon(txtMaPhieu.getText(), txtNgayMuon.getText(), txtMaDG.getText(), txtTenDG.getText(), txtSDT.getText()).setVisible(true);
     }//GEN-LAST:event_btnXemCTActionPerformed
 
     private void btnHuyPhieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyPhieuActionPerformed
@@ -604,21 +616,22 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
         String maPhieu=xlbang.selectRow(jTable_CTmuon1, 0);
         int chon=JOptionPane.showConfirmDialog(this, "Xác nhận Hủy Phiếu: "+maPhieu, "Thông Báo",0);
         if(chon==JOptionPane.OK_OPTION){
-            String sql="UPDATE Sach SET trangThai=2 WHERE maPhieuMuonTruoc='"+maPhieu+"'";
+            String sql="UPDATE PhieuMuonTruoc SET trangThai=3 WHERE maPhieuMuonTruoc='"+maPhieu+"'";
             dbAccess.Update(sql);
             loadDGMT();
         }
     }//GEN-LAST:event_btnHuyPhieuActionPerformed
 
-    private void btnDuyetPhieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDuyetPhieuActionPerformed
+    private void btnHuyPhieu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyPhieu1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnDuyetPhieuActionPerformed
+        loadDGMT();
+    }//GEN-LAST:event_btnHuyPhieu1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDuyetPhieu;
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnHuyPhieu;
+    private javax.swing.JButton btnHuyPhieu1;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXacNhan;
     private javax.swing.JButton btnXemCT;
@@ -627,6 +640,7 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
@@ -651,6 +665,7 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
     private javax.swing.JTextField txtMaDG;
     private javax.swing.JTextField txtMaPhieu;
     private javax.swing.JTextField txtNgayMuon;
+    private javax.swing.JTextField txtSDT;
     private javax.swing.JTextField txtTenDG;
     // End of variables declaration//GEN-END:variables
 }

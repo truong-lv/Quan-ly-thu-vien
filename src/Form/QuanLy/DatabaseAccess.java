@@ -21,33 +21,242 @@ import java.util.List;
  * @author t0168
  */
 public class DatabaseAccess {
-    public List<Sach> laySach(String maISBN) throws SQLException{
+
+    public boolean xoaPhieuNhap(String maPhieuNhapHang) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("DELETE FROM CT_PhieuNhapHang WHERE maPhieuNhapHang=?");
+        ps.setString(1, maPhieuNhapHang);
+
+        if (ps.executeUpdate() > 0) {
+            ps = connect.prepareStatement("DELETE FROM PhieuNhapHang WHERE maPhieuNhapHang=?");
+            ps.setString(1, maPhieuNhapHang);
+            return ps.executeUpdate() > 0;
+        }
+        return false;
+    }
+
+    public boolean suaPhieuNhap(PhieuNhapHang pnh) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("UPDATE PhieuNhapHang SET maNCC=?, trangThai=? WHERE maPhieuNhapHang=?");
+        ps.setString(1, pnh.getMaNCC());
+        ps.setInt(2, pnh.getTrangThai());
+        ps.setString(3, pnh.getMaPhieuNhapHang());
+        boolean chinhSoLuong = true;
+        boolean chinhSoLuongCon = true;
+        boolean chinhSoLuongCSVC = true;
+
+        if (pnh.getListCT_PhieuNhapHang().get(0).getMaSach() != null) {
+            int soLuongSachKhiChuaSua = laySoLuongCuaSach(pnh.getListCT_PhieuNhapHang().get(0).getMaSach());
+            int soLuongMoi = soLuongSachKhiChuaSua - laySoLuongSachCuaPhieuNhap(pnh.getMaPhieuNhapHang()) + pnh.getListCT_PhieuNhapHang().get(0).getSoLuongSach();
+            chinhSoLuong = chinhSuaSoLuongSach(soLuongMoi, pnh.getListCT_PhieuNhapHang().get(0).getMaSach());
+            int soLuongSachConKhiChuaSua = laySoLuongConCuaSach(pnh.getListCT_PhieuNhapHang().get(0).getMaSach());
+            int soLuongConMoi = soLuongSachConKhiChuaSua - laySoLuongSachCuaPhieuNhap(pnh.getMaPhieuNhapHang()) + pnh.getListCT_PhieuNhapHang().get(0).getSoLuongSach();
+            chinhSoLuongCon = chinhSuaSoLuongConCuaSach(soLuongConMoi, pnh.getListCT_PhieuNhapHang().get(0).getMaSach());
+        }
+        if (pnh.getListCT_PhieuNhapHang().get(0).getMaCSVC() != null) {
+            int soLuongCSVCKhiChuaNhap = laySoLuongCuaCSVC(pnh.getListCT_PhieuNhapHang().get(0).getMaCSVC());
+            int soLuongCSVCMoi = soLuongCSVCKhiChuaNhap - laySoLuongCSVCCuaPhieuNhap(pnh.getMaPhieuNhapHang()) + pnh.getListCT_PhieuNhapHang().get(0).getSoLuongCSVC();
+            chinhSoLuongCSVC = chinhSuaSoLuongCSVC(soLuongCSVCMoi, pnh.getListCT_PhieuNhapHang().get(0).getMaCSVC());
+        }
+
+        if (chinhSoLuong && chinhSoLuongCon && chinhSoLuongCSVC) {
+            if (ps.executeUpdate() > 0) {
+                ps = connect.prepareStatement("UPDATE CT_PhieuNhapHang SET maCSVC=?, soLuongCSVC=?, maSach=?, soLuongSach=?, tongTien=? WHERE maPhieuNhapHang=?");
+                ps.setString(1, pnh.getListCT_PhieuNhapHang().get(0).getMaCSVC());
+                ps.setInt(2, pnh.getListCT_PhieuNhapHang().get(0).getSoLuongCSVC());
+                ps.setString(3, pnh.getListCT_PhieuNhapHang().get(0).getMaSach());
+                ps.setInt(4, pnh.getListCT_PhieuNhapHang().get(0).getSoLuongSach());
+                ps.setDouble(5, pnh.getListCT_PhieuNhapHang().get(0).getTongTien());
+                ps.setString(6, pnh.getMaPhieuNhapHang());
+                return ps.executeUpdate() > 0;
+            }
+        }
+
+        return false;
+    }
+
+    public int laySoLuongCuaSach(String maISBN) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("SELECT soLuong FROM Sach WHERE maISBN=?");
+        ps.setString(1, maISBN);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("soLuong");
+        }
+        return 0;
+    }
+
+    public boolean chinhSuaSoLuongSach(int soLuongMoi, String maISBN) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("UPDATE Sach SET soLuong=?  WHERE maISBN=?");
+        ps.setInt(1, soLuongMoi);
+        ps.setString(2, maISBN);
+        return ps.executeUpdate() > 0;
+    }
+
+    public int laySoLuongConCuaSach(String maISBN) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("SELECT soLuongCon FROM Sach WHERE maISBN=?");
+        ps.setString(1, maISBN);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("soLuongCon");
+        }
+        return 0;
+    }
+
+    public boolean chinhSuaSoLuongConCuaSach(int soLuongConMoi, String maISBN) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("UPDATE Sach SET soLuongCon=?  WHERE maISBN=?");
+        ps.setInt(1, soLuongConMoi);
+        ps.setString(2, maISBN);
+        return ps.executeUpdate() > 0;
+    }
+
+    public int laySoLuongCuaCSVC(String maCSVC) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("SELECT soLuong FROM CoSoVatChat WHERE maCSVC=?");
+        ps.setString(1, maCSVC);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("soLuong");
+        }
+        return 0;
+    }
+
+    public int laySoLuongCSVCCuaPhieuNhap(String maPhieuNhapHang) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("SELECT soLuongCSVC FROM CT_PhieuNhapHang WHERE maPhieuNhapHang=?");
+        ps.setString(1, maPhieuNhapHang);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("soLuongCSVC");
+        }
+        return 0;
+    }
+
+    public int laySoLuongSachCuaPhieuNhap(String maPhieuNhapHang) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("SELECT soLuongSach FROM CT_PhieuNhapHang WHERE maPhieuNhapHang=?");
+        ps.setString(1, maPhieuNhapHang);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("soLuongSach");
+        }
+        return 0;
+    }
+
+    public boolean chinhSuaSoLuongCSVC(int soLuongMoi, String maCSVC) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("UPDATE CoSoVatChat SET soLuong=?  WHERE maCSVC=?");
+        ps.setInt(1, soLuongMoi);
+        ps.setString(2, maCSVC);
+        return ps.executeUpdate() > 0;
+    }
+
+    public boolean themPhieuNhap(PhieuNhapHang pnh) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("INSERT INTO PhieuNhapHang VALUES(?,?,?,?,?,?)");
+        ps.setString(1, pnh.getMaPhieuNhapHang());
+        ps.setString(2, pnh.getMaNCC());
+        ps.setString(3, pnh.getMaNV_QuanLy());
+        ps.setString(4, pnh.getMaNV_ThuKho());
+        ps.setDate(5, new java.sql.Date(pnh.getNgayNhap().getTime()));
+        ps.setInt(6, pnh.getTrangThai());
+
+        if (ps.executeUpdate() > 0) {
+            ps = connect.prepareStatement("INSERT INTO CT_PhieuNhapHang(maPhieuNhapHang, maCSVC, soLuongCSVC, maSach, soLuongSach, tongTien) VALUES(?,?,?,?,?,?)");
+//            ps.setInt(1, pnh.getListCT_PhieuNhapHang().get(0).getMaCTPhieuNhapHang());
+            ps.setString(1, pnh.getMaPhieuNhapHang());
+            ps.setString(2, pnh.getListCT_PhieuNhapHang().get(0).getMaCSVC());
+            ps.setInt(3, pnh.getListCT_PhieuNhapHang().get(0).getSoLuongCSVC());
+            ps.setString(4, pnh.getListCT_PhieuNhapHang().get(0).getMaSach());
+            ps.setInt(5, pnh.getListCT_PhieuNhapHang().get(0).getSoLuongSach());
+            ps.setDouble(6, pnh.getListCT_PhieuNhapHang().get(0).getTongTien());
+
+            if (ps.executeUpdate() > 0) {
+                boolean chinhSoLuong = true;
+                boolean chinhSoLuongCon = true;
+                boolean chinhSoLuongCSVC = true;
+
+                if (pnh.getListCT_PhieuNhapHang().get(0).getMaSach() != null) {
+                    int soLuongSachKhiChuaNhap = laySoLuongCuaSach(pnh.getListCT_PhieuNhapHang().get(0).getMaSach());
+                    int soLuongMoi = soLuongSachKhiChuaNhap + pnh.getListCT_PhieuNhapHang().get(0).getSoLuongSach();
+                    chinhSoLuong = chinhSuaSoLuongSach(soLuongMoi, pnh.getListCT_PhieuNhapHang().get(0).getMaSach());
+                    int soLuongSachConKhiChuaNhap = laySoLuongConCuaSach(pnh.getListCT_PhieuNhapHang().get(0).getMaSach());
+                    int soLuongConMoi = soLuongSachConKhiChuaNhap + pnh.getListCT_PhieuNhapHang().get(0).getSoLuongSach();
+                    chinhSoLuongCon = chinhSuaSoLuongConCuaSach(soLuongConMoi, pnh.getListCT_PhieuNhapHang().get(0).getMaSach());
+                }
+                if (pnh.getListCT_PhieuNhapHang().get(0).getMaCSVC() != null) {
+                    int soLuongCSVCKhiChuaNhap = laySoLuongCuaCSVC(pnh.getListCT_PhieuNhapHang().get(0).getMaCSVC());
+                    int soLuongCSVCMoi = soLuongCSVCKhiChuaNhap + pnh.getListCT_PhieuNhapHang().get(0).getSoLuongCSVC();
+                    chinhSoLuongCSVC = chinhSuaSoLuongCSVC(soLuongCSVCMoi, pnh.getListCT_PhieuNhapHang().get(0).getMaCSVC());
+                }
+
+                return chinhSoLuong && chinhSoLuongCon && chinhSoLuongCSVC;
+            }
+        }
+
+        return false;
+    }
+
+    public String layMaPhieuNhapKeTiep() throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        ps = connect.prepareStatement("SELECT MAX(MaPhieuNhapHang) as M FROM PhieuNhapHang");
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            int currentMax = Integer.parseInt(rs.getString("M").substring(2));
+            if (currentMax < 9) {
+                return "NH0" + (currentMax + 1);
+            }
+            return "NH" + (currentMax + 1);
+        } else {
+            return "NH01";
+        }
+    }
+
+    public List<Sach> laySach(String maISBN) throws SQLException {
         List<Sach> list = new ArrayList<>();
         Connection connect = Code.KetNoi.layKetNoi();
         PreparedStatement ps = null;
         ps = connect.prepareStatement("SELECT * FROM Sach");
-        if(!maISBN.equalsIgnoreCase("all")){
+        if (!maISBN.equalsIgnoreCase("all")) {
             ps = connect.prepareStatement("SELECT * FROM Sach WHERE maISBN=?");
             ps.setString(1, maISBN);
         }
-        
+
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Sach sach = new Sach();
             sach.setMaISBN(rs.getString("maISBN"));
             sach.setTenSach(rs.getString("tenSach"));
             sach.setGiaBia(rs.getDouble("giaBia"));
-            
+
             list.add(sach);
         }
         return list;
     }
+
     public List<NhaCungCap> layNhaCungCap(String maNCC) throws SQLException {
         List<NhaCungCap> list = new ArrayList<>();
         Connection connect = Code.KetNoi.layKetNoi();
         PreparedStatement ps = null;
         ps = connect.prepareStatement("SELECT * FROM NhaCungCap");
-        if(!maNCC.equalsIgnoreCase("all")){
+        if (!maNCC.equalsIgnoreCase("all")) {
             ps = connect.prepareStatement("SELECT * FROM NhaCungCap WHERE maNCC=?");
             ps.setString(1, maNCC);
         }
@@ -56,17 +265,18 @@ public class DatabaseAccess {
             NhaCungCap ncc = new NhaCungCap();
             ncc.setMaNCC(rs.getString("maNCC"));
             ncc.setTenNhaCungCap(rs.getString("tenNhaCungCap"));
-            
+
             list.add(ncc);
         }
         return list;
     }
-    public List<CoSoVatChat> layCoSoVatChat(String maCSVC) throws SQLException{
+
+    public List<CoSoVatChat> layCoSoVatChat(String maCSVC) throws SQLException {
         List<CoSoVatChat> list = new ArrayList<>();
         Connection connect = Code.KetNoi.layKetNoi();
         PreparedStatement ps = null;
         ps = connect.prepareStatement("SELECT * FROM CoSoVatChat");
-        if(!maCSVC.equalsIgnoreCase("all")){
+        if (!maCSVC.equalsIgnoreCase("all")) {
             ps = connect.prepareStatement("SELECT * FROM CoSoVatChat WHERE maCSVC=?");
             ps.setString(1, maCSVC);
         }
@@ -79,12 +289,13 @@ public class DatabaseAccess {
             csvc.setMaLoaiCSVC(rs.getString("maLoaiCSVC"));
             csvc.setNgaySanXuat(rs.getDate("ngaySanXuat"));
             csvc.setTrangThai(rs.getInt("trangThai"));
-            
+
             list.add(csvc);
         }
         return list;
     }
-    public List<PhieuNhapHang> layPhieuNhapHang() throws SQLException{
+
+    public List<PhieuNhapHang> layPhieuNhapHang() throws SQLException {
         List<PhieuNhapHang> list = new ArrayList<>();
         Connection connect = Code.KetNoi.layKetNoi();
         PreparedStatement ps = null;
@@ -99,10 +310,10 @@ public class DatabaseAccess {
             pnh.setMaNV_ThuKho(rs.getString("maNV_ThuKho"));
             pnh.setNgayNhap(rs.getDate("ngayNhap"));
             pnh.setTrangThai(rs.getInt("trangThai"));
-            
+
             ps2 = connect.prepareStatement("SELECT * FROM CT_PhieuNhapHang WHERE maPhieuNhapHang = ?");
             ps2.setString(1, pnh.getMaPhieuNhapHang());
-            
+
             ResultSet rs2 = ps2.executeQuery();
             while (rs2.next()) {
                 CT_PhieuNhapHang ct_pnh = new CT_PhieuNhapHang();
@@ -113,15 +324,16 @@ public class DatabaseAccess {
                 ct_pnh.setMaSach(rs2.getString("maSach"));
                 ct_pnh.setSoLuongSach(rs2.getInt("soLuongSach"));
                 ct_pnh.setTongTien(rs2.getDouble("tongTien"));
-                
+
                 pnh.getListCT_PhieuNhapHang().add(ct_pnh);
             }
-            
+
             list.add(pnh);
         }
         return list;
     }
-    public PhieuNhapHang layPhieuNhapHang(String maPhieuNhapHang) throws SQLException{
+
+    public PhieuNhapHang layPhieuNhapHang(String maPhieuNhapHang) throws SQLException {
         PhieuNhapHang pnh = new PhieuNhapHang();
         Connection connect = Code.KetNoi.layKetNoi();
         PreparedStatement ps = null;
@@ -136,10 +348,10 @@ public class DatabaseAccess {
             pnh.setMaNV_ThuKho(rs.getString("maNV_ThuKho"));
             pnh.setNgayNhap(rs.getDate("ngayNhap"));
             pnh.setTrangThai(rs.getInt("trangThai"));
-            
+
             ps2 = connect.prepareStatement("SELECT * FROM CT_PhieuNhapHang WHERE maPhieuNhapHang = ?");
             ps2.setString(1, pnh.getMaPhieuNhapHang());
-            
+
             ResultSet rs2 = ps2.executeQuery();
             while (rs2.next()) {
                 CT_PhieuNhapHang ct_pnh = new CT_PhieuNhapHang();
@@ -150,13 +362,14 @@ public class DatabaseAccess {
                 ct_pnh.setMaSach(rs2.getString("maSach"));
                 ct_pnh.setSoLuongSach(rs2.getInt("soLuongSach"));
                 ct_pnh.setTongTien(rs2.getDouble("tongTien"));
-                
+
                 pnh.getListCT_PhieuNhapHang().add(ct_pnh);
             }
-            
+
         }
         return pnh;
     }
+
     public List<TongChiPhiTheoThoiGian> layChiPhiTheoNgay(java.util.Date dateToCheck) throws SQLException {
         List<TongChiPhiTheoThoiGian> list = new ArrayList<>();
         Connection connect = Code.KetNoi.layKetNoi();
@@ -376,6 +589,97 @@ public class DatabaseAccess {
         return list;
     }
 
+    public List<ChiTietDoanhThuTheoThoiGian> layCTDoanhThuTheoThang(java.util.Date dateToCheck) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        java.sql.Date date = new Date(dateToCheck.getTime());
+        List<ChiTietDoanhThuTheoThoiGian> list = new ArrayList<>();
+        ChiTietDoanhThuTheoThoiGian ct_dttg = new ChiTietDoanhThuTheoThoiGian();
+        ps = connect.prepareStatement("SELECT maPhieuMuon, tongTien FROM PhieuMuon WHERE MONTH(ngayMuon)=MONTH(?) AND YEAR(ngayMuon)=YEAR(?)");
+        ps.setDate(1, date);
+        ps.setDate(2, date);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            ct_dttg = new ChiTietDoanhThuTheoThoiGian();
+            ct_dttg.setDate(dateToCheck);
+            ct_dttg.setTongThu(rs.getDouble("tongTien"));
+            ct_dttg.setLoai("Phiếu mượn");
+            ct_dttg.setNguon(rs.getString("maPhieuMuon").trim());
+            list.add(ct_dttg);
+        }
+
+        ps = connect.prepareStatement("SELECT maPhieuThanhToanSach, tongTien FROM PhieuThanhToanSach WHERE MONTH(ngayThanhToan)=MONTH(?) AND YEAR(ngayThanhToan)=YEAR(?)");
+        ps.setDate(1, date);
+        ps.setDate(2, date);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            ct_dttg = new ChiTietDoanhThuTheoThoiGian();
+            ct_dttg.setDate(dateToCheck);
+            ct_dttg.setTongThu(rs.getDouble("tongTien"));
+            ct_dttg.setLoai("Phiếu thanh toán");
+            ct_dttg.setNguon(rs.getString("maPhieuThanhToanSach").trim());
+            list.add(ct_dttg);
+        }
+        ps = connect.prepareStatement("SELECT maPhieuThanhLy, tongTienThanhLy FROM PhieuThanhLy WHERE MONTH(ngayThanhLy)=MONTH(?) AND YEAR(ngayThanhLy)=YEAR(?)");
+        ps.setDate(1, date);
+        ps.setDate(2, date);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            ct_dttg = new ChiTietDoanhThuTheoThoiGian();
+            ct_dttg.setDate(dateToCheck);
+            ct_dttg.setTongThu(rs.getDouble("tongTienThanhLy"));
+            ct_dttg.setLoai("Phiếu thanh lý");
+            ct_dttg.setNguon(rs.getString("maPhieuThanhLy").trim());
+            list.add(ct_dttg);
+        }
+        return list;
+    }
+
+    public List<ChiTietDoanhThuTheoThoiGian> layCTDoanhThuTheoNam(java.util.Date dateToCheck) throws SQLException {
+        Connection connect = Code.KetNoi.layKetNoi();
+        PreparedStatement ps = null;
+        java.sql.Date date = new Date(dateToCheck.getTime());
+        List<ChiTietDoanhThuTheoThoiGian> list = new ArrayList<>();
+        ChiTietDoanhThuTheoThoiGian ct_dttg = new ChiTietDoanhThuTheoThoiGian();
+        ps = connect.prepareStatement("SELECT maPhieuMuon, tongTien FROM PhieuMuon WHERE YEAR(ngayMuon)=YEAR(?)");
+        ps.setDate(1, date);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            ct_dttg = new ChiTietDoanhThuTheoThoiGian();
+            ct_dttg.setDate(dateToCheck);
+            ct_dttg.setTongThu(rs.getDouble("tongTien"));
+            ct_dttg.setLoai("Phiếu mượn");
+            ct_dttg.setNguon(rs.getString("maPhieuMuon").trim());
+            list.add(ct_dttg);
+        }
+
+        ps = connect.prepareStatement("SELECT maPhieuThanhToanSach, tongTien FROM PhieuThanhToanSach WHERE YEAR(ngayThanhToan)=YEAR(?)");
+        ps.setDate(1, date);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            ct_dttg = new ChiTietDoanhThuTheoThoiGian();
+            ct_dttg.setDate(dateToCheck);
+            ct_dttg.setTongThu(rs.getDouble("tongTien"));
+            ct_dttg.setLoai("Phiếu thanh toán");
+            ct_dttg.setNguon(rs.getString("maPhieuThanhToanSach").trim());
+            list.add(ct_dttg);
+        }
+        ps = connect.prepareStatement("SELECT maPhieuThanhLy, tongTienThanhLy FROM PhieuThanhLy WHERE YEAR(ngayThanhLy)=YEAR(?)");
+        ps.setDate(1, date);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            ct_dttg = new ChiTietDoanhThuTheoThoiGian();
+            ct_dttg.setDate(dateToCheck);
+            ct_dttg.setTongThu(rs.getDouble("tongTienThanhLy"));
+            ct_dttg.setLoai("Phiếu thanh lý");
+            ct_dttg.setNguon(rs.getString("maPhieuThanhLy").trim());
+            list.add(ct_dttg);
+        }
+        return list;
+    }
+
     public List<ChiTietDoanhThuTheoThoiGian> layCTDoanhThuTheoTuanGanNhat() throws SQLException {
         Connection connect = Code.KetNoi.layKetNoi();
         PreparedStatement ps = null;
@@ -426,6 +730,7 @@ public class DatabaseAccess {
         }
         return list;
     }
+
     ////
     public List<ChiTietDoanhThuTheoThoiGian> layCTDoanhThuTheo6ThangGanNhat() throws SQLException {
         Connection connect = Code.KetNoi.layKetNoi();
@@ -543,11 +848,12 @@ public class DatabaseAccess {
         }
         return 0;
     }
-    
+
     public static void main(String[] args) throws SQLException {
 //        System.out.println(new DatabaseAccess().layDoanhThuTrongNgay("thanh-ly"));
 //        System.out.println(new DatabaseAccess().layDoanhThuTrongTuan());
 //        System.out.println(new DatabaseAccess().layDoanhThuTrongThang());
-            System.out.println(new DatabaseAccess().layPhieuNhapHang("NH01"));
+        System.out.println(new DatabaseAccess().laySoLuongCuaSach("039"));
+
     }
 }
