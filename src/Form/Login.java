@@ -90,7 +90,7 @@ public class Login extends javax.swing.JFrame {
         BackgroundLogin = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("PHẦN MỀM BÁN VÉ XE");
+        setTitle("ĐĂNG NHẬP HỆ THỐNG");
         setBackground(new java.awt.Color(4, 25, 45));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImages(null);
