@@ -467,7 +467,7 @@ public class TKQuanLyKhu extends javax.swing.JPanel {
             showMessage("Tầng không được để trống");
         } else {
             if (button.equals("add")) {
-                boolean i = Khu.insert(Integer.toString(list.size()), txtTenKhu.getText(), txtMoTa.getText(), txtTang.getText());
+                boolean i = Khu.insert(txtTenKhu.getText(), txtMoTa.getText(), txtTang.getText());
                 if (i == true) {
                     showMessage("Thêm thành công");
                     normalState();

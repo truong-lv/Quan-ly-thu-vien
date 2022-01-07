@@ -8,6 +8,7 @@ package Entities;
 import Form.ThuKho.DBAccess;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -61,11 +62,15 @@ public class PhieuMuonTruoc {
         this.nhanVien = nhanVien;
     }
 
-    public static boolean insert(String maPhieuMuonTruoc, String maDocGia, Date ngayMuonTruoc, int trangThai, String maNV) {
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-        String query = "INSERT INTO PHIEUMUONTRUOC VALUES(N'" + maPhieuMuonTruoc + "', N'" + maDocGia + "', N'" + dateformat.format(ngayMuonTruoc) + "', N'" + trangThai + "', N'" + maNV + "' )";
+    public static boolean insert(PhieuMuonTruoc pmt, List<ChiTietMuonTruoc> list) {
         DBAccess dba = new DBAccess();
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+        String maPhieuMuonTruoc = dba.generateId("2");
+        String query = "INSERT INTO PHIEUMUONTRUOC VALUES(N'" + maPhieuMuonTruoc + "', N'" + pmt.getDocgia().getMaDocGia() + "', N'" + dateformat.format(pmt.getNgayMuonTruoc()) + "', N'" + pmt.getTrangThai() + "', N'" + pmt.getNhanVien().getMaNhanVien() + "' )";
         boolean i = dba.Update(query);
+        if (i == true) {
+            i = ChiTietMuonTruoc.insert(maPhieuMuonTruoc, list);
+        }
         return i;
     }
 }

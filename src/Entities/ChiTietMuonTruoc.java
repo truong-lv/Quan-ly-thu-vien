@@ -51,12 +51,12 @@ public class ChiTietMuonTruoc {
         this.soLuong = soLuong;
     }
 
-    public static boolean insert(List<ChiTietMuonTruoc> listChiTietMuonTruoc) {
+    public static boolean insert(String maPhieuMuon, List<ChiTietMuonTruoc> listChiTietMuonTruoc) {
         boolean result = true;
         int i = 0;
         for (; i < listChiTietMuonTruoc.size(); i++) {
             ChiTietMuonTruoc ctmt = listChiTietMuonTruoc.get(i);
-            String query = "INSERT INTO CHITIETMUONTRUOC(maPhieuMuonTruoc, maSach, soLuong) VALUES(N'" + ctmt.getPhieuMuonTruoc().getMaPhieuMuongTruoc() + "', N'" + ctmt.getSach().getMaISBN() + "', N'" + ctmt.getSoLuong() + "')";
+            String query = "INSERT INTO CT_PhieuMuonTruoc(maPhieuMuonTruoc, maSach, soLuong) VALUES(N'" + maPhieuMuon + "', N'" + ctmt.getSach().getMaISBN() + "', N'" + ctmt.getSoLuong() + "')";
             DBAccess dba = new DBAccess();
             result = dba.Update(query);
             if (result == false) {

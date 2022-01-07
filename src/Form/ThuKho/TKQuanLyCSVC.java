@@ -500,6 +500,7 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
         txtGia.setText("");
         txtTrangThai.setText("");
         dpNgaySanXuat.setDate(new Date());
+        cbxLoaiCSVC.setSelectedIndex(0);
         button = "add";
     }//GEN-LAST:event_btnAddMouseClicked
 
@@ -522,6 +523,7 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
         btnRefresh.setEnabled(false);
+        txtSearch.setEnabled(false);
         table.setEnabled(false);
     }
 
@@ -561,7 +563,7 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
             showMessage("Xin hãy nhập trạng thái");
         } else {
             if (button.equals("add")) {
-                boolean i = CoSoVatChat.insert(Integer.toString(listCSVC.size()), txtTenCSVC.getText(), Float.parseFloat(txtGia.getText()), getSelectedFacilityType().getMaLoaiCSVC(), dpNgaySanXuat.getDate(), Integer.parseInt(txtTrangThai.getText()));
+                boolean i = CoSoVatChat.insert(txtTenCSVC.getText(), Float.parseFloat(txtGia.getText()), getSelectedFacilityType().getMaLoaiCSVC(), dpNgaySanXuat.getDate(), Integer.parseInt(txtTrangThai.getText()));
                 if (i == true) {
                     showMessage("Thêm thành công");
                     normalState();
@@ -599,6 +601,7 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
         btnRefresh.setEnabled(true);
+        txtSearch.setEnabled(true);
         table.setEnabled(true);
 
         txtMaCSVC.setEditable(false);

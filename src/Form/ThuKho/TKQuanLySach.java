@@ -214,15 +214,20 @@ public class TKQuanLySach extends javax.swing.JPanel {
         if (table.getColumnModel().getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setResizable(false);
             table.getColumnModel().getColumn(1).setResizable(false);
+            table.getColumnModel().getColumn(1).setPreferredWidth(100);
             table.getColumnModel().getColumn(2).setResizable(false);
             table.getColumnModel().getColumn(3).setResizable(false);
             table.getColumnModel().getColumn(4).setResizable(false);
+            table.getColumnModel().getColumn(4).setPreferredWidth(20);
             table.getColumnModel().getColumn(5).setResizable(false);
             table.getColumnModel().getColumn(6).setResizable(false);
+            table.getColumnModel().getColumn(6).setPreferredWidth(20);
             table.getColumnModel().getColumn(7).setResizable(false);
             table.getColumnModel().getColumn(8).setResizable(false);
             table.getColumnModel().getColumn(9).setResizable(false);
+            table.getColumnModel().getColumn(9).setPreferredWidth(10);
             table.getColumnModel().getColumn(10).setResizable(false);
+            table.getColumnModel().getColumn(10).setPreferredWidth(10);
             table.getColumnModel().getColumn(11).setResizable(false);
         }
 
@@ -939,11 +944,15 @@ public class TKQuanLySach extends javax.swing.JPanel {
         KeSach keSach = getSelectedBookshelf();
         if (keSach == null) {
             cbxNganKe.removeAllItems();
+            cbxNganKe.addItem("Chọn ngăn kệ");
             cbxNganKe.setSelectedIndex(0);
+            cbxNganKe.setEnabled(false);
         } else {
+            cbxNganKe.setEnabled(true);
             listNganKeSach = NganKeSach.getList(keSach.getMaKe());
             cbxNganKe.removeAllItems();
 
+            cbxNganKe.addItem("Chọn ngăn kệ");
             for (NganKeSach nganKeSach : listNganKeSach) {
                 cbxNganKe.addItem(nganKeSach.getTenNgan());
             }

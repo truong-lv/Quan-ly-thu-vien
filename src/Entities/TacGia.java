@@ -11,23 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  *
  * @author Phat
  */
-//@Table(name = "TacGia")
 public class TacGia {
 
     private String maTacGia;
     private String tenTacGia;
 
-//    @OneToMany(mappedBy = "tacGia", fetch = FetchType.EAGER)
-//    private List<Sach> cacSach;
     public String getMaTacGia() {
         return maTacGia;
     }
@@ -102,9 +95,9 @@ public class TacGia {
         return tacGia;
     }
 
-    public static boolean insert(String maTacGia, String tenTacGia) {
-        String query = "INSERT INTO TACGIA VALUES(N'" + maTacGia + "', N'" + tenTacGia + "')";
+    public static boolean insert(String tenTacGia) {
         DBAccess dba = new DBAccess();
+        String query = "INSERT INTO TACGIA VALUES(N'" + dba.generateId("3") + "', N'" + tenTacGia + "')";
         boolean i = dba.Update(query);
         return i;
     }
