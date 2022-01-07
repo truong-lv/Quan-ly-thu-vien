@@ -36,7 +36,9 @@ public class GDChinh extends javax.swing.JFrame {
 
     public GDChinh() throws SQLException {
         initComponents();
-        if (ThuVien.Account.isEmpty()) {
+
+        this.setLocationRelativeTo(null);
+        if(ThuVien.Account.isEmpty()){
             jBtnCancelGDNhanVien.setText("Đăng nhập");
         }
 
@@ -57,7 +59,7 @@ public class GDChinh extends javax.swing.JFrame {
         DocGiaTraCuu docGiaTraCuu2 = new DocGiaTraCuu();
         addPanel(docGiaTraCuu2, "Tra Cứu", "/image/search_30px.png");
 
-        // CHỨC NĂNG CHO KHÁCH
+        // CHỨC NĂNG CHO KHÁCHS
         switch (ThuVien.quyen) {
 
             case "Độc giả":
