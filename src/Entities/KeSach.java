@@ -77,8 +77,6 @@ public class KeSach {
     public void setKhu(Khu khu) {
         this.khu = khu;
     }
-    
-    
 
     public static List<KeSach> getList() {
         List<KeSach> cacKeSach = new ArrayList<>();
@@ -100,6 +98,31 @@ public class KeSach {
             }
         } catch (SQLException ex) {
             Logger.getLogger(Khu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return cacKeSach;
+    }
+
+    public static List<KeSach> getList(String maKhu) {
+        List<KeSach> cacKeSach = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM KeSach ks JOIN Khu k ON ks.maKhu = k.maKhu WHERE k.maKhu = '" + maKhu + "'";
+            DBAccess dba = new DBAccess();
+            ResultSet rs = dba.Query(query);
+            while (rs.next()) {
+                KeSach keSach = new KeSach();
+                keSach.setMaKe(rs.getNString("maKe"));
+                keSach.setTenKe(rs.getNString("tenKe"));
+                keSach.setThongTin(rs.getNString("thongTin"));
+
+                Khu khu = Khu.retrieve(rs.getNString("maKhu"));
+                keSach.setKhu(khu);
+
+                cacKeSach.add(keSach);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(KeSach.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return cacKeSach;
@@ -144,8 +167,7 @@ public class KeSach {
 
                 Khu khu = Khu.retrieve(rs.getNString("maKhu"));
                 keSach.setKhu(khu);
-                
-                
+
             }
             return keSach;
         } catch (SQLException ex) {
@@ -153,7 +175,7 @@ public class KeSach {
             return null;
         }
     }
-    
+
     public static boolean insert(String maKe, String tenKe, String thongTin, String maKhu) {
         String query = "INSERT INTO KeSach VALUES(N'" + maKe + "', N'" + tenKe + "', N'" + thongTin + "', N'" + maKhu + "')";
         DBAccess dba = new DBAccess();
