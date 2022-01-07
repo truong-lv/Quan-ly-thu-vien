@@ -210,7 +210,7 @@ public class Sach {
         return cacSach;
     }
 
-    public static List<Sach> search(Sach sach, KeSach keSach, String keyword) {
+    public static List<Sach> search(Sach sach, Khu khu, KeSach keSach, NganKeSach nganKeSach, String keyword) {
         List<Sach> cacSach = new ArrayList<>();
 
         List<String> conditions = new ArrayList<>();
@@ -223,6 +223,15 @@ public class Sach {
         if (sach.getTheLoaiSach() != null) {
             conditions.add("tls.tenTheLoai LIKE N'%" + sach.getTheLoaiSach().getTenTheLoai() + "%'");
         }
+        if (khu != null) {
+            conditions.add("k.tenKhu LIKE N'%" + khu.getTenKhu() + "%'");
+        }
+        if (keSach != null) {
+            conditions.add("ks.tenKe LIKE N'%" + keSach.getTenKe() + "%'");
+        }
+        if (nganKeSach != null) {
+            conditions.add("nks.tenNgan LIKE N'%" + nganKeSach.getTenNgan() + "%'");
+        }
 
 //        if (keSach != null) {
 //            conditions.add("ks.tenKeSach LIKE N'%" + keSach.getTenKe() + "%'");
@@ -233,35 +242,40 @@ public class Sach {
         }
 
         try {
-            String query = "SELECT * FROM Sach s JOIN TacGia tg ON s.maTacGia = tg.maTacGia JOIN NhaXuatBan nxb ON s.maNXB = nxb.maNXB JOIN TheLoaiSach tls ON s.maTheLoai = tls.maTheLoai WHERE " + condition;
+            String query = "SELECT * FROM Sach s JOIN TacGia tg ON s.maTacGia = tg.maTacGia JOIN NhaXuatBan nxb ON s.maNXB = nxb.maNXB JOIN TheLoaiSach tls ON s.maTheLoai = tls.maTheLoai JOIN NganKeSach nks ON s.maNganKe = nks.maNganKe JOIN KeSach ks ON ks.maKe = nks.maKe JOIN Khu k ON ks.maKhu = k.maKhu  WHERE " + condition;
             System.out.println(query);
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
-            while (rs.next()) {
-                Sach s = new Sach();
-                s.setMaISBN(rs.getNString("maISBN"));
-                s.setTenSach(rs.getNString("tenSach"));
+            if (rs != null) {
 
-                TacGia tacGia = TacGia.retrieve(rs.getNString("maTacGia"));
-                s.setTacGia(tacGia);
-                NhaXuatBan nxb = NhaXuatBan.retrieve(rs.getNString("maNXB"));
-                s.setNhaXuatBan(nxb);
+                while (rs.next()) {
+                    Sach s = new Sach();
+                    s.setMaISBN(rs.getNString("maISBN"));
+                    s.setTenSach(rs.getNString("tenSach"));
 
-                s.setNamXB(rs.getDate("namXB"));
-                s.setGiaBia(rs.getFloat("giaBia"));
-                s.setSoTrang(rs.getInt("soTrang"));
-                s.setMoTa(rs.getNString("moTa"));
+                    TacGia tacGia = TacGia.retrieve(rs.getNString("maTacGia"));
+                    s.setTacGia(tacGia);
+                    NhaXuatBan nxb = NhaXuatBan.retrieve(rs.getNString("maNXB"));
+                    s.setNhaXuatBan(nxb);
 
-                TheLoaiSach theLoaiSach = TheLoaiSach.retrieve(rs.getNString("maTheLoai"));
-                s.setTheLoaiSach(theLoaiSach);
+                    s.setNamXB(rs.getDate("namXB"));
+                    s.setGiaBia(rs.getFloat("giaBia"));
+                    s.setSoTrang(rs.getInt("soTrang"));
+                    s.setMoTa(rs.getNString("moTa"));
 
-                s.setSoLuong(rs.getInt("soLuong"));
-                s.setSoLuongCon(rs.getInt("soLuongCon"));
+                    TheLoaiSach theLoaiSach = TheLoaiSach.retrieve(rs.getNString("maTheLoai"));
+                    s.setTheLoaiSach(theLoaiSach);
 
-                NganKeSach nganKeSach = NganKeSach.retrieve(rs.getNString("maNganKe"));
-                s.setNganKeSach(nganKeSach);
+                    s.setSoLuong(rs.getInt("soLuong"));
+                    s.setSoLuongCon(rs.getInt("soLuongCon"));
 
-                cacSach.add(s);
+                    NganKeSach nks = NganKeSach.retrieve(rs.getNString("maNganKe"));
+                    s.setNganKeSach(nks);
+
+                    cacSach.add(s);
+                }
+            } else {
+                cacSach = Sach.getList();
             }
         } catch (SQLException ex) {
             Logger.getLogger(Sach.class.getName()).log(Level.SEVERE, null, ex);
