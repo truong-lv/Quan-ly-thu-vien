@@ -73,7 +73,7 @@
                               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                               <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtSDT1" min="-2" pref="159" max="-2" attributes="0"/>
+                              <Component id="txtTrangThai" min="-2" pref="159" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -159,7 +159,7 @@
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtSDT" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtSDT1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtTrangThai" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
               <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
@@ -508,7 +508,7 @@
         <Property name="text" type="java.lang.String" value="Tr&#x1ea1;ng th&#xe1;i:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtSDT1">
+    <Component class="javax.swing.JTextField" name="txtTrangThai">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">

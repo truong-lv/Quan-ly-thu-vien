@@ -82,7 +82,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
             ngayTra.setEnabled(false);
         }
         else {
-            if(txtSDT1.getText().equalsIgnoreCase("Đang chờ mượn")){
+            if(txtTrangThai.getText().equalsIgnoreCase("Đang chờ mượn")){
                 btnDuyetPhieu.setEnabled(false);
                 txtInfor.setText("Sách đã đáp ứng đủ. Hãy nhắn tin xác nhận cho đọc giả");
             }else{
@@ -123,8 +123,8 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
         ResultSet rs =dbAccess.Query(sql);
         try {
             if(rs.next()){
-                String trangThai=(rs.getString(1).equalsIgnoreCase("1"))?"Đang chờ mượn":"Đã được xác nhận";
-                txtSDT1.setText(trangThai);
+                String trangThai=(rs.getString(1).equalsIgnoreCase("1"))?"Đang chờ mượn":"Đã gửi tin nhắn";
+                txtTrangThai.setText(trangThai);
             }
         } catch (SQLException ex) {
             Logger.getLogger(frmConvertMuonTruocToMuon.class.getName()).log(Level.SEVERE, null, ex);
@@ -258,7 +258,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtSDT = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtSDT1 = new javax.swing.JTextField();
+        txtTrangThai = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -391,8 +391,8 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setText("Trạng thái:");
 
-        txtSDT1.setEditable(false);
-        txtSDT1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txtTrangThai.setEditable(false);
+        txtTrangThai.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -437,7 +437,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
                                 .addGap(44, 44, 44)
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtSDT1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -503,7 +503,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
-                    .addComponent(txtSDT1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTrangThai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -595,6 +595,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
             txtInfor.setText("Nhấn duyệt phiếu để xác nhận mượn cho độc giả");
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");// /MM/uuuu
             LocalDate localDate = LocalDate.now();
+            txtTrangThai.setText("Đã gửi tin nhắn");
             txtNgayMuon.setText(dtf.format(localDate));
             ngayTra.setEnabled(true);
             btnNhanTin.setEnabled(false);
@@ -663,8 +664,8 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
     private javax.swing.JTextField txtNgayLap;
     private javax.swing.JTextField txtNgayMuon;
     private javax.swing.JTextField txtSDT;
-    private javax.swing.JTextField txtSDT1;
     private javax.swing.JTextField txtTenDG;
     private javax.swing.JTextField txtTenSach;
+    private javax.swing.JTextField txtTrangThai;
     // End of variables declaration//GEN-END:variables
 }

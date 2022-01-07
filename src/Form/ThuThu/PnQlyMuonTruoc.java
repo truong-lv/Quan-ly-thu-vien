@@ -184,6 +184,7 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
         txtNgayMuon = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         txtSDT = new javax.swing.JTextField();
+        btnHuyPhieu1 = new javax.swing.JButton();
 
         addHierarchyListener(new java.awt.event.HierarchyListener() {
             public void hierarchyChanged(java.awt.event.HierarchyEvent evt) {
@@ -466,7 +467,7 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
             }
         });
         add(btnXemCT);
-        btnXemCT.setBounds(770, 220, 150, 40);
+        btnXemCT.setBounds(690, 220, 150, 40);
 
         btnHuyPhieu.setBackground(new java.awt.Color(255, 51, 51));
         btnHuyPhieu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/cancel_subscription_35px.png"))); // NOI18N
@@ -477,7 +478,7 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
             }
         });
         add(btnHuyPhieu);
-        btnHuyPhieu.setBounds(960, 220, 130, 40);
+        btnHuyPhieu.setBounds(1020, 220, 130, 40);
 
         txtMaPhieu.setEditable(false);
         add(txtMaPhieu);
@@ -508,6 +509,17 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
         txtSDT.setEditable(false);
         add(txtSDT);
         txtSDT.setBounds(780, 170, 130, 30);
+
+        btnHuyPhieu1.setBackground(new java.awt.Color(51, 255, 255));
+        btnHuyPhieu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/reload.png"))); // NOI18N
+        btnHuyPhieu1.setText("Tải lại");
+        btnHuyPhieu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyPhieu1ActionPerformed(evt);
+            }
+        });
+        add(btnHuyPhieu1);
+        btnHuyPhieu1.setBounds(870, 220, 130, 40);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox_maDGItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_maDGItemStateChanged
@@ -610,10 +622,16 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnHuyPhieuActionPerformed
 
+    private void btnHuyPhieu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyPhieu1ActionPerformed
+        // TODO add your handling code here:
+        loadDGMT();
+    }//GEN-LAST:event_btnHuyPhieu1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnHuyPhieu;
+    private javax.swing.JButton btnHuyPhieu1;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXacNhan;
     private javax.swing.JButton btnXemCT;
