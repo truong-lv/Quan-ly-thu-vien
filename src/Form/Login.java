@@ -121,7 +121,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         pnLogin.add(btnDangNhap);
-        btnDangNhap.setBounds(160, 340, 350, 50);
+        btnDangNhap.setBounds(200, 340, 310, 50);
 
         psMatkhau.setText("123456");
         psMatkhau.addKeyListener(new java.awt.event.KeyAdapter() {
