@@ -11,16 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  *
  * @author Phat
  */
-//@Table(name = "Khu")
 public class Khu {
 
     private String maKhu;
@@ -28,16 +23,6 @@ public class Khu {
     private String moTa;
     private String tang;
 
-//    @OneToMany(mappedBy = "khu", fetch = FetchType.EAGER)
-//    private List<KeSach> cacKeSach;
-//
-//    public List<KeSach> getCacKeSach() {
-//        return cacKeSach;
-//    }
-//
-//    public void setCacKeSach(List<KeSach> cacKeSach) {
-//        this.cacKeSach = cacKeSach;
-//    }
     public String getMaKhu() {
         return maKhu;
     }
@@ -134,9 +119,9 @@ public class Khu {
         return cacKhu;
     }
 
-    public static boolean insert(String maKhu, String tenKhu, String moTa, String tang) {
-        String query = "INSERT INTO Khu VALUES(N'" + maKhu + "', N'" + tenKhu + "', N'" + moTa + "', N'" + tang + "')";
+    public static boolean insert(String tenKhu, String moTa, String tang) {
         DBAccess dba = new DBAccess();
+        String query = "INSERT INTO Khu VALUES(N'" + dba.generateId("8") + "', N'" + tenKhu + "', N'" + moTa + "', N'" + tang + "')";
         boolean i = dba.Update(query);
         return i;
     }

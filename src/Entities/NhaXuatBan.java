@@ -11,22 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  *
  * @author Phat
  */
-//@Table(name = "NXB")
 public class NhaXuatBan {
 
     private String maNXB;
     private String tenNXB;
 
-//    @OneToMany(mappedBy = "nxb", fetch = FetchType.EAGER)
-//    private List<Sach> cacSach;
     public String getMaNXB() {
         return maNXB;
     }
@@ -43,13 +37,6 @@ public class NhaXuatBan {
         this.tenNXB = tenNXB;
     }
 
-//    public List<Sach> getCacSach() {
-//        return cacSach;
-//    }
-//
-//    public void setCacSach(List<Sach> cacSach) {
-//        this.cacSach = cacSach;
-//    }
     public static List<NhaXuatBan> getList() {
         List<NhaXuatBan> cacNXB = new ArrayList<>();
 
@@ -108,9 +95,9 @@ public class NhaXuatBan {
         return cacNXB;
     }
 
-    public static boolean insert(String maNXB, String tenNXB) {
-        String query = "INSERT INTO NhaXuatBan VALUES(N'" + maNXB + "', N'" + tenNXB + "')";
+    public static boolean insert(String tenNXB) {
         DBAccess dba = new DBAccess();
+        String query = "INSERT INTO NhaXuatBan VALUES(N'" + dba.generateId("4") + "', N'" + tenNXB + "')";
         boolean i = dba.Update(query);
         return i;
     }
