@@ -77,7 +77,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
                         listSach = Sach.search(keyword);
                     }
                     updateTable();
-                    
+
                 });
                 t.start();
             }
@@ -839,7 +839,6 @@ public class TKQuanLySach extends javax.swing.JPanel {
         txtSoLuong.setText(Integer.toString(sach.getSoLuong()));
         txtSoLuongCon.setText(Integer.toString(sach.getSoLuongCon()));
         txtSoTrang.setText(Integer.toString(sach.getSoTrang()));
-        button = "choose";
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
         dpNamXB.setYear(Integer.parseInt(dateFormat.format(sach.getNamXB())));
@@ -879,6 +878,8 @@ public class TKQuanLySach extends javax.swing.JPanel {
                 cbxNganKe.setSelectedIndex(i);
             }
         }
+        cbxKeSach.setEnabled(false);
+        cbxNganKe.setEnabled(false);
     }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -1023,6 +1024,14 @@ public class TKQuanLySach extends javax.swing.JPanel {
             showMessage("Số trang không được để trống");
         } else if (txtSoLuong.getText().isEmpty()) {
             showMessage("Số lượng không được để trống");
+        } else if (cbxNganKe.getSelectedIndex() == 0) {
+            showMessage("Hãy chọn ngăn kệ sách");
+        } else if (cbxNXB.getSelectedIndex() == 0) {
+            showMessage("Hãy chọn nhà xuất bản");
+        } else if (cbxTheLoai.getSelectedIndex() == 0) {
+            showMessage("Hãy chọn thể loại sách");
+        } else if (cbxTacGia.getSelectedIndex() == 0) {
+            showMessage("Hãy chọn tác giả");
         } else {
             Date d = null;
             try {
@@ -1075,9 +1084,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
                 cbxNganKe.setSelectedIndex(0);
                 cbxNganKe.setEnabled(false);
             } else {
-                if (!button.equals("choose")) {
-                    cbxNganKe.setEnabled(true);
-                }
+                cbxNganKe.setEnabled(true);
                 listNganKeSach = NganKeSach.getList(keSach.getMaKe());
                 cbxNganKe.removeAllItems();
 
@@ -1099,9 +1106,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
                 cbxKeSach.setSelectedIndex(0);
                 cbxKeSach.setEnabled(false);
             } else {
-                if (!button.equals("choose")) {
-                    cbxKeSach.setEnabled(true);
-                }
+                cbxKeSach.setEnabled(true);
                 listKeSach = KeSach.getList(khu.getMaKhu());
                 cbxKeSach.removeAllItems();
 
@@ -1142,9 +1147,12 @@ public class TKQuanLySach extends javax.swing.JPanel {
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
 
-        listSach = Sach.getList();
-        updateTable();
-        onTableClick(0);
+        Thread t = new Thread(() -> {
+            listSach = Sach.getList();
+            updateTable();
+            onTableClick(0);
+        });
+        t.start();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
