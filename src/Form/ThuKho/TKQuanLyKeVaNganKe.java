@@ -226,7 +226,7 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
         jLabel16 = new javax.swing.JLabel();
         cbxKeSach = new javax.swing.JComboBox<>();
 
-        setPreferredSize(new java.awt.Dimension(1155, 500));
+        setPreferredSize(new java.awt.Dimension(1155, 600));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Quản lý Kệ sách & Ngăn kệ");
@@ -740,7 +740,7 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
                                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(21, 21, 21)
                         .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -825,7 +825,7 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
             showMessage("Xin hãy chọn Khu");
         } else {
             if (button.equals("add")) {
-                boolean i = KeSach.insert(generateBookshelfId(), txtTenKe.getText(), txtThongTin.getText(), getSelectedArea().getMaKhu());
+                boolean i = KeSach.insert(txtTenKe.getText(), txtThongTin.getText(), getSelectedArea().getMaKhu());
                 if (i == true) {
                     showMessage("Thêm thành công");
                     normalState();
@@ -921,7 +921,7 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
             showMessage("Xin hãy chọn Kệ sách");
         } else {
             if (button.equals("addNganKe")) {
-                boolean i = NganKeSach.insert(generateBookshelfCompartmentId(), txtTenNganKe.getText(), getSelectedBookShelf().getMaKe());
+                boolean i = NganKeSach.insert(txtTenNganKe.getText(), getSelectedBookShelf().getMaKe());
                 if (i == true) {
                     showMessage("Thêm thành công");
                     normalState();

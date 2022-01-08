@@ -10,7 +10,6 @@ import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,6 +27,7 @@ public class CoSoVatChat {
     private Date ngaySanXuat;
     private int trangThai;
     private LoaiCoSoVatChat loaiCSVC;
+    private int soLuong;
 
     public String getMaCSVC() {
         return maCSVC;
@@ -77,6 +77,14 @@ public class CoSoVatChat {
         this.loaiCSVC = loaiCSVC;
     }
 
+    public int getSoLuong() {
+        return soLuong;
+    }
+
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
+    }
+
     public static List<CoSoVatChat> getList() {
         List<CoSoVatChat> cacCoSoVatChat = new ArrayList<>();
 
@@ -91,6 +99,7 @@ public class CoSoVatChat {
                 coSoVatChat.setGia(rs.getFloat("gia"));
                 coSoVatChat.setNgaySanXuat(rs.getDate("ngaySanXuat"));
                 coSoVatChat.setTrangThai(rs.getInt("trangThai"));
+                coSoVatChat.setSoLuong(rs.getInt("soLuong"));
 
                 LoaiCoSoVatChat loaiCSVC = LoaiCoSoVatChat.retrieve(rs.getNString("maLoaiCSVC"));
                 coSoVatChat.setLoaiCSVC(loaiCSVC);
@@ -131,20 +140,17 @@ public class CoSoVatChat {
         return cacCoSoVatChat;
     }
 
-    public static boolean insert(String maCSVC, String tenCSVC, float gia, String maLoaiCSVC, Date ngaySanXuat, int trangThai) {
+    public static boolean insert(String tenCSVC, float gia, String maLoaiCSVC, Date ngaySanXuat, int trangThai, int soLuong) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        String query = "INSERT INTO CoSoVatChat VALUES(N'" + maCSVC + "', N'" + tenCSVC + "', N'" + gia + "', N'" + maLoaiCSVC + "', N'" + dateFormat.format(ngaySanXuat) + "', N'" + trangThai + "')";
-        System.out.println(query);
         DBAccess dba = new DBAccess();
+        String query = "INSERT INTO CoSoVatChat VALUES(N'" + dba.generateId("7") + "', N'" + tenCSVC + "', N'" + gia + "', N'" + maLoaiCSVC + "', N'" + dateFormat.format(ngaySanXuat) + "', N'" + trangThai + "', N'" + soLuong + "')";
         boolean i = dba.Update(query);
         return i;
     }
 
-    public static boolean update(String maCSVC, String tenCSVC, float gia, String maLoaiCSVC, Date ngaySanXuat, int trangThai) {
+    public static boolean update(String maCSVC, String tenCSVC, float gia, String maLoaiCSVC, Date ngaySanXuat, int trangThai, int soLuong) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        String query = "UPDATE CoSoVatChat SET tenCSVC = N'" + tenCSVC + "', gia = N'" + gia + "', maLoaiCSVC = N'" + maLoaiCSVC + "', ngaySanXuat = N'" + dateFormat.format(ngaySanXuat) + "', trangThai = N'" + trangThai + "' WHERE maCSVC = N'" + maCSVC + "'";
+        String query = "UPDATE CoSoVatChat SET tenCSVC = N'" + tenCSVC + "', gia = N'" + gia + "', maLoaiCSVC = N'" + maLoaiCSVC + "', ngaySanXuat = N'" + dateFormat.format(ngaySanXuat) + "', trangThai = N'" + trangThai + "', soLuong = N'" + soLuong + "' WHERE maCSVC = N'" + maCSVC + "'";
 //        System.out.println(query);
         DBAccess dba = new DBAccess();
         boolean i = dba.Update(query);

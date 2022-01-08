@@ -76,12 +76,6 @@ public class GDChinh extends javax.swing.JFrame {
 
                 PnQuanLyNhapHang qlyNH = new PnQuanLyNhapHang();
                 addPanel(qlyNH, "QLÝ Nhập hàng", "/image/user-icon11.png");
-
-                TKQuanLySach qlySach = new TKQuanLySach();
-                addPanel(qlySach, "QLÝ Sách", "/image/user-icon11.png");
-
-                TKQuanLyCSVC qlyCSVC = new TKQuanLyCSVC();
-                addPanel(qlyCSVC, "QLÝ CSVC", "/image/user-icon11.png");
                 break;
 
             case "Thủ thư":

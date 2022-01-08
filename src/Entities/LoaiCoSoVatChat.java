@@ -96,9 +96,9 @@ public class LoaiCoSoVatChat {
         return loaiCSVC;
     }
 
-    public static boolean insert(String maLoaiCSVC, String tenLoaiCSVC) {
-        String query = "INSERT INTO LoaiCoSoVatChat VALUES(N'" + maLoaiCSVC + "', N'" + tenLoaiCSVC + "')";
+    public static boolean insert(String tenLoaiCSVC) {
         DBAccess dba = new DBAccess();
+        String query = "INSERT INTO LoaiCoSoVatChat VALUES(N'" + dba.generateId("6") + "', N'" + tenLoaiCSVC + "')";
         boolean i = dba.Update(query);
         return i;
     }

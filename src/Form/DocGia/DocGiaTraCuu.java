@@ -5,25 +5,16 @@
  */
 package Form.DocGia;
 
-import Form.ThuKho.*;
 import Entities.KeSach;
 import Entities.Khu;
-import Entities.LoaiCoSoVatChat;
 import Entities.NganKeSach;
 import Entities.NhaXuatBan;
 import Entities.Sach;
 import Entities.TacGia;
 import Entities.TheLoaiSach;
-import com.toedter.calendar.JYearChooser;
-import java.awt.Color;
 import java.awt.event.ItemEvent;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -78,17 +69,19 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
 
             protected void updateFieldState() {
                 String keyword = txtSearch.getText();
-                if (keyword.isEmpty()) {
-                    listSach = Sach.getList();
-                } else {
-                    listSach = Sach.search(keyword);
-                }
-
-                updateTable();
+                Thread t = new Thread(() -> {
+                    if (keyword.isEmpty()) {
+                        listSach = Sach.getList();
+                    } else {
+                        listSach = Sach.search(keyword);
+                    }
+                    updateTable();
+                });
+                t.start();
             }
         };
 
-        //txtSearch.getDocument().addDocumentListener(dl);
+        txtSearch.getDocument().addDocumentListener(dl);
     }
 
     private void updateTable() {
@@ -256,7 +249,6 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
 
         btnSearch.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/search-icon.png"))); // NOI18N
-        btnSearch.setText("Tìm kiếm");
         btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnSearchMouseClicked(evt);
@@ -269,15 +261,14 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnSearch))
+                .addComponent(btnSearch)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(btnSearch))
+            .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnSearch, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -420,10 +411,6 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(547, 547, 547))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -441,14 +428,18 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(514, 514, 514))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(27, 27, 27)
                 .addComponent(jLabel1)
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -608,6 +599,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
     private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
         // TODO add your handling code here:  
         boolean flag = true;
+        button = "refresh";
 
         if (cbxTacGia.getSelectedIndex() != 0) {
             cbxTacGia.setSelectedIndex(0);
@@ -620,7 +612,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         }
 
         if (cbxNXB.getSelectedIndex() != 0) {
-            cbxNXB.setSelectedItem(0);
+            cbxNXB.setSelectedIndex(0);
             flag = false;
         }
 
@@ -630,8 +622,11 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         }
         txtSearch.setText("");
         if (flag == true) {
-            listSach = Sach.getList();
-            updateTable();
+            Thread t = new Thread(() -> {
+                listSach = Sach.getList();
+                updateTable();
+            });
+            t.start();
         }
     }//GEN-LAST:event_btnRefreshMouseClicked
 
@@ -653,10 +648,12 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
 //                for (NganKeSach nganKeSach : listNganKeSach) {
 //                    cbxNganKe.addItem(nganKeSach.getTenNgan());
 //                }
-//            }
-
-            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
-            updateTable();
+//            } 
+            Thread t = new Thread(() -> {
+                listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
+                updateTable();
+            });
+            t.start();
         }
     }//GEN-LAST:event_cbxKeSachItemStateChanged
 
@@ -679,9 +676,12 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
                     cbxKeSach.addItem(keSach.getTenKe());
                 }
             }
-
-            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
-            updateTable();
+            
+            Thread t = new Thread(() -> {
+                listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
+                updateTable();
+            });
+            t.start();
         }
     }//GEN-LAST:event_cbxKhuItemStateChanged
 
@@ -690,8 +690,11 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             TheLoaiSach theLoaiSach = getSelectedCategory();
             sach.setTheLoaiSach(theLoaiSach);
-            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
-            updateTable();
+            Thread t = new Thread(() -> {
+                listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
+                updateTable();
+            });
+            t.start();
         }
     }//GEN-LAST:event_cbxTheLoaiItemStateChanged
 
@@ -700,8 +703,11 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             TacGia tacGia = getSelectedAuthor();
             sach.setTacGia(tacGia);
-            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
-            updateTable();
+            Thread t = new Thread(() -> {
+                listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
+                updateTable();
+            });
+            t.start();
         }
     }//GEN-LAST:event_cbxTacGiaItemStateChanged
 
@@ -710,8 +716,11 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             NhaXuatBan nxb = getSelectedPublishingHouse();
             sach.setNhaXuatBan(nxb);
-            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
-            updateTable();
+            Thread t = new Thread(() -> {
+                listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
+                updateTable();
+            });
+            t.start();
         }
     }//GEN-LAST:event_cbxNXBItemStateChanged
 

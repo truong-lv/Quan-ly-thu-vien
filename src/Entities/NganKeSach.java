@@ -11,31 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  *
  * @author Phat
  */
-//@Table(name = "NganKeSach")
 public class NganKeSach {
 
     private String maNganKe;
     private String tenNgan;
     private KeSach keSach;
 
-//    @ManyToOne()
-//    @JoinColumn(name = "maKe")
-//    private KeSach keSach;
-//
-//    @OneToMany(mappedBy = "sach", fetch = FetchType.EAGER)
-//    private List<Sach> cacSach;
     public String getMaNganKe() {
         return maNganKe;
     }
@@ -177,9 +163,9 @@ public class NganKeSach {
         return nganKeSach;
     }
 
-    public static boolean insert(String maNganKe, String tenNgan, String maKe) {
-        String query = "INSERT INTO NganKeSach VALUES(N'" + maNganKe + "', N'" + tenNgan + "', N'" + maKe + "')";
+    public static boolean insert(String tenNgan, String maKe) {
         DBAccess dba = new DBAccess();
+        String query = "INSERT INTO NganKeSach VALUES(N'" + dba.generateId("10") + "', N'" + tenNgan + "', N'" + maKe + "')";
         boolean i = dba.Update(query);
         return i;
     }

@@ -399,7 +399,7 @@ public class TKQuanLyNXB extends javax.swing.JPanel {
             showMessage("Tên nhà xuất bản không được để trống");
         } else {
             if (button.equals("add")) {
-                boolean i = NhaXuatBan.insert(Integer.toString(list.size()), txtTenNXB.getText());
+                boolean i = NhaXuatBan.insert(txtTenNXB.getText());
                 if (i == true) {
                     showMessage("Thêm thành công");
                     normalState();
