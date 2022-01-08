@@ -174,7 +174,7 @@ public class Sach {
         List<Sach> cacSach = new ArrayList<>();
         try {
             String query = "SELECT * FROM Sach s JOIN TacGia tg ON s.maTacGia = tg.maTacGia JOIN NhaXuatBan nxb ON s.maNXB = nxb.maNXB JOIN TheLoaiSach tls ON s.maTheLoai = tls.maTheLoai WHERE s.maISBN LIKE N'%" + keyword + "%' OR s.tenSach LIKE N'%" + keyword + "%' OR tg.tenTacGia LIKE N'%" + keyword + "%' OR nxb.tenNXB LIKE N'%" + keyword + "%' OR s.namXB LIKE N'%" + keyword + "%' OR s.giaBia LIKE N'%" + keyword + "%' OR s.soTrang LIKE N'%" + keyword + "%' OR s.moTa LIKE N'%" + keyword + "%' OR tls.tenTheLoai LIKE N'%" + keyword + "%' OR s.soLuong LIKE N'%" + keyword + "%' OR s.soLuongCon LIKE N'%" + keyword + "%'";
-            System.out.println(query);
+            //System.out.println(query);
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             while (rs.next()) {
@@ -243,7 +243,7 @@ public class Sach {
 
         try {
             String query = "SELECT * FROM Sach s JOIN TacGia tg ON s.maTacGia = tg.maTacGia JOIN NhaXuatBan nxb ON s.maNXB = nxb.maNXB JOIN TheLoaiSach tls ON s.maTheLoai = tls.maTheLoai JOIN NganKeSach nks ON s.maNganKe = nks.maNganKe JOIN KeSach ks ON ks.maKe = nks.maKe JOIN Khu k ON ks.maKhu = k.maKhu  WHERE " + condition;
-            System.out.println(query);
+            //System.out.println(query);
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             if (rs != null) {
@@ -338,8 +338,8 @@ public class Sach {
         return i;
     }
 
-    public static boolean delete(String maSach) {
-        String query = "DELETE FROM Sach WHERE maSach = '" + maSach + "'";
+    public static boolean delete(String maISBN) {
+        String query = "DELETE FROM Sach WHERE maISBN = '" + maISBN + "'";
         DBAccess dba = new DBAccess();
         boolean i = dba.Update(query);
         return i;
