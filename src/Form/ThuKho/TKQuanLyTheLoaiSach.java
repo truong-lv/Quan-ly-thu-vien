@@ -400,7 +400,7 @@ public class TKQuanLyTheLoaiSach extends javax.swing.JPanel {
             showMessage("Tên thể loại sách không được để trống");
         } else {
             if (button.equals("add")) {
-                boolean i = TheLoaiSach.insert(Integer.toString(list.size()), txtTenTheLoai.getText());
+                boolean i = TheLoaiSach.insert(txtTenTheLoai.getText());
                 if (i == true) {
                     showMessage("Thêm thành công");
                     normalState();
