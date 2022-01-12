@@ -361,7 +361,7 @@ public class PnQlyMuonSach extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn SÁCH cần xóa trong bảng");
             return;
         }
-        double tongCoc=Double.parseDouble(jTable_CTmuon.getValueAt(jTable_CTmuon.getSelectedRow(), 5).toString());
+        double tongCoc=Double.parseDouble(jTable_CTmuon.getValueAt(jTable_CTmuon.getSelectedRow(), 6).toString());
         ((DefaultTableModel)jTable_CTmuon.getModel()).removeRow(jTable_CTmuon.getSelectedRow());
         //Tính lại tổng cọc cho tất cả sách ĐG mượn và hiện thị
         double tongTienCoc=Double.parseDouble(lbTongTien.getText())-tongCoc;
