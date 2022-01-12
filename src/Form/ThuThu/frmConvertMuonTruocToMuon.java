@@ -582,7 +582,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
         try {
             //Gửi tin nhắn
             Sender sender=new Sender();
-            String content="Xin chào "+this.tenDG+ ", Hiện tại hệ thống THƯ VIỆN 10Đ đã có đủ Sách để đáp ứng Phiếu mượn trước của bạn có mã là"+this.maPhieuMuonTruoc+". Vui lòng đến quầy để làm thủ tục mượn sách";
+            String content="Xin chào "+this.tenDG+ ", Hiện tại hệ thống THƯ VIỆN 10Đ đã có đủ Sách để đáp ứng Phiếu mượn trước của bạn có mã là "+this.maPhieuMuonTruoc+". Vui lòng đến quầy để làm thủ tục mượn sách";
             sender.sendSms(this.sdt, content);
             
             //Cập nhập trạng thái
