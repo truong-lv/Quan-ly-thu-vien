@@ -8,10 +8,8 @@ package Form.DocGia;
 import Code.ThuVien;
 import Entities.ChiTietMuonTruoc;
 import Entities.DocGia;
-import Form.ThuKho.*;
 import Entities.KeSach;
 import Entities.Khu;
-import Entities.LoaiCoSoVatChat;
 import Entities.NganKeSach;
 import Entities.NhaXuatBan;
 import Entities.NhanVien;
@@ -19,22 +17,15 @@ import Entities.PhieuMuonTruoc;
 import Entities.Sach;
 import Entities.TacGia;
 import Entities.TheLoaiSach;
-import com.toedter.calendar.JYearChooser;
-import java.awt.Color;
 import java.awt.event.ItemEvent;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import jxl.biff.Type;
 
 /**
  *
@@ -304,6 +295,11 @@ public class DocGiaDKMuonTruoc extends javax.swing.JPanel {
         );
 
         setPreferredSize(new java.awt.Dimension(1155, 600));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Đăng ký mượn trước");
@@ -1109,6 +1105,35 @@ public class DocGiaDKMuonTruoc extends javax.swing.JPanel {
         // TODO add your handling code here:
         normalState();
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+        if (!ThuVien.quyen.equals("Độc giả")) {
+            showMessage("Xin hãy đăng nhập để thực hiện chức năng này");
+            lock();
+        }
+    }//GEN-LAST:event_formComponentShown
+
+    private void lock() {
+        listSach.clear();
+        txtSoLuong.setEditable(false);
+        cbxTacGia.setEnabled(false);
+        cbxTheLoai.setEnabled(false);
+        cbxNXB.setEnabled(false);
+        
+        btnSave.setEnabled(false);
+        btnCancel.setEnabled(false);
+
+        txtSearch.setEnabled(false);
+        btnAdd.setEnabled(false);
+        btnEdit.setEnabled(false);
+        btnDelete.setEnabled(false);
+        btnFinish.setEnabled(false);
+        btnRefresh.setEnabled(false);
+
+        table.setEnabled(false);
+        tableMuonTruoc.setEnabled(false);
+    }
 
     private void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
