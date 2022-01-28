@@ -39,7 +39,7 @@ public class ThanhToanSach extends javax.swing.JPanel {
     public void loadDaTa()
     {
         try {
-            ResultSet rs = dbAccess.Query("select maNV from ThuThu");
+            ResultSet rs = dbAccess.Query("select maNV from NhanVien where maChucVu = 'CV02'");
             while (rs.next()) {
                 cbbNV.addItem(rs.getString(1));
             }
@@ -56,8 +56,8 @@ public class ThanhToanSach extends javax.swing.JPanel {
 
     public void laydulieuSach(){
         String sql = "select S.maISBN, S.tenSach, S.maTacGia, TL.tenTheLoai, S.giaBia, S.soLuongCon " +
-                        "from SACH S, TacGia TG, TheLoaiSach TL\n" +
-                        "where S.maTacGia = TG.maTacGia\n" +
+                        "from SACH S, DoiTac DT, TheLoaiSach TL\n" +
+                        "where S.maTacGia = DT.maDoiTac\n" +
                         "and S.maTheLoai = TL.maTheLoai\n" +
                         "and S.soLuongCon > 0";
         
@@ -77,7 +77,7 @@ public class ThanhToanSach extends javax.swing.JPanel {
     {
         int maPTT = 0;
         try {
-            PreparedStatement command = ketNoi.prepareStatement("select maPhieuThanhToanSach from PhieuThanhToanSach");
+            PreparedStatement command = ketNoi.prepareStatement("select maPhieuXuatSach from PhieuXuatSach");
             ResultSet rs = command.executeQuery();
             while(rs.next())
             {
@@ -93,14 +93,14 @@ public class ThanhToanSach extends javax.swing.JPanel {
     
     public void insertPhieuThanhToanSach(String maPTT, String ngayTT, String maDG, String maNV, String tongTien)
     {
-        String sql = "insert into PhieuThanhToanSach(maPhieuThanhToanSach, ngayThanhToan, maDocGia, maNV, tongTien, trangThai)\n" +
+        String sql = "insert into PhieuXuatSach(maPhieuXuatSach, ngayThanhToan, maDocGia, maNV, tongTien, trangThai)\n" +
                     "values('" + maPTT + "','" + ngayTT + "','" + maDG + "','" + maNV + "','" + tongTien + "','1')";
         dbAccess.Update(sql);
     }
     
     public void insertCTPhieuThanhToanSach(String maPTT, String maSach, int SL)
     {
-        String sql = "insert into CT_PhieuThanhToanSach(maPhieuThanhToanSach, maSach, soLuong)\n" +
+        String sql = "insert into CT_PhieuXuatSach(maPhieuXuatSach, maSach, soLuong)\n" +
                     "values('" + maPTT + "','" + maSach + "'," + SL + ")";
         dbAccess.Update(sql);
     }
