@@ -202,8 +202,8 @@
                 <Column editable="false" title="M&#xe3; s&#xe1;ch" type="java.lang.Object"/>
                 <Column editable="false" title="T&#xea;n s&#xe1;ch" type="java.lang.Object"/>
                 <Column editable="false" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng" type="java.lang.Object"/>
-                <Column editable="true" title="Gi&#xe1; ti&#x1ec1;n" type="java.lang.Object"/>
-                <Column editable="true" title="H&#x1ea1;n tr&#x1ea3;" type="java.lang.Object"/>
+                <Column editable="false" title="Gi&#xe1; ti&#x1ec1;n" type="java.lang.Object"/>
+                <Column editable="false" title="H&#x1ea1;n tr&#x1ea3;" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -237,7 +237,6 @@
             </Property>
             <Property name="rowHeight" type="int" value="25"/>
             <Property name="rowMargin" type="int" value="3"/>
-            <Property name="rowSelectionAllowed" type="boolean" value="false"/>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>

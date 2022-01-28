@@ -149,7 +149,7 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -158,7 +158,6 @@ public class PnQlyDocGiaQuaHan extends javax.swing.JPanel {
         });
         jTable_DSSach.setRowHeight(25);
         jTable_DSSach.setRowMargin(3);
-        jTable_DSSach.setRowSelectionAllowed(false);
         jScrollPane3.setViewportView(jTable_DSSach);
 
         add(jScrollPane3);
