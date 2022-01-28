@@ -41,13 +41,13 @@ public class NhaXuatBan {
         List<NhaXuatBan> cacNXB = new ArrayList<>();
 
         try {
-            String query = "SELECT * FROM NhaXuatBan";
+            String query = "SELECT * FROM DoiTac WHERE loaiDoiTac = 'NXB'";
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             while (rs.next()) {
                 NhaXuatBan nxb = new NhaXuatBan();
-                nxb.setMaNXB(rs.getNString("maNXB"));
-                nxb.setTenNXB(rs.getNString("tenNXB"));
+                nxb.setMaNXB(rs.getNString("maDoiTac"));
+                nxb.setTenNXB(rs.getNString("tenDoiTac"));
                 cacNXB.add(nxb);
             }
         } catch (SQLException ex) {
@@ -61,12 +61,12 @@ public class NhaXuatBan {
         NhaXuatBan nxb = new NhaXuatBan();
 
         try {
-            String query = "SELECT * FROM NhaXuatBan WHERE maNXB = '" + maNXB + "'";
+            String query = "SELECT * FROM DoiTac WHERE maDoiTac = '" + maNXB + "' AND loaiDoiTac = 'NXB'";
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             if (rs.next()) {
-                nxb.setMaNXB(rs.getNString("maNXB"));
-                nxb.setTenNXB(rs.getNString("tenNXB"));
+                nxb.setMaNXB(rs.getNString("maDoiTac"));
+                nxb.setTenNXB(rs.getNString("tenDoiTac"));
             }
             return nxb;
         } catch (SQLException ex) {
@@ -79,13 +79,13 @@ public class NhaXuatBan {
         List<NhaXuatBan> cacNXB = new ArrayList<>();
 
         try {
-            String query = "SELECT * FROM NhaXuatBan WHERE maNXB LIKE N'%" + keyword + "%' OR tenNXB LIKE N'%" + keyword + "%'";
+            String query = "SELECT * FROM DoiTac WHERE maDoiTac LIKE N'%" + keyword + "%' OR tenDoiTac LIKE N'%" + keyword + "%' AND loaiDoiTac = 'NXB'";
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             while (rs.next()) {
                 NhaXuatBan nxb = new NhaXuatBan();
-                nxb.setMaNXB(rs.getNString("maNXB"));
-                nxb.setTenNXB(rs.getNString("tenNXB"));
+                nxb.setMaNXB(rs.getNString("maDoiTac"));
+                nxb.setTenNXB(rs.getNString("tenDoiTac"));
                 cacNXB.add(nxb);
             }
         } catch (SQLException ex) {
@@ -97,20 +97,20 @@ public class NhaXuatBan {
 
     public static boolean insert(String tenNXB) {
         DBAccess dba = new DBAccess();
-        String query = "INSERT INTO NhaXuatBan VALUES(N'" + dba.generateId("4") + "', N'" + tenNXB + "')";
+        String query = "INSERT INTO DoiTac VALUES(N'" + dba.generateId("4") + "', N'" + tenNXB + "') WHERE loaiDoiTac = 'NXB'";
         boolean i = dba.Update(query);
         return i;
     }
 
     public static boolean update(String maNXB, String tenNXB) {
-        String query = "UPDATE NhaXuatBan SET tenNXB = N'" + tenNXB + "' WHERE maNXB = N'" + maNXB + "'";
+        String query = "UPDATE DoiTac SET tenDoiTac = N'" + tenNXB + "' WHERE maDoiTac = N'" + maNXB + "' AND loaiDoiTac = 'NXB'";
         DBAccess dba = new DBAccess();
         boolean i = dba.Update(query);
         return i;
     }
 
     public static boolean delete(String maNXB) {
-        String query = "DELETE FROM NhaXuatBan WHERE maNXB = '" + maNXB + "'";
+        String query = "DELETE FROM DoiTac WHERE maDoiTac = '" + maNXB + "' AND loaiDoiTac = 'NXB'";
         DBAccess dba = new DBAccess();
         boolean i = dba.Update(query);
         return i;
