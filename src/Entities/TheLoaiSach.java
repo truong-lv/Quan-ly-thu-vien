@@ -41,13 +41,13 @@ public class TheLoaiSach {
         List<TheLoaiSach> cacTheLoaiSach = new ArrayList<>();
 
         try {
-            String query = "SELECT * FROM TheLoaiSach";
+            String query = "SELECT * FROM ChiTietSach WHERE loaiChiTiet = 'TheLoaiSach'";
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             while (rs.next()) {
                 TheLoaiSach theLoaiSach = new TheLoaiSach();
-                theLoaiSach.setMaTheLoai(rs.getNString("maTheLoai"));
-                theLoaiSach.setTenTheLoai(rs.getNString("tenTheLoai"));
+                theLoaiSach.setMaTheLoai(rs.getNString("maChiTiet"));
+                theLoaiSach.setTenTheLoai(rs.getNString("tenChiTiet"));
                 cacTheLoaiSach.add(theLoaiSach);
             }
         } catch (SQLException ex) {
@@ -61,13 +61,13 @@ public class TheLoaiSach {
         TheLoaiSach theLoaiSach = null;
 
         try {
-            String query = "SELECT * FROM TheLoaiSach WHERE maTheLoai = '" + maTheLoai + "'";
+            String query = "SELECT * FROM ChiTietSach WHERE maChiTiet = '" + maTheLoai + "' AND loaiChiTiet = 'TheLoaiSach'";
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             if (rs.next()) {
                 theLoaiSach = new TheLoaiSach();
-                theLoaiSach.setMaTheLoai(rs.getNString("maTheLoai"));
-                theLoaiSach.setTenTheLoai(rs.getNString("tenTheLoai"));
+                theLoaiSach.setMaTheLoai(rs.getNString("maChiTiet"));
+                theLoaiSach.setTenTheLoai(rs.getNString("tenChiTiet"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(TheLoaiSach.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,13 +79,13 @@ public class TheLoaiSach {
         List<TheLoaiSach> cacTheLoaiSach = new ArrayList<>();
 
         try {
-            String query = "SELECT * FROM TheLoaiSach WHERE maTheLoai LIKE N'%" + keyword + "%' OR tenTheLoai LIKE N'%" + keyword + "%'";
+            String query = "SELECT * FROM ChiTietSach WHERE maChiTiet LIKE N'%" + keyword + "%' OR tenChiTiet LIKE N'%" + keyword + "%' AND loaiChiTiet = 'TheLoaiSach'";
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             while (rs.next()) {
                 TheLoaiSach theLoaiSach = new TheLoaiSach();
-                theLoaiSach.setMaTheLoai(rs.getNString("maTheLoai"));
-                theLoaiSach.setTenTheLoai(rs.getNString("tenTheLoai"));
+                theLoaiSach.setMaTheLoai(rs.getNString("maChiTiet"));
+                theLoaiSach.setTenTheLoai(rs.getNString("tenChiTiet"));
                 cacTheLoaiSach.add(theLoaiSach);
             }
         } catch (SQLException ex) {
@@ -97,20 +97,20 @@ public class TheLoaiSach {
 
     public static boolean insert(String tenTheLoai) {
         DBAccess dba = new DBAccess();
-        String query = "INSERT INTO TheLoaiSach VALUES(N'" + dba.generateId("5") + "', N'" + tenTheLoai + "')";
+        String query = "INSERT INTO ChiTietSach VALUES(N'" + dba.generateId("5") + "', N'" + tenTheLoai + "', N'TheLoaiSach')";
         boolean i = dba.Update(query);
         return i;
     }
 
     public static boolean update(String maTheLoai, String tenTheLoai) {
-        String query = "UPDATE TheLoaiSach SET tenTheLoai = N'" + tenTheLoai + "' WHERE maTheLoai = N'" + maTheLoai + "'";
+        String query = "UPDATE ChiTietSach SET tenChiTiet = N'" + tenTheLoai + "' WHERE maChiTiet = N'" + maTheLoai + "' AND loaiChiTiet = 'TheLoaiSach'";
         DBAccess dba = new DBAccess();
         boolean i = dba.Update(query);
         return i;
     }
 
     public static boolean delete(String maTheLoai) {
-        String query = "DELETE FROM TheLoaiSach WHERE maTheLoai = '" + maTheLoai + "'";
+        String query = "DELETE FROM TheLoaiSach WHERE maTheLoai = '" + maTheLoai + "' AND loaiChiTiet = 'TheLoaiSach'";
         DBAccess dba = new DBAccess();
         boolean i = dba.Update(query);
         return i;

@@ -73,4 +73,76 @@ public class ViTri {
         return cacViTri;
     }
 
+    public static List<ViTri> getList(Sach sach) {
+        List<ViTri> cacViTri = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM Vitri vt JOIN Sach s ON vt.maISBN = s.maISBN WHERE s.maISBN = '" + sach.getMaISBN() + "'";
+            DBAccess dba = new DBAccess();
+            ResultSet rs = dba.Query(query);
+            while (rs.next()) {
+                ViTri viTri = new ViTri();
+                viTri.setMaVitri(rs.getInt("maViTri"));
+
+                Sach sach1 = Sach.retrieve(rs.getNString("maISBN"));
+                viTri.setSach(sach1);
+
+                NganKeSach nks = NganKeSach.retrieve(rs.getNString("maNganKe"));
+                viTri.setNganKeSach(nks);
+
+                cacViTri.add(viTri);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ViTri.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return cacViTri;
+    }
+
+    public static List<ViTri> search(String keyword) {
+        List<ViTri> cacViTri = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM Vitri";
+            DBAccess dba = new DBAccess();
+            ResultSet rs = dba.Query(query);
+            while (rs.next()) {
+                ViTri viTri = new ViTri();
+                viTri.setMaVitri(rs.getInt("maViTri"));
+
+                Sach sach = Sach.retrieve(rs.getNString("maISBN"));
+                viTri.setSach(sach);
+
+                NganKeSach nks = NganKeSach.retrieve(rs.getNString("maNganKe"));
+                viTri.setNganKeSach(nks);
+
+                cacViTri.add(viTri);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ViTri.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return cacViTri;
+    }
+
+    public static boolean insert(ViTri viTri) {
+        DBAccess dba = new DBAccess();
+        String query = "INSERT INTO Vitri(maNganKe, maISBN) VALUES(N'" + viTri.getNganKeSach().getMaNganKe() + "', N'" + viTri.getSach().getMaISBN() + "')";
+        boolean i = dba.Update(query);
+        return i;
+    }
+
+    public static boolean update(ViTri viTri) {
+        String query = "UPDATE ViTri SET maNganKe = N'" + viTri.getNganKeSach().getMaNganKe() + "', maISBN = '" + viTri.getSach().getMaISBN() + "' WHERE maVitri = N'" + viTri.getMaVitri() + "'";
+        DBAccess dba = new DBAccess();
+        boolean i = dba.Update(query);
+        return i;
+    }
+
+    public static boolean delete(ViTri viTri) {
+        String query = "DELETE FROM ViTri WHERE maViTri = '" + viTri.getMaVitri() + "'";
+        DBAccess dba = new DBAccess();
+        boolean i = dba.Update(query);
+        return i;
+    }
 }

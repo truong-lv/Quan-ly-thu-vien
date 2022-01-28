@@ -15,6 +15,7 @@ import Form.ThuKho.TKQuanLyNXB;
 import Form.ThuKho.TKQuanLySach;
 import Form.ThuKho.TKQuanLyTacGia;
 import Form.ThuKho.TKQuanLyTheLoaiSach;
+import Form.ThuKho.TKQuanLyVitri;
 import Form.ThuThu.LamTheTV;
 import Form.ThuThu.PnQlyDocGiaQuaHan;
 import Form.ThuThu.PnQlyMuonSach;
@@ -103,29 +104,32 @@ public class GDChinh extends javax.swing.JFrame {
 //                DocGiaTraCuu docGiaTraCuu2 = new DocGiaTraCuu();
 //                addPanel(docGiaTraCuu2, "Tra Cứu Sách", "/image/user-icon11.png");
 
-                TKQuanLyKeVaNganKe tKQuanLyKeVaNganKe = new TKQuanLyKeVaNganKe();
-                addPanel(tKQuanLyKeVaNganKe, "QLÝ Kệ và Ngăn Kệ", "/image/book_shelfs_30px.png");
-
                 TKQuanLySach tKQuanLySach = new TKQuanLySach();
                 addPanel(tKQuanLySach, "QLÝ Sách", "/image/book_30px.png");
-
+                
+                TKQuanLyVitri tKQuanLyVitri = new TKQuanLyVitri();
+                addPanel(tKQuanLyVitri, "QLÝ Vị trí", "/image/book_shelfs_30px.png");
+                
+                TKQuanLyTheLoaiSach tKQuanLyTheLoaiSach = new TKQuanLyTheLoaiSach();
+                addPanel(tKQuanLyTheLoaiSach, "QLÝ Thể Loại Sách", "/image/books_30px.png");
+                
+                 TKQuanLyTacGia tKQuanLyTacGia = new TKQuanLyTacGia();
+                addPanel(tKQuanLyTacGia, "QLÝ Tác giả", "/image/user_typing_using_typewriter_30px.png");
+                
+                TKQuanLyNXB tKQuanLyNXB = new TKQuanLyNXB();
+                addPanel(tKQuanLyNXB, "QLÝ NXB", "/image/company_30px.png");
+                
                 TKQuanLyCSVC tKQuanLyCSVC = new TKQuanLyCSVC();
                 addPanel(tKQuanLyCSVC, "QLÝ CSVC", "/image/administrative_tools_30px.png");
 
                 TKQuanLyLoaiCSVC tKQuanLyLoaiCSVC = new TKQuanLyLoaiCSVC();
                 addPanel(tKQuanLyLoaiCSVC, "QLÝ Loại CSVC", "/image/window_tools_30px.png");
-
+                
                 TKQuanLyKhu tKQuanLyKhu = new TKQuanLyKhu();
-                addPanel(tKQuanLyKhu, "QLÝ Khu", "/image/book_shelf_30px.png");
-
-                TKQuanLyNXB tKQuanLyNXB = new TKQuanLyNXB();
-                addPanel(tKQuanLyNXB, "QLÝ NXB", "/image/company_30px.png");
-
-                TKQuanLyTheLoaiSach tKQuanLyTheLoaiSach = new TKQuanLyTheLoaiSach();
-                addPanel(tKQuanLyTheLoaiSach, "QLÝ Thể Loại Sách", "/image/books_30px.png");
-
-                TKQuanLyTacGia tKQuanLyTacGia = new TKQuanLyTacGia();
-                addPanel(tKQuanLyTacGia, "QLÝ Tác giả", "/image/user_typing_using_typewriter_30px.png");
+                addPanel(tKQuanLyKhu, "QLÝ Khu", "/image/book_shelf_30px.png"); 
+                
+                TKQuanLyKeVaNganKe tKQuanLyKeVaNganKe = new TKQuanLyKeVaNganKe();
+                addPanel(tKQuanLyKeVaNganKe, "QLÝ Kệ và Ngăn Kệ", "/image/book_shelfs_30px.png");
                 break;
 
             default:
