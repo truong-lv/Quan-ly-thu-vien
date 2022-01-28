@@ -143,8 +143,6 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         jTextField_TenCSVC = new javax.swing.JTextField();
 
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -169,8 +167,6 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 31, 1120, 207));
-
         jLabel_THem.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel_THem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_add_25px_2.png"))); // NOI18N
         jLabel_THem.setText("Thêm");
@@ -180,7 +176,6 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 jLabel_THemMouseClicked(evt);
             }
         });
-        add(jLabel_THem, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 250, -1, -1));
 
         jLabel_Sua.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel_Sua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_edit_25px.png"))); // NOI18N
@@ -190,7 +185,6 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 jLabel_SuaMouseClicked(evt);
             }
         });
-        add(jLabel_Sua, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 250, -1, -1));
 
         jLabel_Xoa.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel_Xoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_delete_25px_1.png"))); // NOI18N
@@ -200,11 +194,9 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 jLabel_XoaMouseClicked(evt);
             }
         });
-        add(jLabel_Xoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 250, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Ngày nhập");
-        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, -1, -1));
 
         jButton_Luu.setBackground(new java.awt.Color(0, 102, 102));
         jButton_Luu.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -216,32 +208,24 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 jButton_LuuActionPerformed(evt);
             }
         });
-        add(jButton_Luu, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 480, 184, 27));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Mã NCC");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Mã sách");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 300, -1, -1));
-        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 1120, 10));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("<html><u>Quản lý nhập hàng</u></html>");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
 
         jDateChooser2.setDateFormatString("dd/MM/yyyy");
         jDateChooser2.setEnabled(false);
-        add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 370, 196, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Mã CSVC");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 360, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("Mã phiếu nhập");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 293, -1, -1));
 
         jTextField_MaPhieuNhap.setEnabled(false);
         jTextField_MaPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
@@ -249,9 +233,6 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 jTextField_MaPhieuNhapActionPerformed(evt);
             }
         });
-        add(jTextField_MaPhieuNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, 196, -1));
-
-        add(jComboBox_MaNCC, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 330, 196, 23));
 
         jComboBox_MaCSVC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Không nhập CSVC" }));
         jComboBox_MaCSVC.addItemListener(new java.awt.event.ItemListener() {
@@ -259,7 +240,6 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 jComboBox_MaCSVCItemStateChanged(evt);
             }
         });
-        add(jComboBox_MaCSVC, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 360, 134, 23));
 
         jComboBox_MaSach.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Không nhập sách" }));
         jComboBox_MaSach.addItemListener(new java.awt.event.ItemListener() {
@@ -272,38 +252,31 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 jComboBox_MaSachMouseClicked(evt);
             }
         });
-        add(jComboBox_MaSach, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 300, 134, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Số lượng");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 300, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Số lượng");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 360, -1, -1));
 
         jSpinField_SLSach.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jSpinField_SLSachPropertyChange(evt);
             }
         });
-        add(jSpinField_SLSach, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 300, 46, -1));
 
         jSpinField_SLCSVC.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jSpinField_SLCSVCPropertyChange(evt);
             }
         });
-        add(jSpinField_SLCSVC, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 360, 46, -1));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel12.setText("Tổng tiền");
-        add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 430, -1, -1));
 
         jTextField_TongTien.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jTextField_TongTien.setText("0000000");
         jTextField_TongTien.setEnabled(false);
-        add(jTextField_TongTien, new org.netbeans.lib.awtextra.AbsoluteConstraints(862, 450, 260, -1));
 
         jLabel_Cancel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel_Cancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_unavailable_24px.png"))); // NOI18N
@@ -313,11 +286,9 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 jLabel_CancelMouseClicked(evt);
             }
         });
-        add(jLabel_Cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 250, -1, -1));
 
         jLabel_BaoLoi.setForeground(new java.awt.Color(255, 0, 0));
         jLabel_BaoLoi.setText("Báo lỗi");
-        add(jLabel_BaoLoi, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 463, 209, 23));
 
         jLabel_TaiLai.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel_TaiLai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_refresh_24px_2.png"))); // NOI18N
@@ -327,21 +298,156 @@ public class PnQuanLyNhapHang extends javax.swing.JPanel {
                 jLabel_TaiLaiMouseClicked(evt);
             }
         });
-        add(jLabel_TaiLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 250, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("Tên sách");
-        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 330, -1, -1));
 
         jTextField_TenSach.setEnabled(false);
-        add(jTextField_TenSach, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 330, 265, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setText("Tên CSVC");
-        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 390, -1, -1));
 
         jTextField_TenCSVC.setEnabled(false);
-        add(jTextField_TenCSVC, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 390, 265, -1));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(389, 389, 389)
+                .addComponent(jLabel_THem)
+                .addGap(6, 6, 6)
+                .addComponent(jLabel_Sua)
+                .addGap(6, 6, 6)
+                .addComponent(jLabel_Xoa)
+                .addGap(10, 10, 10)
+                .addComponent(jLabel_TaiLai)
+                .addGap(6, 6, 6)
+                .addComponent(jLabel_Cancel))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addComponent(jTextField_MaPhieuNhap, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(128, 128, 128)
+                .addComponent(jLabel2)
+                .addGap(24, 24, 24)
+                .addComponent(jComboBox_MaSach, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(jSpinField_SLSach, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(370, 370, 370)
+                .addComponent(jLabel9)
+                .addGap(20, 20, 20)
+                .addComponent(jTextField_TenSach, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel5)
+                .addGap(59, 59, 59)
+                .addComponent(jComboBox_MaNCC, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(128, 128, 128)
+                .addComponent(jLabel3)
+                .addGap(22, 22, 22)
+                .addComponent(jComboBox_MaCSVC, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel8)
+                .addGap(18, 18, 18)
+                .addComponent(jSpinField_SLCSVC, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel7)
+                .addGap(41, 41, 41)
+                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(128, 128, 128)
+                .addComponent(jLabel10)
+                .addGap(18, 18, 18)
+                .addComponent(jTextField_TenCSVC, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(500, 500, 500)
+                .addComponent(jLabel12)
+                .addGap(18, 18, 18)
+                .addComponent(jTextField_TongTien, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel_BaoLoi, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(306, 306, 306)
+                .addComponent(jButton_Luu, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel_THem)
+                    .addComponent(jLabel_Sua)
+                    .addComponent(jLabel_Xoa)
+                    .addComponent(jLabel_TaiLai)
+                    .addComponent(jLabel_Cancel))
+                .addGap(11, 11, 11)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField_MaPhieuNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox_MaSach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)
+                            .addComponent(jSpinField_SLSach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel9))
+                    .addComponent(jTextField_TenSach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox_MaNCC, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox_MaCSVC, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(jSpinField_SLCSVC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3))))
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel10))
+                    .addComponent(jTextField_TenCSVC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel12))
+                    .addComponent(jTextField_TongTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel_BaoLoi, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jButton_Luu))))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField_MaPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_MaPhieuNhapActionPerformed
