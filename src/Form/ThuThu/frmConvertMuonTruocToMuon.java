@@ -119,7 +119,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
           }); 
     }
     public void loadTrangThai(){
-        String sql = "SELECT trangThai FROM PhieuMuonTruoc Where maPhieuMuonTruoc='"+this.maPhieuMuonTruoc+"'";
+        String sql = "SELECT trangThai FROM PhieuMuon Where maPhieuMuon='"+this.maPhieuMuonTruoc+"'";
         ResultSet rs =dbAccess.Query(sql);
         try {
             if(rs.next()){
@@ -132,7 +132,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
     }
     public void loadSachVaoBang(){
         String sql = "SELECT maISBN, tenSach, giaBia, tienCoc=giaBia*0.7, PMT.soLuong "
-                + "FROM (SELECT * FROM CT_PhieuMuonTruoc Where maPhieuMuonTruoc='"+this.maPhieuMuonTruoc+"') PMT, SACH "
+                + "FROM (SELECT * FROM CT_PhieuMuon Where maPhieuMuon='"+this.maPhieuMuonTruoc+"') PMT, SACH "
                 + "WHERE PMT.maSach=maISBN";
         ResultSet rs =dbAccess.Query(sql);
         try {
@@ -174,7 +174,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
     }
     
     public boolean ktMuon(){
-        String sql="SELECT maCTPhieuMuonTruoc From CT_PhieuMuonTruoc Where maPhieuMuonTruoc='"+this.maPhieuMuonTruoc+"'";
+        String sql="SELECT maCTPhieuMuon From CT_PhieuMuon Where maPhieuMuon='"+this.maPhieuMuonTruoc+"'";
         ResultSet rs =dbAccess.Query(sql);
         List<String> listCtMuonTruoc=new ArrayList<String>();
         try {
@@ -183,7 +183,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
             }
             String sql2="";
             for(int i=0;i<listCtMuonTruoc.size();i++){
-                sql2="SELECT maCTPhieuMuonTruoc From CT_PhieuMuonTruoc CT, Sach S Where maCTPhieuMuonTruoc="+listCtMuonTruoc.get(i)+" and maSach=maISBN and soLuongCon>=CT.soLuong";
+                sql2="SELECT maCTPhieuMuon From CT_PhieuMuon CT, Sach S Where maCTPhieuMuon="+listCtMuonTruoc.get(i)+" and maSach=maISBN and soLuongCon>=CT.soLuong";
                 rs =dbAccess.Query(sql2);
                 //tính tổng tiền
                 
@@ -200,32 +200,16 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
     }
     
     public void themPhieuMuon(){
-        maPhieuMuon=layMaPhieu("1");
-        String sql = "INSERT INTO PhieuMuon VALUES ('"+maPhieuMuon+"',"
-                                                    +tongTien
-                                                    +",0,'"+ThuVien.primaryKey+"','"
-                                                    +txtNgayMuon.getText()+"','"
-                                                    +txtMaDG.getText()+"')";
+        String sql = "UPDATE PhieuMuon SET trangThai=0, tongTien="+tongTien+" ,ngayMuon='"+txtNgayMuon.getText()+"' WHERE maPhieuMuon=N'"+maPhieuMuonTruoc+"'";
         dbAccess.Update(sql);
     }
     public void them1CTPhieuMuon(String maSach, String ngaytra){
-        String sql = "INSERT INTO CT_PhieuMuon(maPhieuMuon,maSach,ngayTra,soLuong) VALUES ('"+maPhieuMuon+"','"+maSach+"','"+ngaytra+"',1)";
+        String sql = "UPDATE CT_PhieuMuon SET ngayTra='"+ngaytra+"' WHERE maPhieuMuon='"+maPhieuMuonTruoc+"'";
         String sql2="UPDATE Sach SET soLuongCon=soLuongCon-1 WHERE maISBN='"+maSach+"'";
         dbAccess.Update(sql);
         dbAccess.Update(sql2);
     }
     
-    public void deleteCTPhieuMuonTruoc(String maPM)
-    {
-        String sql = "delete from CT_PhieuMuonTruoc where maPhieuMuonTruoc = '" + maPM + "'";
-        dbAccess.Update(sql);
-    }
-    
-    public void deletePhieuMuonTruoc(String maPM)
-    {
-        String sql = "delete from PhieuMuonTruoc where maPhieuMuonTruoc = '" + maPM + "'";
-        dbAccess.Update(sql);
-    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -561,10 +545,6 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
             them1CTPhieuMuon(xlbang.getRow(jTable_CTmuon, i,0), xlbang.getRow(jTable_CTmuon, i, 3));
         }
         
-        //xóa phiếu mượn trước khi duyệt thành công
-        deleteCTPhieuMuonTruoc(this.maPhieuMuonTruoc);
-        deletePhieuMuonTruoc(this.maPhieuMuonTruoc);
-        
         //thông báo thành công
         JOptionPane.showMessageDialog(this, "Mượn sách thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         this.dispose();
@@ -587,7 +567,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
             sender.sendSms(this.sdt, content);
             
             //Cập nhập trạng thái
-            dbAccess.Update("UPDATE PhieuMuonTruoc Set trangThai=2 WHERE maPhieuMuonTruoc='"+maPhieuMuonTruoc+"'");
+            dbAccess.Update("UPDATE PhieuMuon Set trangThai=2 WHERE maPhieuMuon='"+maPhieuMuonTruoc+"'");
             
             //Thông báo thành công
             JOptionPane.showMessageDialog(this, "Gửi tin nhắn thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);

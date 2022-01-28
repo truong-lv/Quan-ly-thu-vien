@@ -31,12 +31,12 @@ import javax.swing.table.DefaultTableModel;
 public class PnQlyMuonTruoc extends javax.swing.JPanel {
 
     /**
-     * Creates new form PnQlyMuonTruoc
+     * Creates new form PnQlyMuon
      */
     DataBaseAccess dbAccess;
     HamXuLyBang xlbang;
     Connection ketNoi = KetNoi.layKetNoi();
-    String maPhieuMuonTruoc="";
+    String maPhieuMuon="";
     double tongTien=0;
     public PnQlyMuonTruoc() {
         initComponents();
@@ -48,8 +48,8 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
 
     
     public void loadDGMT(){
-        String sql="SELECT PMT.maPhieuMuonTruoc, DG.maDocGia, DG.tenDG, DG.SDT, PMT.ngayMuonTruoc FROM DocGia DG, (SELECT * FROM PhieuMuonTruoc WHERE  (trangThai=1 OR trangThai=2)) PMT, CT_PhieuMuonTruoc CTPMT "
-                                + "WHERE DG.maDocGia=PMT.maDocGia AND PMT.maPhieuMuonTruoc=CTPMT.maPhieuMuonTruoc ORDER BY PMT.ngayMuonTruoc";
+        String sql="SELECT PMT.maPhieuMuon, DG.maDocGia, DG.tenDG, DG.SDT, PMT.ngayMuon FROM DocGia DG, (SELECT * FROM PhieuMuon WHERE  (trangThai=1 OR trangThai=2)) PMT, CT_PhieuMuon CTPMT "
+                                + "WHERE DG.maDocGia=PMT.maDocGia AND PMT.maPhieuMuon=CTPMT.maPhieuMuon ORDER BY PMT.ngayMuon";
         xlbang.loadDuLieuVaoBang(jTable_CTmuon1, sql);
     }
     
@@ -106,16 +106,16 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
         return "";
     }
     public void themPhieuMuonTruoc(){
-        maPhieuMuonTruoc= layMaPhieu("2");
-        System.out.println("ma: "+maPhieuMuonTruoc);
-        String sql = "INSERT INTO PhieuMuonTruoc VALUES ('"+maPhieuMuonTruoc+"','"
+        maPhieuMuon= layMaPhieu("1");
+        System.out.println("ma: "+maPhieuMuon);
+        String sql = "INSERT INTO PhieuMuon(maPhieuMuon,maDocGia,ngayMuon,trangThai,maNV) VALUES ('"+maPhieuMuon+"','"
                                                     +jComboBox_maDG.getSelectedItem().toString()+"','"
                                                     +jTextField_ngayMuon.getText()+"',"
                                                     +"1,'"+ThuVien.primaryKey+"')";
         dbAccess.Update(sql);
     }
     public void them1CTPhieuMuonTruoc(String maSach,int soluong){
-        String sql = "INSERT INTO CT_PhieuMuonTruoc(maPhieuMuonTruoc,maSach,soLuong) VALUES ('"+maPhieuMuonTruoc+"','"+maSach+"',"+soluong+")";
+        String sql = "INSERT INTO CT_PhieuMuon(maPhieuMuon,maSach,soLuong) VALUES ('"+maPhieuMuon+"','"+maSach+"',"+soluong+")";
         //String sql2="UPDATE Sach SET soLuongCon=soLuongCon-"+soluong+" WHERE maISBN='"+maSach+"'";
         dbAccess.Update(sql);
         //dbAccess.Update(sql2);
@@ -616,7 +616,7 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
         String maPhieu=xlbang.selectRow(jTable_CTmuon1, 0);
         int chon=JOptionPane.showConfirmDialog(this, "Xác nhận Hủy Phiếu: "+maPhieu, "Thông Báo",0);
         if(chon==JOptionPane.OK_OPTION){
-            String sql="UPDATE PhieuMuonTruoc SET trangThai=3 WHERE maPhieuMuonTruoc='"+maPhieu+"'";
+            String sql="UPDATE PhieuMuon SET trangThai=3 WHERE maPhieuMuon='"+maPhieu+"'";
             dbAccess.Update(sql);
             loadDGMT();
         }
