@@ -131,7 +131,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
         }
     }
     public void loadSachVaoBang(){
-        String sql = "SELECT maISBN, tenSach, giaBia, tienCoc=giaBia*0.7"
+        String sql = "SELECT maISBN, tenSach, giaBia, tienCoc=giaBia*0.7, PMT.soLuong "
                 + "FROM (SELECT * FROM CT_PhieuMuonTruoc Where maPhieuMuonTruoc='"+this.maPhieuMuonTruoc+"') PMT, SACH "
                 + "WHERE PMT.maSach=maISBN";
         ResultSet rs =dbAccess.Query(sql);
@@ -144,6 +144,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
                 vt.add(rs.getString(3).substring(0,rs.getString(3).indexOf(".")));
                 vt.add("");
                 vt.add(rs.getString(4).substring(0,rs.getString(4).indexOf(".")));
+                vt.add(rs.getString(5));
                 
                 tongTien+=(Double.parseDouble(rs.getString(4)));
                 dtm.addRow(vt);
@@ -182,7 +183,7 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
             }
             String sql2="";
             for(int i=0;i<listCtMuonTruoc.size();i++){
-                sql2="SELECT maCTPhieuMuonTruoc From CT_PhieuMuonTruoc CT, Sach S Where maCTPhieuMuonTruoc="+listCtMuonTruoc.get(i)+" and maSach=maISBN and soLuongCon>0";
+                sql2="SELECT maCTPhieuMuonTruoc From CT_PhieuMuonTruoc CT, Sach S Where maCTPhieuMuonTruoc="+listCtMuonTruoc.get(i)+" and maSach=maISBN and soLuongCon>=CT.soLuong";
                 rs =dbAccess.Query(sql2);
                 //tính tổng tiền
                 
@@ -309,11 +310,11 @@ public class frmConvertMuonTruocToMuon extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã sách", "Tên sách", "Giá", "Ngày trả", "Tiền cọc"
+                "Mã sách", "Tên sách", "Giá", "Ngày trả", "Tổng cọc", "Số lượng"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

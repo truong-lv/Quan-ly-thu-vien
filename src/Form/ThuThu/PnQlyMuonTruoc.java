@@ -49,7 +49,7 @@ public class PnQlyMuonTruoc extends javax.swing.JPanel {
     
     public void loadDGMT(){
         String sql="SELECT PMT.maPhieuMuonTruoc, DG.maDocGia, DG.tenDG, DG.SDT, PMT.ngayMuonTruoc FROM DocGia DG, (SELECT * FROM PhieuMuonTruoc WHERE  (trangThai=1 OR trangThai=2)) PMT, CT_PhieuMuonTruoc CTPMT "
-                                + "WHERE DG.maDocGia=PMT.maDocGia AND PMT.maPhieuMuonTruoc=CTPMT.maPhieuMuonTruoc";
+                                + "WHERE DG.maDocGia=PMT.maDocGia AND PMT.maPhieuMuonTruoc=CTPMT.maPhieuMuonTruoc ORDER BY PMT.ngayMuonTruoc";
         xlbang.loadDuLieuVaoBang(jTable_CTmuon1, sql);
     }
     
