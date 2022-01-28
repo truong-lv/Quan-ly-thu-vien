@@ -57,8 +57,8 @@ public class GDChinh extends javax.swing.JFrame {
     public void loadGiaoDien() throws SQLException {
 
         //Load chức năng Tra cứu (dùng chung)
-        DocGiaTraCuu docGiaTraCuu2 = new DocGiaTraCuu();
-        addPanel(docGiaTraCuu2, "Tra Cứu", "/image/search_30px.png");
+//        DocGiaTraCuu docGiaTraCuu2 = new DocGiaTraCuu();
+//        addPanel(docGiaTraCuu2, "Tra Cứu", "/image/search_30px.png");
 
         // CHỨC NĂNG CHO KHÁCHS
         switch (ThuVien.quyen) {

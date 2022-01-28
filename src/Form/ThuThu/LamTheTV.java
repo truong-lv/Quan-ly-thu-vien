@@ -60,12 +60,15 @@ public class LamTheTV extends javax.swing.JPanel {
     
     public void insertDocGia(String maDG, String tenDG, String matKhau, String SDT, String email, String diaChi)
     {
-        String sql = "insert into DocGia(maDocGia, tenDG, maTK, SDT, email, diaChi)\n" +
-                "values('"+ maDG + "',N'" + tenDG + "','" + maDG + "','" + SDT + "','" + email + "','" + diaChi + "')";
-        dbAccess.Update(sql);
         String sql2 = "insert into TaiKhoan(maTK, matKhau)\n"
                 + "values('" + maDG + "','" + matKhau + "')";
         dbAccess.Update(sql2);
+        String sql = "insert into DocGia(maDocGia, tenDG, maTK, SDT, email, diaChi)\n" +
+                "values('"+ maDG + "',N'" + tenDG + "','" + maDG + "','" + SDT + "','" + email + "','" + diaChi + "')";
+        dbAccess.Update(sql);   
+        String sql3 = "insert into Quyen(maTK, maLoaiTK)\n"
+                + "values('" + maDG + "','3')";
+        dbAccess.Update(sql3);
     }
 
     
