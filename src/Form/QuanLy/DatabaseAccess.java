@@ -464,7 +464,7 @@ public class DatabaseAccess {
 
             dttn.setMuon(muon);
 
-            ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE MONTH(ngayThanhToan)=MONTH(?) AND YEAR(ngayThanhToan)=YEAR(?)");
+            ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM PhieuXuatSach WHERE MONTH(ngayThanhToan)=MONTH(?) AND YEAR(ngayThanhToan)=YEAR(?) AND trangThai = 1");
             ps.setDate(1, date);
             ps.setDate(2, date);
 
@@ -476,7 +476,7 @@ public class DatabaseAccess {
 
             dttn.setThanhToan(thanhToan);
 
-            ps = connect.prepareStatement("SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE MONTH(ngayThanhLy)=MONTH(?) AND YEAR(ngayThanhLy)=YEAR(?)");
+            ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM PhieuXuatSach WHERE MONTH(ngayThanhToan)=MONTH(?) AND YEAR(ngayThanhToan)=YEAR(?) AND trangThai = 0");
             ps.setDate(1, date);
             ps.setDate(2, date);
             rs = ps.executeQuery();
@@ -519,7 +519,7 @@ public class DatabaseAccess {
 
             dttn.setMuon(muon);
 
-            ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE ngayThanhToan=?");
+            ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM PhieuXuatSach WHERE ngayThanhToan=? AND trangThai = 1");
             ps.setDate(1, date);
             rs = ps.executeQuery();
             double thanhToan = 0;
@@ -529,7 +529,7 @@ public class DatabaseAccess {
 
             dttn.setThanhToan(thanhToan);
 
-            ps = connect.prepareStatement("SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE ngayThanhLy=?");
+            ps = connect.prepareStatement("SELECT SUM(tongTien) as total FROM PhieuXuatSach WHERE ngayThanhToan=?");
             ps.setDate(1, date);
             rs = ps.executeQuery();
             double thanhLy = 0;
@@ -564,7 +564,7 @@ public class DatabaseAccess {
             list.add(ct_dttg);
         }
 
-        ps = connect.prepareStatement("SELECT maPhieuThanhToanSach, tongTien FROM PhieuThanhToanSach WHERE ngayThanhToan=?");
+        ps = connect.prepareStatement("SELECT maPhieuXuatSach, tongTien FROM PhieuXuatSach WHERE ngayThanhToan=? AND trangThai = 1");
         ps.setDate(1, date);
         rs = ps.executeQuery();
         while (rs.next()) {
@@ -572,18 +572,18 @@ public class DatabaseAccess {
             ct_dttg.setDate(dateToCheck);
             ct_dttg.setTongThu(rs.getDouble("tongTien"));
             ct_dttg.setLoai("Phiếu thanh toán");
-            ct_dttg.setNguon(rs.getString("maPhieuThanhToanSach").trim());
+            ct_dttg.setNguon(rs.getString("maPhieuXuatSach").trim());
             list.add(ct_dttg);
         }
-        ps = connect.prepareStatement("SELECT maPhieuThanhLy, tongTienThanhLy FROM PhieuThanhLy WHERE ngayThanhLy=?");
+        ps = connect.prepareStatement("SELECT maPhieuXuatSach, tongTien FROM PhieuXuatSach WHERE ngayThanhToan=? AND trangThai = 0");
         ps.setDate(1, date);
         rs = ps.executeQuery();
         while (rs.next()) {
             ct_dttg = new ChiTietDoanhThuTheoThoiGian();
             ct_dttg.setDate(dateToCheck);
-            ct_dttg.setTongThu(rs.getDouble("tongTienThanhLy"));
+            ct_dttg.setTongThu(rs.getDouble("tongTien"));
             ct_dttg.setLoai("Phiếu thanh lý");
-            ct_dttg.setNguon(rs.getString("maPhieuThanhLy").trim());
+            ct_dttg.setNguon(rs.getString("maPhieuXuatSach").trim());
             list.add(ct_dttg);
         }
         return list;
@@ -609,7 +609,7 @@ public class DatabaseAccess {
             list.add(ct_dttg);
         }
 
-        ps = connect.prepareStatement("SELECT maPhieuThanhToanSach, tongTien FROM PhieuThanhToanSach WHERE MONTH(ngayThanhToan)=MONTH(?) AND YEAR(ngayThanhToan)=YEAR(?)");
+        ps = connect.prepareStatement("SELECT maPhieuXuatSach, tongTien FROM PhieuXuatSach WHERE MONTH(ngayThanhToan)=MONTH(?) AND YEAR(ngayThanhToan)=YEAR(?) AND trangThai = 1");
         ps.setDate(1, date);
         ps.setDate(2, date);
         rs = ps.executeQuery();
@@ -618,19 +618,19 @@ public class DatabaseAccess {
             ct_dttg.setDate(dateToCheck);
             ct_dttg.setTongThu(rs.getDouble("tongTien"));
             ct_dttg.setLoai("Phiếu thanh toán");
-            ct_dttg.setNguon(rs.getString("maPhieuThanhToanSach").trim());
+            ct_dttg.setNguon(rs.getString("maPhieuXuatSach").trim());
             list.add(ct_dttg);
         }
-        ps = connect.prepareStatement("SELECT maPhieuThanhLy, tongTienThanhLy FROM PhieuThanhLy WHERE MONTH(ngayThanhLy)=MONTH(?) AND YEAR(ngayThanhLy)=YEAR(?)");
+        ps = connect.prepareStatement("SELECT maPhieuXuatSach, tongTien FROM PhieuXuatSach WHERE MONTH(ngayThanhToan)=MONTH(?) AND YEAR(ngayThanhToan)=YEAR(?) AND trangThai = 0");
         ps.setDate(1, date);
         ps.setDate(2, date);
         rs = ps.executeQuery();
         while (rs.next()) {
             ct_dttg = new ChiTietDoanhThuTheoThoiGian();
             ct_dttg.setDate(dateToCheck);
-            ct_dttg.setTongThu(rs.getDouble("tongTienThanhLy"));
+            ct_dttg.setTongThu(rs.getDouble("tongTien"));
             ct_dttg.setLoai("Phiếu thanh lý");
-            ct_dttg.setNguon(rs.getString("maPhieuThanhLy").trim());
+            ct_dttg.setNguon(rs.getString("maPhieuXuatSach").trim());
             list.add(ct_dttg);
         }
         return list;
@@ -655,7 +655,7 @@ public class DatabaseAccess {
             list.add(ct_dttg);
         }
 
-        ps = connect.prepareStatement("SELECT maPhieuThanhToanSach, tongTien FROM PhieuThanhToanSach WHERE YEAR(ngayThanhToan)=YEAR(?)");
+        ps = connect.prepareStatement("SELECT maPhieuXuatSach, tongTien FROM PhieuXuatSach WHERE YEAR(ngayThanhToan)=YEAR(?) AND trangThai = 1");
         ps.setDate(1, date);
         rs = ps.executeQuery();
         while (rs.next()) {
@@ -663,18 +663,18 @@ public class DatabaseAccess {
             ct_dttg.setDate(dateToCheck);
             ct_dttg.setTongThu(rs.getDouble("tongTien"));
             ct_dttg.setLoai("Phiếu thanh toán");
-            ct_dttg.setNguon(rs.getString("maPhieuThanhToanSach").trim());
+            ct_dttg.setNguon(rs.getString("maPhieuXuatSach").trim());
             list.add(ct_dttg);
         }
-        ps = connect.prepareStatement("SELECT maPhieuThanhLy, tongTienThanhLy FROM PhieuThanhLy WHERE YEAR(ngayThanhLy)=YEAR(?)");
+        ps = connect.prepareStatement("SELECT maPhieuXuatSach, tongTien FROM PhieuXuatSach WHERE YEAR(ngayThanhToan)=YEAR(?) AND trangThai = 0");
         ps.setDate(1, date);
         rs = ps.executeQuery();
         while (rs.next()) {
             ct_dttg = new ChiTietDoanhThuTheoThoiGian();
             ct_dttg.setDate(dateToCheck);
-            ct_dttg.setTongThu(rs.getDouble("tongTienThanhLy"));
+            ct_dttg.setTongThu(rs.getDouble("tongTien"));
             ct_dttg.setLoai("Phiếu thanh lý");
-            ct_dttg.setNguon(rs.getString("maPhieuThanhLy").trim());
+            ct_dttg.setNguon(rs.getString("maPhieuXuatSach").trim());
             list.add(ct_dttg);
         }
         return list;
@@ -705,7 +705,7 @@ public class DatabaseAccess {
                 list.add(ct_dttg);
             }
 
-            ps = connect.prepareStatement("SELECT maPhieuThanhToanSach, tongTien FROM PhieuThanhToanSach WHERE ngayThanhToan=?");
+            ps = connect.prepareStatement("SELECT maPhieuXuatSach, tongTien FROM PhieuXuatSach WHERE ngayThanhToan=? AND trangThai = 1");
             ps.setDate(1, date);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -713,18 +713,18 @@ public class DatabaseAccess {
                 ct_dttg.setDate(utilDate);
                 ct_dttg.setTongThu(rs.getDouble("tongTien"));
                 ct_dttg.setLoai("Phiếu thanh toán");
-                ct_dttg.setNguon(rs.getString("maPhieuThanhToanSach").trim());
+                ct_dttg.setNguon(rs.getString("maPhieuXuatSach").trim());
                 list.add(ct_dttg);
             }
-            ps = connect.prepareStatement("SELECT maPhieuThanhLy, tongTienThanhLy FROM PhieuThanhLy WHERE ngayThanhLy=?");
+            ps = connect.prepareStatement("SELECT maPhieuXuatSach, tongTien FROM PhieuXuatSach WHERE ngayThanhToan=? AND trangThai = 0");
             ps.setDate(1, date);
             rs = ps.executeQuery();
             while (rs.next()) {
                 ct_dttg = new ChiTietDoanhThuTheoThoiGian();
                 ct_dttg.setDate(utilDate);
-                ct_dttg.setTongThu(rs.getDouble("tongTienThanhLy"));
+                ct_dttg.setTongThu(rs.getDouble("tongTien"));
                 ct_dttg.setLoai("Phiếu thanh lý");
-                ct_dttg.setNguon(rs.getString("maPhieuThanhLy").trim());
+                ct_dttg.setNguon(rs.getString("maPhieuXuatSach").trim());
                 list.add(ct_dttg);
             }
         }
@@ -758,7 +758,7 @@ public class DatabaseAccess {
                 list.add(ct_dttg);
             }
 
-            ps = connect.prepareStatement("SELECT maPhieuThanhToanSach, tongTien FROM PhieuThanhToanSach WHERE MONTH(ngayThanhToan)=MONTH(?) AND YEAR(ngayThanhToan)=YEAR(?)");
+            ps = connect.prepareStatement("SELECT maPhieuXuatSach, tongTien FROM PhieuXuatSach WHERE MONTH(ngayThanhToan)=MONTH(?) AND YEAR(ngayThanhToan)=YEAR(?) AND trangThai = 1");
             ps.setDate(1, date);
             ps.setDate(2, date);
 
@@ -768,10 +768,10 @@ public class DatabaseAccess {
                 ct_dttg.setDate(utilDate);
                 ct_dttg.setTongThu(rs.getDouble("tongTien"));
                 ct_dttg.setLoai("Phiếu thanh toán");
-                ct_dttg.setNguon(rs.getString("maPhieuThanhToanSach").trim());
+                ct_dttg.setNguon(rs.getString("maPhieuXuatSach").trim());
                 list.add(ct_dttg);
             }
-            ps = connect.prepareStatement("SELECT maPhieuThanhLy, tongTienThanhLy FROM PhieuThanhLy WHERE MONTH(ngayThanhLy)=MONTH(?) AND YEAR(ngayThanhLy)=YEAR(?)");
+            ps = connect.prepareStatement("SELECT maPhieuXuatSach, tongTien FROM PhieuXuatSach WHERE MONTH(ngayThanhToan)=MONTH(?) AND YEAR(ngayThanhToan)=YEAR(?) AND trangThai = 0");
             ps.setDate(1, date);
             ps.setDate(2, date);
 
@@ -779,9 +779,9 @@ public class DatabaseAccess {
             while (rs.next()) {
                 ct_dttg = new ChiTietDoanhThuTheoThoiGian();
                 ct_dttg.setDate(utilDate);
-                ct_dttg.setTongThu(rs.getDouble("tongTienThanhLy"));
+                ct_dttg.setTongThu(rs.getDouble("tongTien"));
                 ct_dttg.setLoai("Phiếu thanh lý");
-                ct_dttg.setNguon(rs.getString("maPhieuThanhLy").trim());
+                ct_dttg.setNguon(rs.getString("maPhieuXuatSach").trim());
                 list.add(ct_dttg);
             }
         }
@@ -795,16 +795,16 @@ public class DatabaseAccess {
 
         if (searchMode == "theo-ngay") {
             queryDoanhThuMuon = "SELECT SUM(tongTien) as total FROM PhieuMuon WHERE ngayMuon=?";
-            queryDoanhThuThanhToan = "SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE ngayThanhToan=?";
-            queryDoanhThuThanhLy = "SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE ngayThanhLy=?";
+            queryDoanhThuThanhToan = "SELECT SUM(tongTien) as total FROM PhieuXuatSach WHERE ngayThanhToan=? AND trangThai = 1";
+            queryDoanhThuThanhLy = "SELECT SUM(tongTien) as total FROM PhieuXuatSach WHERE ngayThanhToan=? AND trangThai = 0";
         } else if (searchMode == "theo-thang") {
             queryDoanhThuMuon = "SELECT SUM(tongTien) as total FROM PhieuMuon WHERE MONTH(ngayMuon)= MONTH(?) AND YEAR(ngayMuon)= YEAR(?)";
-            queryDoanhThuThanhToan = "SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE MONTH(ngayThanhToan)= MONTH(?) AND YEAR(ngayThanhToan)= YEAR(?)";
-            queryDoanhThuThanhLy = "SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE MONTH(ngayThanhLy)= MONTH(?) AND YEAR(ngayThanhLy)= YEAR(?)";
+            queryDoanhThuThanhToan = "SELECT SUM(tongTien) as total FROM PhieuXuatSach WHERE MONTH(ngayThanhToan)= MONTH(?) AND YEAR(ngayThanhToan)= YEAR(?) AND trangThai = 1";
+            queryDoanhThuThanhLy = "SELECT SUM(tongTien) as total FROM PhieuXuatSach WHERE MONTH(ngayThanhToan)= MONTH(?) AND YEAR(ngayThanhToan)= YEAR(?) AND trangThai = 0";
         } else if (searchMode == "theo-nam") {
             queryDoanhThuMuon = "SELECT SUM(tongTien) as total FROM PhieuMuon WHERE YEAR(ngayMuon)= YEAR(?)";
-            queryDoanhThuThanhToan = "SELECT SUM(tongTien) as total FROM PhieuThanhToanSach WHERE YEAR(ngayThanhToan)= YEAR(?)";
-            queryDoanhThuThanhLy = "SELECT SUM(tongTienThanhLy) as total FROM PhieuThanhLy WHERE YEAR(ngayThanhLy)= YEAR(?)";
+            queryDoanhThuThanhToan = "SELECT SUM(tongTien) as total FROM PhieuXuatSach WHERE YEAR(ngayThanhToan)= YEAR(?) AND trangThai = 1";
+            queryDoanhThuThanhLy = "SELECT SUM(tongTien) as total FROM PhieuXuatSach WHERE YEAR(ngayThanhToan)= YEAR(?) AND trangThai = 0";
         }
 
         java.sql.Date date = new Date(dateToCheck.getTime());
