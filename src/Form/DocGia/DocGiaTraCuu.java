@@ -12,9 +12,12 @@ import Entities.NhaXuatBan;
 import Entities.Sach;
 import Entities.TacGia;
 import Entities.TheLoaiSach;
+import Entities.ViTri;
 import java.awt.event.ItemEvent;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -27,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
 public class DocGiaTraCuu extends javax.swing.JPanel {
 
     private List<Sach> listSach = null;
+    //private List<ViTri> listVitri = null;
     private List<TacGia> listTacGia = null;
     private List<TheLoaiSach> listTheLoaiSach = null;
     private List<Khu> listKhu = null;
@@ -40,59 +44,67 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
     private NganKeSach nganKeSach = null;
 
     String button = "";
+    boolean f = true;
 
     /**
      * Creates new form PnQlyMuonSach
      */
     public DocGiaTraCuu() {
         initComponents();
+        System.out.println("hello");
 
         listSach = Sach.getList();
+        //listVitri = ViTri.getList();
         updateTable();
         updateCombobox();
 
-        DocumentListener dl = new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateFieldState();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateFieldState();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                updateFieldState();
-            }
-
-            protected void updateFieldState() {
-                String keyword = txtSearch.getText();
-                Thread t = new Thread(() -> {
-                    if (keyword.isEmpty()) {
-                        listSach = Sach.getList();
-                    } else {
-                        listSach = Sach.search(keyword);
-                    }
-                    updateTable();
-                });
-                t.start();
-            }
-        };
-
-        txtSearch.getDocument().addDocumentListener(dl);
     }
 
     private void updateTable() {
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
         DefaultTableModel dtm = (DefaultTableModel) table.getModel();
         dtm.setRowCount(0);
 
-        for (Sach sach : listSach) {
-            String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuongCon()), sach.getNganKeSach().getKeSach().getTenKe(), sach.getNganKeSach().getTenNgan(), sach.getNganKeSach().getKeSach().getKhu().getTenKhu(), sach.getNganKeSach().getKeSach().getKhu().getTang()};
-            dtm.addRow(data);
+//        for (Sach sach : listSach) {
+//            List<ViTri> cacViTri = ViTri.getList(sach);
+//            for (ViTri vt : cacViTri) {
+//                //String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), Float.toString(sach.getGiaBia()), Integer.toString(sach.getSoTrang()), sach.getMoTa(), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuong()), Integer.toString(sach.getSoLuongCon()), sach.getNganKeSach().getKeSach().getTenKe(), sach.getNganKeSach().getTenNgan(), sach.getNganKeSach().getKeSach().getKhu().getTenKhu()};
+//                NganKeSach nks = vt.getNganKeSach();
+//                String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuongCon()), nks.getKeSach().getTenKe(), nks.getTenNgan(), nks.getKeSach().getKhu().getTenKhu(), nks.getKeSach().getKhu().getTang()};
+//                dtm.addRow(data);
+//            }
+//
+//        }
+        if (f == false) {
+            for (Sach sach : listSach) {
+                if (sach.getCacViTri() != null) {
+                    f = true;
+                    break;
+                }
+//            List<ViTri> cacViTri = ViTri.getList(sach);
+                //for (ViTri vt : sach.getCacViTri()) {
+                //String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), Float.toString(sach.getGiaBia()), Integer.toString(sach.getSoTrang()), sach.getMoTa(), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuong()), Integer.toString(sach.getSoLuongCon()), sach.getNganKeSach().getKeSach().getTenKe(), sach.getNganKeSach().getTenNgan(), sach.getNganKeSach().getKeSach().getKhu().getTenKhu()};
+                NganKeSach nks = sach.getViTri().getNganKeSach();
+                String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuongCon()), nks.getKeSach().getTenKe(), nks.getTenNgan(), nks.getKeSach().getKhu().getTenKhu(), nks.getKeSach().getKhu().getTang()};
+                dtm.addRow(data);
+                //}
+            }
         }
+
+        if (f == true) {
+            for (Sach sach : listSach) {
+//            List<ViTri> cacViTri = ViTri.getList(sach);
+                for (ViTri vt : sach.getCacViTri()) {
+                    //String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), Float.toString(sach.getGiaBia()), Integer.toString(sach.getSoTrang()), sach.getMoTa(), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuong()), Integer.toString(sach.getSoLuongCon()), sach.getNganKeSach().getKeSach().getTenKe(), sach.getNganKeSach().getTenNgan(), sach.getNganKeSach().getKeSach().getKhu().getTenKhu()};
+                    NganKeSach nks = vt.getNganKeSach();
+                    String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuongCon()), nks.getKeSach().getTenKe(), nks.getTenNgan(), nks.getKeSach().getKhu().getTenKhu(), nks.getKeSach().getKhu().getTang()};
+                    dtm.addRow(data);
+                }
+
+            }
+        }
+
     }
 
     private void updateCombobox() {
@@ -249,6 +261,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
 
         btnSearch.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/search-icon.png"))); // NOI18N
+        btnSearch.setText("Tìm Kiếm");
         btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnSearchMouseClicked(evt);
@@ -261,14 +274,16 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnSearch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnSearch, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(btnSearch)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -439,7 +454,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
                 .addGap(27, 27, 27)
                 .addComponent(jLabel1)
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -598,6 +613,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
 
     private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
         // TODO add your handling code here:  
+        f = true;
         boolean flag = true;
         button = "refresh";
 
@@ -621,13 +637,12 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
             flag = false;
         }
         txtSearch.setText("");
-        if (flag == true) {
-            Thread t = new Thread(() -> {
-                listSach = Sach.getList();
-                updateTable();
-            });
-            t.start();
-        }
+        //Thread t = new Thread(() -> {
+        listSach = Sach.getList();
+        updateTable();
+        //});
+        //t.start();
+
     }//GEN-LAST:event_btnRefreshMouseClicked
 
     private void cbxKeSachItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxKeSachItemStateChanged
@@ -649,11 +664,12 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
 //                    cbxNganKe.addItem(nganKeSach.getTenNgan());
 //                }
 //            } 
-            Thread t = new Thread(() -> {
+            //Thread t = new Thread(() -> {
+                f = false;
                 listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
                 updateTable();
-            });
-            t.start();
+            //});
+            //t.start();
         }
     }//GEN-LAST:event_cbxKeSachItemStateChanged
 
@@ -676,12 +692,13 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
                     cbxKeSach.addItem(keSach.getTenKe());
                 }
             }
-            
-            Thread t = new Thread(() -> {
+
+            //Thread t = new Thread(() -> {
+                f = false;
                 listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
                 updateTable();
-            });
-            t.start();
+            //});
+            //t.start();
         }
     }//GEN-LAST:event_cbxKhuItemStateChanged
 
@@ -691,6 +708,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
             TheLoaiSach theLoaiSach = getSelectedCategory();
             sach.setTheLoaiSach(theLoaiSach);
             Thread t = new Thread(() -> {
+                f = false;
                 listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
                 updateTable();
             });
@@ -704,6 +722,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
             TacGia tacGia = getSelectedAuthor();
             sach.setTacGia(tacGia);
             Thread t = new Thread(() -> {
+                f = false;
                 listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
                 updateTable();
             });
@@ -717,6 +736,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
             NhaXuatBan nxb = getSelectedPublishingHouse();
             sach.setNhaXuatBan(nxb);
             Thread t = new Thread(() -> {
+                f = false;
                 listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
                 updateTable();
             });
@@ -736,10 +756,11 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
     private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
         // TODO add your handling code here:
         String keyword = txtSearch.getText();
+        f = true;
         if (keyword.isEmpty()) {
             listSach = Sach.getList();
         } else {
-            listSach = Sach.search(keyword);
+            listSach = Sach.search2(keyword);
         }
 
         updateTable();
@@ -771,6 +792,7 @@ public class DocGiaTraCuu extends javax.swing.JPanel {
 
 //        btnSave.setEnabled(false);
 //        btnCancel.setEnabled(false);
+//        listVitri = ViTri.getList();
         listSach = Sach.getList();
         updateTable();
         onTableClick(0);
