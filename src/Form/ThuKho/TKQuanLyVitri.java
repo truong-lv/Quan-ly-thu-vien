@@ -7,7 +7,6 @@ package Form.ThuKho;
 
 import Entities.KeSach;
 import Entities.Khu;
-import Entities.LoaiCoSoVatChat;
 import Entities.NganKeSach;
 import Entities.Sach;
 import Entities.ViTri;
@@ -71,45 +70,47 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
 
             protected void updateFieldState() {
                 String keyword = txtSearch.getText();
-                if (keyword.isEmpty()) {
-                    listSach = Sach.getList();
-                } else {
-                    listSach = Sach.search(keyword);
-                }
+                Thread t = new Thread(() -> {
+                    if (keyword.isEmpty()) {
+                        listSach = Sach.getList();
+                    } else {
+                        listSach = Sach.search(keyword);
+                    }
+                    updateBookTable(listSach);
 
-                updateBookTable(listSach);
+                });
             }
         };
         txtSearch.getDocument().addDocumentListener(dl);
-
-        DocumentListener dl2 = new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateFieldState();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateFieldState();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                updateFieldState();
-            }
-
-            protected void updateFieldState() {
-                String keyword = txtSearchViTri.getText();
-                if (keyword.isEmpty()) {
-                    listNganKeSach = NganKeSach.getList();
-                } else {
-                    listNganKeSach = NganKeSach.search(keyword);
-                }
-                //updateBookshelfCompartmentTable(listNganKeSach);
-            }
-        };
-
-        txtSearchViTri.getDocument().addDocumentListener(dl2);
+//
+//        DocumentListener dl2 = new DocumentListener() {
+//            @Override
+//            public void insertUpdate(DocumentEvent e) {
+//                updateFieldState();
+//            }
+//
+//            @Override
+//            public void removeUpdate(DocumentEvent e) {
+//                updateFieldState();
+//            }
+//
+//            @Override
+//            public void changedUpdate(DocumentEvent e) {
+//                updateFieldState();
+//            }
+//
+//            protected void updateFieldState() {
+//                String keyword = txtSearchViTri.getText();
+//                if (keyword.isEmpty()) {
+//                    listNganKeSach = NganKeSach.getList();
+//                } else {
+//                    listNganKeSach = NganKeSach.search(keyword);
+//                }
+//                //updateBookshelfCompartmentTable(listNganKeSach);
+//            }
+//        };
+//
+//        txtSearchViTri.getDocument().addDocumentListener(dl2);
     }
 
     private void updateBookTable(List<Sach> bookList) {
@@ -193,9 +194,6 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
         txtSearch = new javax.swing.JTextField();
         btnDelete = new javax.swing.JLabel();
         btnEdit = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        btnSearch1 = new javax.swing.JLabel();
-        txtSearchViTri = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         bookTable = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
@@ -258,7 +256,9 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
             locationTable.getColumnModel().getColumn(0).setResizable(false);
             locationTable.getColumnModel().getColumn(1).setResizable(false);
             locationTable.getColumnModel().getColumn(2).setResizable(false);
+            locationTable.getColumnModel().getColumn(2).setPreferredWidth(80);
             locationTable.getColumnModel().getColumn(3).setResizable(false);
+            locationTable.getColumnModel().getColumn(3).setPreferredWidth(20);
         }
 
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -318,26 +318,6 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
             }
         });
 
-        btnSearch1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnSearch1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/search-icon.png"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSearch1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtSearchViTri, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnSearch1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(txtSearchViTri, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
         bookTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -369,7 +349,9 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
             bookTable.getColumnModel().getColumn(3).setResizable(false);
             bookTable.getColumnModel().getColumn(4).setResizable(false);
             bookTable.getColumnModel().getColumn(5).setResizable(false);
+            bookTable.getColumnModel().getColumn(5).setPreferredWidth(20);
             bookTable.getColumnModel().getColumn(6).setResizable(false);
+            bookTable.getColumnModel().getColumn(6).setPreferredWidth(20);
         }
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -600,15 +582,12 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 668, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(btnEdit)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnDelete)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnDelete))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -628,29 +607,23 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnAdd)
-                                    .addComponent(btnRefresh)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnEdit)
-                                    .addComponent(btnDelete))
-                                .addGap(1, 1, 1)))
-                        .addGap(14, 14, 14)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnAdd)
+                                .addComponent(btnRefresh)))
+                        .addGap(14, 14, 14)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnEdit)
+                        .addComponent(btnDelete)))
                 .addContainerGap(59, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -911,7 +884,7 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
         bookTable.setEnabled(false);
 
         txtSearch.setEnabled(false);
-        txtSearchViTri.setEnabled(false);
+        //txtSearchViTri.setEnabled(false);
     }
 
     private void normalState() {
@@ -931,7 +904,7 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
         bookTable.setEnabled(true);
 
         txtSearch.setEnabled(true);
-        txtSearchViTri.setEnabled(true);
+        //txtSearchViTri.setEnabled(true);
 
         Thread t = new Thread(() -> {
             listSach = Sach.getList();
@@ -950,7 +923,6 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
     private javax.swing.JLabel btnRefresh;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel btnSearch;
-    private javax.swing.JLabel btnSearch1;
     private javax.swing.JComboBox<String> cbxKeSach;
     private javax.swing.JComboBox<String> cbxKhu;
     private javax.swing.JComboBox<String> cbxNganKe;
@@ -965,7 +937,6 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
@@ -975,7 +946,6 @@ public class TKQuanLyVitri extends javax.swing.JPanel {
     private javax.swing.JTable locationTable;
     private javax.swing.JTextField txtMaISBN;
     private javax.swing.JTextField txtSearch;
-    private javax.swing.JTextField txtSearchViTri;
     private javax.swing.JTextField txtTenSach;
     // End of variables declaration//GEN-END:variables
 }
