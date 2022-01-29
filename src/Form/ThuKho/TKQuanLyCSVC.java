@@ -79,6 +79,9 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
     }
 
     private void updateCombobox() {
+        cbxLoaiCSVC.removeAllItems();
+        cbxLoaiCSVC.addItem("Chọn loại CSVC");
+
         for (LoaiCoSoVatChat loaiCSVC : listLoaiCSVC) {
             cbxLoaiCSVC.addItem(loaiCSVC.getTenLoaiCSVC());
         }
@@ -540,21 +543,23 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEditMouseClicked
 
     private void editState() {
+        table.setEnabled(false);
+        txtSearch.setEditable(false);
+
+        btnAdd.setEnabled(false);
+        btnEdit.setEnabled(false);
+        btnDelete.setEnabled(false);
+        btnRefresh.setEnabled(false);
+
         txtTenCSVC.setEditable(true);
         txtGia.setEditable(true);
         cbxTrangThai.setEnabled(true);
         txtSoLuong.setEditable(true);
         cbxLoaiCSVC.setEnabled(true);
         dpNgaySanXuat.setEnabled(true);
+
         btnSave.setEnabled(true);
         btnCancel.setEnabled(true);
-
-        btnAdd.setEnabled(false);
-        btnEdit.setEnabled(false);
-        btnDelete.setEnabled(false);
-        btnRefresh.setEnabled(false);
-        txtSearch.setEnabled(false);
-        table.setEnabled(false);
     }
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
@@ -633,12 +638,13 @@ public class TKQuanLyCSVC extends javax.swing.JPanel {
     }
 
     private void normalState() {
+        table.setEnabled(true);
+        txtSearch.setEditable(true);
+
         btnAdd.setEnabled(true);
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
         btnRefresh.setEnabled(true);
-        txtSearch.setEnabled(true);
-        table.setEnabled(true);
 
         txtMaCSVC.setEditable(false);
         txtTenCSVC.setEditable(false);
