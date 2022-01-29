@@ -56,7 +56,7 @@ public class ChiTietMuonTruoc {
         int i = 0;
         for (; i < listChiTietMuonTruoc.size(); i++) {
             ChiTietMuonTruoc ctmt = listChiTietMuonTruoc.get(i);
-            String query = "INSERT INTO CT_PhieuMuonTruoc(maPhieuMuonTruoc, maSach, soLuong) VALUES(N'" + maPhieuMuon + "', N'" + ctmt.getSach().getMaISBN() + "', N'" + ctmt.getSoLuong() + "')";
+            String query = "INSERT INTO CT_PhieuMuon(maPhieuMuon, maSach, soLuong) VALUES(N'" + maPhieuMuon + "', N'" + ctmt.getSach().getMaISBN() + "', N'" + ctmt.getSoLuong() + "')";
             DBAccess dba = new DBAccess();
             result = dba.Update(query);
             if (result == false) {
@@ -66,7 +66,7 @@ public class ChiTietMuonTruoc {
 
         if (result == false) {
             ChiTietMuonTruoc ctmt = listChiTietMuonTruoc.get(0);
-            String query = "DELETE FROM PHIEUMUONTRUOC WHERE maPhieuMuonTruoc = '" + ctmt.getPhieuMuonTruoc().getMaPhieuMuongTruoc() + "'";
+            String query = "DELETE FROM PHIEUMUONTRUOC WHERE maPhieuMuon = '" + ctmt.getPhieuMuonTruoc().getMaPhieuMuongTruoc() + "'";
             DBAccess dba = new DBAccess();
             dba.Update(query);
         }

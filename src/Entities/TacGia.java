@@ -41,13 +41,13 @@ public class TacGia {
         List<TacGia> cacTacGia = new ArrayList<>();
 
         try {
-            String query = "SELECT * FROM TacGia";
+            String query = "SELECT * FROM ChiTietSach WHERE loaiChiTiet = 'TacGia'";
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             while (rs.next()) {
                 TacGia tacGia = new TacGia();
-                tacGia.setMaTacGia(rs.getNString("maTacGia"));
-                tacGia.setTenTacGia(rs.getNString("tenTacGia"));
+                tacGia.setMaTacGia(rs.getNString("maChiTiet"));
+                tacGia.setTenTacGia(rs.getNString("tenChiTiet"));
                 cacTacGia.add(tacGia);
             }
         } catch (SQLException ex) {
@@ -61,13 +61,13 @@ public class TacGia {
         List<TacGia> cacTacGia = new ArrayList<>();
 
         try {
-            String query = "SELECT * FROM TacGia WHERE maTacGia LIKE N'%" + keyword + "%' OR tenTacGia LIKE N'%" + keyword + "%'";
+            String query = "SELECT * FROM ChiTietSach WHERE maChiTiet LIKE N'%" + keyword + "%' OR tenChiTiet LIKE N'%" + keyword + "%' AND loaiChiTiet = 'TacGia'";
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             while (rs.next()) {
                 TacGia tacGia = new TacGia();
-                tacGia.setMaTacGia(rs.getNString("maTacGia"));
-                tacGia.setTenTacGia(rs.getNString("tenTacGia"));
+                tacGia.setMaTacGia(rs.getNString("maChiTiet"));
+                tacGia.setTenTacGia(rs.getNString("tenChiTiet"));
                 cacTacGia.add(tacGia);
             }
         } catch (SQLException ex) {
@@ -81,13 +81,13 @@ public class TacGia {
         TacGia tacGia = null;
 
         try {
-            String query = "SELECT * FROM TacGia WHERE maTacGia = '" + maTacGia + "'";
+            String query = "SELECT * FROM ChiTietSach WHERE maChiTiet = '" + maTacGia + "' AND loaiChiTiet = 'TacGia'";
             DBAccess dba = new DBAccess();
             ResultSet rs = dba.Query(query);
             if (rs.next()) {
                 tacGia = new TacGia();
-                tacGia.setMaTacGia(rs.getNString("maTacGia"));
-                tacGia.setTenTacGia(rs.getNString("tenTacGia"));
+                tacGia.setMaTacGia(rs.getNString("maChiTiet"));
+                tacGia.setTenTacGia(rs.getNString("tenChiTiet"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(TacGia.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,20 +97,20 @@ public class TacGia {
 
     public static boolean insert(String tenTacGia) {
         DBAccess dba = new DBAccess();
-        String query = "INSERT INTO TACGIA VALUES(N'" + dba.generateId("3") + "', N'" + tenTacGia + "')";
+        String query = "INSERT INTO ChiTietSach VALUES(N'" + dba.generateId("3") + "', N'" + tenTacGia + "', N'TacGia')";
         boolean i = dba.Update(query);
         return i;
     }
 
     public static boolean update(String maTacGia, String tenTacGia) {
-        String query = "UPDATE TACGIA SET tenTacGia = N'" + tenTacGia + "' WHERE maTacGia = N'" + maTacGia + "'";
+        String query = "UPDATE ChiTietSach SET tenChiTiet = N'" + tenTacGia + "' WHERE maChiTiet = N'" + maTacGia + "' AND loaiChiTiet = 'TacGia'";
         DBAccess dba = new DBAccess();
         boolean i = dba.Update(query);
         return i;
     }
 
     public static boolean delete(String maTacGia) {
-        String query = "DELETE FROM TACGIA WHERE maTacGia = '" + maTacGia + "'";
+        String query = "DELETE FROM ChiTietSach WHERE maChiTiet = '" + maTacGia + "' AND loaiChiTiet = 'TacGia'";
         DBAccess dba = new DBAccess();
         boolean i = dba.Update(query);
         return i;

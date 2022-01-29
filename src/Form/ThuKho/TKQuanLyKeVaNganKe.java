@@ -455,6 +455,7 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
         jLabel12.setText("Mã ngăn kệ:");
 
         txtMaNganKe.setEditable(false);
+        txtMaNganKe.setEnabled(false);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -775,32 +776,51 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEditMouseClicked
 
     private void editBookShelfTableState() {
+        BookShelfTable.setEnabled(false);
+        txtSearch.setEditable(false);
+        
+        btnAdd.setEnabled(false);
+        btnEdit.setEnabled(false);
+        btnDelete.setEnabled(false);
+        btnRefresh.setEnabled(false);
+        
         txtTenKe.setEditable(true);
         txtThongTin.setEditable(true);
         cbxKhu.setEnabled(true);
 
         btnSave.setEnabled(true);
         btnCancel.setEnabled(true);
+        
+        BookshelfCompartmentTable.setEnabled(false);
+        txtSearchNganKe.setEditable(false);
+        
+        btnAddNganKe.setEnabled(false);
+        btnEditNganKe.setEnabled(false);
+        btnDeleteNganKe.setEnabled(false);
+    }
 
+    private void editBookShelfCompartmentTableState() {
+        BookShelfTable.setEnabled(false);
+        txtSearch.setEditable(false);
+        
         btnAdd.setEnabled(false);
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
         btnRefresh.setEnabled(false);
-        BookShelfTable.setEnabled(false);
-    }
-
-    private void editBookShelfCompartmentTableState() {
-        txtTenNganKe.setEditable(true);
-        cbxKeSach.setEnabled(true);
-
-        btnSaveNganKe.setEnabled(true);
-        btnCancelNganKe.setEnabled(true);
-
+        
+        BookshelfCompartmentTable.setEnabled(false);
+        txtSearchNganKe.setEditable(false);
+        
         btnAddNganKe.setEnabled(false);
         btnEditNganKe.setEnabled(false);
         btnDeleteNganKe.setEnabled(false);
-        btnRefresh.setEnabled(false);
-        BookshelfCompartmentTable.setEnabled(false);
+        
+        txtMaNganKe.setEditable(true);
+        txtTenNganKe.setEditable(true);
+        cbxKeSach.setEnabled(true);
+        
+        btnSaveNganKe.setEnabled(true);
+        btnCancelNganKe.setEnabled(true);
     }
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
@@ -848,6 +868,7 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
         // TODO add your handling code here:
         bookshelfList = KeSach.getList();
         bookshelfCompartmentList = NganKeSach.getList(bookshelfList.get(0).getMaKe());
+        areaList = Khu.getList();
         updateBookshelfTable(bookshelfList);
         updateBookshelfCompartmentTable(bookshelfCompartmentList);
         handleBookshelfTableClick(0);
@@ -868,6 +889,12 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
 
         bookshelfCompartmentList = NganKeSach.getList(keSach.getMaKe());
         updateBookshelfCompartmentTable(bookshelfCompartmentList);
+        
+        for (int i = 0; i < cbxKeSach.getItemCount(); i++) {
+            if (cbxKeSach.getItemAt(i).equals(keSach.getTenKe())) {
+                cbxKeSach.setSelectedIndex(i);
+            }
+        }
     }
 
     private void handleBookshelfCompartmentTableClick(int selectedRow) {
@@ -950,30 +977,35 @@ public class TKQuanLyKeVaNganKe extends javax.swing.JPanel {
     }
 
     private void normalState() {
+        BookShelfTable.setEnabled(true);
+        txtSearch.setEditable(true);
+        
         btnAdd.setEnabled(true);
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
-        BookShelfTable.setEnabled(true);
-
-        btnAddNganKe.setEnabled(true);
-        btnEditNganKe.setEnabled(true);
-        btnDeleteNganKe.setEnabled(true);
-        BookshelfCompartmentTable.setEnabled(true);
-
+        btnRefresh.setEnabled(true);
+        
         txtMaKe.setEditable(false);
         txtTenKe.setEditable(false);
         txtThongTin.setEditable(false);
-        cbxKhu.setEnabled(true);
+        cbxKhu.setEnabled(false);
+        
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
 
-        txtMaNganKe.setEditable(false);
-        txtTenNganKe.setEditable(true);
-        cbxKeSach.setEnabled(true);
-        btnSaveNganKe.setEnabled(true);
-        btnCancelNganKe.setEnabled(true);
+        BookshelfCompartmentTable.setEnabled(true);
+        txtSearchNganKe.setEditable(true);
+        
+        btnAddNganKe.setEnabled(true);
+        btnEditNganKe.setEnabled(true);
+        btnDeleteNganKe.setEnabled(true);
 
-        btnRefresh.setEnabled(true);
+        txtMaNganKe.setEditable(false);
+        txtTenNganKe.setEditable(false);
+        cbxKeSach.setEnabled(false);
+        
+        btnSaveNganKe.setEnabled(false);
+        btnCancelNganKe.setEnabled(false);
 
         bookshelfList = KeSach.getList();
         updateBookshelfTable(bookshelfList);

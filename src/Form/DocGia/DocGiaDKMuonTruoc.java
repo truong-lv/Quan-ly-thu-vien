@@ -17,6 +17,7 @@ import Entities.PhieuMuonTruoc;
 import Entities.Sach;
 import Entities.TacGia;
 import Entities.TheLoaiSach;
+import Entities.ViTri;
 import java.awt.event.ItemEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -101,11 +102,14 @@ public class DocGiaDKMuonTruoc extends javax.swing.JPanel {
         List<Sach> removedSach = new ArrayList<>();
 
         for (Sach sach : listSach) {
-            if (sach.getSoLuongCon() == 0) {
-                String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), sach.getTheLoaiSach().getTenTheLoai(), sach.getNganKeSach().getKeSach().getTenKe(), sach.getNganKeSach().getKeSach().getKhu().getTenKhu()};
-                dtm.addRow(data);
-            } else {
-                removedSach.add(sach);
+            for (ViTri vt : sach.getCacViTri()) {
+                if (sach.getSoLuongCon() == 0) {
+                    NganKeSach nks = vt.getNganKeSach();
+                    String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), sach.getTheLoaiSach().getTenTheLoai(), nks.getKeSach().getTenKe(), nks.getKeSach().getKhu().getTenKhu()};
+                    dtm.addRow(data);
+                } else {
+                    removedSach.add(sach);
+                }
             }
         }
 
@@ -933,12 +937,12 @@ public class DocGiaDKMuonTruoc extends javax.swing.JPanel {
 
     private void cbxTacGiaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTacGiaItemStateChanged
         // TODO add your handling code here:
-//        if (evt.getStateChange() == ItemEvent.SELECTED) {
-//            TacGia tacGia = getSelectedAuthor();
-//            sach.setTacGia(tacGia);
-//            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
-//            updateTable();
-//        }
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            TacGia tacGia = getSelectedAuthor();
+            sach.setTacGia(tacGia);
+            listSach = Sach.search(sach, khu, keSach, nganKeSach, txtSearch.getText());
+            updateTable();
+        }
     }//GEN-LAST:event_cbxTacGiaItemStateChanged
 
     private void cbxNXBItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxNXBItemStateChanged
@@ -1120,7 +1124,7 @@ public class DocGiaDKMuonTruoc extends javax.swing.JPanel {
         cbxTacGia.setEnabled(false);
         cbxTheLoai.setEnabled(false);
         cbxNXB.setEnabled(false);
-        
+
         btnSave.setEnabled(false);
         btnCancel.setEnabled(false);
 
