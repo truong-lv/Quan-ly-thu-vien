@@ -5,18 +5,12 @@
  */
 package Form.ThuKho;
 
-import Entities.KeSach;
-import Entities.Khu;
-import Entities.LoaiCoSoVatChat;
-import Entities.NganKeSach;
 import Entities.NhaXuatBan;
 import Entities.Sach;
 import Entities.TacGia;
 import Entities.TheLoaiSach;
-import java.awt.event.ItemEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,9 +29,9 @@ public class TKQuanLySach extends javax.swing.JPanel {
     private List<Sach> listSach = null;
     private List<TacGia> listTacGia = null;
     private List<TheLoaiSach> listTheLoaiSach = null;
-    private List<KeSach> listKeSach = null;
-    private List<Khu> listKhu = null;
-    private List<NganKeSach> listNganKeSach = null;
+//    private List<KeSach> listKeSach = null;
+//    private List<Khu> listKhu = null;
+//    private List<NganKeSach> listNganKeSach = null;
     private List<NhaXuatBan> listNXB = null;
 
     String button = "";
@@ -92,7 +86,8 @@ public class TKQuanLySach extends javax.swing.JPanel {
         dtm.setRowCount(0);
 
         for (Sach sach : listSach) {
-            String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), Float.toString(sach.getGiaBia()), Integer.toString(sach.getSoTrang()), sach.getMoTa(), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuong()), Integer.toString(sach.getSoLuongCon()), sach.getNganKeSach().getKeSach().getTenKe(), sach.getNganKeSach().getTenNgan(), sach.getNganKeSach().getKeSach().getKhu().getTenKhu()};
+            //String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), Float.toString(sach.getGiaBia()), Integer.toString(sach.getSoTrang()), sach.getMoTa(), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuong()), Integer.toString(sach.getSoLuongCon()), sach.getNganKeSach().getKeSach().getTenKe(), sach.getNganKeSach().getTenNgan(), sach.getNganKeSach().getKeSach().getKhu().getTenKhu()};
+            String data[] = {sach.getMaISBN(), sach.getTenSach(), sach.getTacGia().getTenTacGia(), sach.getNhaXuatBan().getTenNXB(), dateFormat.format(sach.getNamXB()), Float.toString(sach.getGiaBia()), Integer.toString(sach.getSoTrang()), sach.getMoTa(), sach.getTheLoaiSach().getTenTheLoai(), Integer.toString(sach.getSoLuong()), Integer.toString(sach.getSoLuongCon())};
             dtm.addRow(data);
         }
     }
@@ -101,9 +96,18 @@ public class TKQuanLySach extends javax.swing.JPanel {
         listTacGia = TacGia.getList();
         listNXB = NhaXuatBan.getList();
         listTheLoaiSach = TheLoaiSach.getList();
-        listKhu = Khu.getList();
-        listKeSach = KeSach.getList();
-        listNganKeSach = NganKeSach.getList();
+//        listKhu = Khu.getList();
+//        listKeSach = KeSach.getList();
+//        listNganKeSach = NganKeSach.getList();
+
+        cbxTacGia.removeAllItems();
+        cbxTacGia.addItem("Chọn tác giả");
+        
+        cbxNXB.removeAllItems();
+        cbxNXB.addItem("Chọn NXB");
+        
+        cbxTheLoai.removeAllItems();
+        cbxTheLoai.addItem("Chọn thể loại");
 
         for (TacGia tacGia : listTacGia) {
             cbxTacGia.addItem(tacGia.getTenTacGia());
@@ -117,17 +121,17 @@ public class TKQuanLySach extends javax.swing.JPanel {
             cbxTheLoai.addItem(theLoaiSach.getTenTheLoai());
         }
 
-        for (Khu khu : listKhu) {
-            cbxKhu.addItem(khu.getTenKhu());
-        }
-
-        for (KeSach keSach : listKeSach) {
-            cbxKeSach.addItem(keSach.getTenKe());
-        }
-
-        for (NganKeSach nganKeSach : listNganKeSach) {
-            cbxNganKe.addItem(nganKeSach.getTenNgan());
-        }
+//        for (Khu khu : listKhu) {
+//            cbxKhu.addItem(khu.getTenKhu());
+//        }
+//
+//        for (KeSach keSach : listKeSach) {
+//            cbxKeSach.addItem(keSach.getTenKe());
+//        }
+//
+//        for (NganKeSach nganKeSach : listNganKeSach) {
+//            cbxNganKe.addItem(nganKeSach.getTenNgan());
+//        }
     }
 
     /**
@@ -139,6 +143,15 @@ public class TKQuanLySach extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel17 = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        cbxNganKe = new javax.swing.JComboBox<>();
+        jPanel16 = new javax.swing.JPanel();
+        jLabel22 = new javax.swing.JLabel();
+        cbxKeSach = new javax.swing.JComboBox<>();
+        jPanel19 = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        cbxKhu = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
@@ -183,20 +196,93 @@ public class TKQuanLySach extends javax.swing.JPanel {
         jLabel16 = new javax.swing.JLabel();
         txtSoTrang = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
-        jPanel16 = new javax.swing.JPanel();
-        jLabel22 = new javax.swing.JLabel();
-        cbxKeSach = new javax.swing.JComboBox<>();
-        jPanel17 = new javax.swing.JPanel();
-        jLabel23 = new javax.swing.JLabel();
-        cbxNganKe = new javax.swing.JComboBox<>();
         jPanel13 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         txtSoLuongCon = new javax.swing.JTextField();
-        jPanel19 = new javax.swing.JPanel();
-        jLabel25 = new javax.swing.JLabel();
-        cbxKhu = new javax.swing.JComboBox<>();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+
+        jLabel23.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel23.setText("Ngăn kệ:");
+
+        cbxNganKe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn ngăn kệ" }));
+        cbxNganKe.setEnabled(false);
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbxNganKe, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel23)
+                .addComponent(cbxNganKe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel22.setText("Kệ sách:");
+
+        cbxKeSach.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn kệ sách" }));
+        cbxKeSach.setEnabled(false);
+        cbxKeSach.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxKeSachItemStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
+        jPanel16.setLayout(jPanel16Layout);
+        jPanel16Layout.setHorizontalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel16Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cbxKeSach, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel16Layout.setVerticalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(cbxKeSach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel22))
+        );
+
+        jLabel25.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel25.setText("Khu:");
+
+        cbxKhu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn khu" }));
+        cbxKhu.setEnabled(false);
+        cbxKhu.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxKhuItemStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
+        jPanel19.setLayout(jPanel19Layout);
+        jPanel19Layout.setHorizontalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel25)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cbxKhu, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel19Layout.setVerticalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(cbxKhu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel25))
+        );
 
         setPreferredSize(new java.awt.Dimension(1155, 600));
 
@@ -208,11 +294,11 @@ public class TKQuanLySach extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã ISBN", "Tên sách", "Tác giả", "NXB", "năm XB", "Giá bìa", "Số trang", "Mô tả", "Thể loại", "SL", "SL còn", "Kệ sách", "Ngăn Kệ", "Khu"
+                "Mã ISBN", "Tên sách", "Tác giả", "NXB", "năm XB", "Giá bìa", "Số trang", "Mô tả", "Thể loại", "SL", "SL còn"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -246,11 +332,6 @@ public class TKQuanLySach extends javax.swing.JPanel {
             table.getColumnModel().getColumn(9).setPreferredWidth(10);
             table.getColumnModel().getColumn(10).setResizable(false);
             table.getColumnModel().getColumn(10).setPreferredWidth(10);
-            table.getColumnModel().getColumn(11).setResizable(false);
-            table.getColumnModel().getColumn(11).setPreferredWidth(40);
-            table.getColumnModel().getColumn(12).setResizable(false);
-            table.getColumnModel().getColumn(12).setPreferredWidth(30);
-            table.getColumnModel().getColumn(13).setResizable(false);
         }
 
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -588,59 +669,6 @@ public class TKQuanLySach extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel22.setText("Kệ sách:");
-
-        cbxKeSach.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn kệ sách" }));
-        cbxKeSach.setEnabled(false);
-        cbxKeSach.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbxKeSachItemStateChanged(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
-        jPanel16.setLayout(jPanel16Layout);
-        jPanel16Layout.setHorizontalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel22)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cbxKeSach, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel16Layout.setVerticalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(cbxKeSach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jLabel22))
-        );
-
-        jLabel23.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel23.setText("Ngăn kệ:");
-
-        cbxNganKe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn ngăn kệ" }));
-        cbxNganKe.setEnabled(false);
-
-        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
-        jPanel17.setLayout(jPanel17Layout);
-        jPanel17Layout.setHorizontalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel17Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel23)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbxNganKe, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel17Layout.setVerticalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabel23)
-                .addComponent(cbxNganKe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel19.setText("SL còn:");
 
@@ -662,35 +690,6 @@ public class TKQuanLySach extends javax.swing.JPanel {
             .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jLabel19)
                 .addComponent(txtSoLuongCon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jLabel25.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel25.setText("Khu:");
-
-        cbxKhu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn khu" }));
-        cbxKhu.setEnabled(false);
-        cbxKhu.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbxKhuItemStateChanged(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
-        jPanel19.setLayout(jPanel19Layout);
-        jPanel19Layout.setHorizontalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel25)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cbxKhu, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel19Layout.setVerticalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(cbxKhu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jLabel25))
         );
 
         btnSave.setBackground(new java.awt.Color(0, 102, 102));
@@ -724,11 +723,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel19, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel17, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -738,13 +733,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(125, 125, 125)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -861,25 +850,25 @@ public class TKQuanLySach extends javax.swing.JPanel {
             }
         }
 
-        for (int i = 0; i < cbxKhu.getItemCount(); i++) {
-            if (cbxKhu.getItemAt(i).equals(sach.getNganKeSach().getKeSach().getKhu().getTenKhu())) {
-                cbxKhu.setSelectedIndex(i);
-            }
-        }
-
-        for (int i = 0; i < cbxKeSach.getItemCount(); i++) {
-            if (cbxKeSach.getItemAt(i).equals(sach.getNganKeSach().getKeSach().getTenKe())) {
-                cbxKeSach.setSelectedIndex(i);
-            }
-        }
-
-        for (int i = 0; i < cbxNganKe.getItemCount(); i++) {
-            if (cbxNganKe.getItemAt(i).equals(sach.getNganKeSach().getTenNgan())) {
-                cbxNganKe.setSelectedIndex(i);
-            }
-        }
-        cbxKeSach.setEnabled(false);
-        cbxNganKe.setEnabled(false);
+//        for (int i = 0; i < cbxKhu.getItemCount(); i++) {
+//            if (cbxKhu.getItemAt(i).equals(sach.getNganKeSach().getKeSach().getKhu().getTenKhu())) {
+//                cbxKhu.setSelectedIndex(i);
+//            }
+//        }
+//
+//        for (int i = 0; i < cbxKeSach.getItemCount(); i++) {
+//            if (cbxKeSach.getItemAt(i).equals(sach.getNganKeSach().getKeSach().getTenKe())) {
+//                cbxKeSach.setSelectedIndex(i);
+//            }
+//        }
+//
+//        for (int i = 0; i < cbxNganKe.getItemCount(); i++) {
+//            if (cbxNganKe.getItemAt(i).equals(sach.getNganKeSach().getTenNgan())) {
+//                cbxNganKe.setSelectedIndex(i);
+//            }
+//        }
+//        cbxKeSach.setEnabled(false);
+//        cbxNganKe.setEnabled(false);
     }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -982,35 +971,35 @@ public class TKQuanLySach extends javax.swing.JPanel {
         return null;
     }
 
-    private Khu getSelectedArea() {
-        String selected = cbxKhu.getItemAt(cbxKhu.getSelectedIndex());
-        for (Khu khu : listKhu) {
-            if (khu.getTenKhu().equals(selected)) {
-                return khu;
-            }
-        }
-        return null;
-    }
+//    private Khu getSelectedArea() {
+//        String selected = cbxKhu.getItemAt(cbxKhu.getSelectedIndex());
+//        for (Khu khu : listKhu) {
+//            if (khu.getTenKhu().equals(selected)) {
+//                return khu;
+//            }
+//        }
+//        return null;
+//    }
 
-    private KeSach getSelectedBookshelf() {
-        String selectedBookshelf = cbxKeSach.getItemAt(cbxKeSach.getSelectedIndex());
-        for (KeSach keSach : listKeSach) {
-            if (keSach.getTenKe().equals(selectedBookshelf)) {
-                return keSach;
-            }
-        }
-        return null;
-    }
+//    private KeSach getSelectedBookshelf() {
+//        String selectedBookshelf = cbxKeSach.getItemAt(cbxKeSach.getSelectedIndex());
+//        for (KeSach keSach : listKeSach) {
+//            if (keSach.getTenKe().equals(selectedBookshelf)) {
+//                return keSach;
+//            }
+//        }
+//        return null;
+//    }
 
-    private NganKeSach getSelectedBookshelfCapartment() {
-        String selected = cbxNganKe.getItemAt(cbxNganKe.getSelectedIndex());
-        for (NganKeSach nganKeSach : listNganKeSach) {
-            if (nganKeSach.getTenNgan().equals(selected)) {
-                return nganKeSach;
-            }
-        }
-        return null;
-    }
+//    private NganKeSach getSelectedBookshelfCapartment() {
+//        String selected = cbxNganKe.getItemAt(cbxNganKe.getSelectedIndex());
+//        for (NganKeSach nganKeSach : listNganKeSach) {
+//            if (nganKeSach.getTenNgan().equals(selected)) {
+//                return nganKeSach;
+//            }
+//        }
+//        return null;
+//    }
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
@@ -1024,9 +1013,11 @@ public class TKQuanLySach extends javax.swing.JPanel {
             showMessage("Số trang không được để trống");
         } else if (txtSoLuong.getText().isEmpty()) {
             showMessage("Số lượng không được để trống");
-        } else if (cbxNganKe.getSelectedIndex() == 0) {
-            showMessage("Hãy chọn ngăn kệ sách");
-        } else if (cbxNXB.getSelectedIndex() == 0) {
+        } 
+//        else if (cbxNganKe.getSelectedIndex() == 0) {
+//            showMessage("Hãy chọn ngăn kệ sách");
+//        } 
+        else if (cbxNXB.getSelectedIndex() == 0) {
             showMessage("Hãy chọn nhà xuất bản");
         } else if (cbxTheLoai.getSelectedIndex() == 0) {
             showMessage("Hãy chọn thể loại sách");
@@ -1040,7 +1031,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
                 if (button.equals("add")) {
                     boolean i = Sach.insert(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
                             d, Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
-                            getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuong.getText()), getSelectedBookshelfCapartment().getMaNganKe()
+                            getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuong.getText())
                     );
                     if (i == true) {
                         showMessage("Thêm thành công");
@@ -1051,7 +1042,7 @@ public class TKQuanLySach extends javax.swing.JPanel {
                 } else if (button.equals("edit")) {
                     boolean i = Sach.update(txtMaISBN.getText(), txtTenSach.getText(), getSelectedAuthor().getMaTacGia(), getSelectedPublishingHouse().getMaNXB(),
                             d, Float.parseFloat(txtGiaBia.getText()), Integer.parseInt(txtSoTrang.getText()), txtMoTa.getText(),
-                            getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuongCon.getText()), getSelectedBookshelfCapartment().getMaNganKe()
+                            getSelectedCategory().getMaTheLoai(), Integer.parseInt(txtSoLuong.getText()), Integer.parseInt(txtSoLuongCon.getText())
                     );
                     if (i == true) {
                         showMessage("Sửa thành công");
@@ -1071,51 +1062,52 @@ public class TKQuanLySach extends javax.swing.JPanel {
         // TODO add your handling code here:
         listSach = Sach.getList();
         updateTable();
+        updateCombobox();
         onTableClick(0);
     }//GEN-LAST:event_btnRefreshMouseClicked
 
     private void cbxKeSachItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxKeSachItemStateChanged
         // TODO add your handling code here:
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            KeSach keSach = getSelectedBookshelf();
-            if (keSach == null) {
-                cbxNganKe.removeAllItems();
-                cbxNganKe.addItem("Chọn ngăn kệ");
-                cbxNganKe.setSelectedIndex(0);
-                cbxNganKe.setEnabled(false);
-            } else {
-                cbxNganKe.setEnabled(true);
-                listNganKeSach = NganKeSach.getList(keSach.getMaKe());
-                cbxNganKe.removeAllItems();
-
-                cbxNganKe.addItem("Chọn ngăn kệ");
-                for (NganKeSach nganKeSach : listNganKeSach) {
-                    cbxNganKe.addItem(nganKeSach.getTenNgan());
-                }
-            }
-        }
+//        if (evt.getStateChange() == ItemEvent.SELECTED) {
+//            KeSach keSach = getSelectedBookshelf();
+//            if (keSach == null) {
+//                cbxNganKe.removeAllItems();
+//                cbxNganKe.addItem("Chọn ngăn kệ");
+//                cbxNganKe.setSelectedIndex(0);
+//                cbxNganKe.setEnabled(false);
+//            } else {
+//                cbxNganKe.setEnabled(true);
+//                listNganKeSach = NganKeSach.getList(keSach.getMaKe());
+//                cbxNganKe.removeAllItems();
+//
+//                cbxNganKe.addItem("Chọn ngăn kệ");
+//                for (NganKeSach nganKeSach : listNganKeSach) {
+//                    cbxNganKe.addItem(nganKeSach.getTenNgan());
+//                }
+//            }
+//        }
     }//GEN-LAST:event_cbxKeSachItemStateChanged
 
     private void cbxKhuItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxKhuItemStateChanged
         // TODO add your handling code here:
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            Khu khu = getSelectedArea();
-            if (khu == null) {
-                cbxKeSach.removeAllItems();
-                cbxKeSach.addItem("Chọn kệ sách");
-                cbxKeSach.setSelectedIndex(0);
-                cbxKeSach.setEnabled(false);
-            } else {
-                cbxKeSach.setEnabled(true);
-                listKeSach = KeSach.getList(khu.getMaKhu());
-                cbxKeSach.removeAllItems();
-
-                cbxKeSach.addItem("Chọn kệ sách");
-                for (KeSach keSach : listKeSach) {
-                    cbxKeSach.addItem(keSach.getTenKe());
-                }
-            }
-        }
+//        if (evt.getStateChange() == ItemEvent.SELECTED) {
+//            Khu khu = getSelectedArea();
+//            if (khu == null) {
+//                cbxKeSach.removeAllItems();
+//                cbxKeSach.addItem("Chọn kệ sách");
+//                cbxKeSach.setSelectedIndex(0);
+//                cbxKeSach.setEnabled(false);
+//            } else {
+//                cbxKeSach.setEnabled(true);
+//                listKeSach = KeSach.getList(khu.getMaKhu());
+//                cbxKeSach.removeAllItems();
+//
+//                cbxKeSach.addItem("Chọn kệ sách");
+//                for (KeSach keSach : listKeSach) {
+//                    cbxKeSach.addItem(keSach.getTenKe());
+//                }
+//            }
+//        }
     }//GEN-LAST:event_cbxKhuItemStateChanged
 
     private void showMessage(String message) {
