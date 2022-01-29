@@ -55,11 +55,10 @@ public class ThanhToanSach extends javax.swing.JPanel {
     }
 
     public void laydulieuSach(){
-        String sql = "select S.maISBN, S.tenSach, S.maTacGia, TL.tenTheLoai, S.giaBia, S.soLuongCon " +
-                        "from SACH S, DoiTac DT, TheLoaiSach TL\n" +
-                        "where S.maTacGia = DT.maDoiTac\n" +
-                        "and S.maTheLoai = TL.maTheLoai\n" +
-                        "and S.soLuongCon > 0";
+        String sql = "select S.maISBN, S.tenSach, ten=(SELECT tenChiTiet FROM ChiTietSach CTS WHERE S.maTacGia = CTS.maChiTiet),\n" +
+                "theloai=(SELECT tenChiTiet FROM ChiTietSach CTS WHERE S.maTheLoai = CTS.maChiTiet), S.giaBia, S.soLuongCon  \n" +
+                "from SACH S\n" +
+                "where S.soLuongCon > 0";
         
         xlyBang.loadDuLieuVaoBang(t_sach, sql); 
         
