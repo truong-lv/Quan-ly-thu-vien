@@ -4,6 +4,7 @@ import Code.HamXuLyBang;
 import Code.LoadThoiGian;
 import Code.ThuVien;
 import Form.DocGia.DocGiaDKMuonTruoc;
+import Form.DocGia.DocGiaPhanHoi;
 import Form.DocGia.DocGiaTraCuu;
 import Form.QuanLy.PnQlyDoanhThu;
 import Form.QuanLy.PnQuanLyNhapHang;
@@ -64,9 +65,12 @@ public class GDChinh extends javax.swing.JFrame {
         // CHỨC NĂNG CHO KHÁCHS
         switch (ThuVien.quyen) {
 
-            case "Độc Giả":
+            case "Độc giả":
                 DocGiaDKMuonTruoc docGiaDKMuonTruoc = new DocGiaDKMuonTruoc();
                 addPanel(docGiaDKMuonTruoc, "Đăng ký mượn trước", "/image/icons8_edit_25px.png");
+                
+                DocGiaPhanHoi docGiaPhanHoi = new DocGiaPhanHoi();
+                addPanel(docGiaPhanHoi, "Độc giả phản hồi", "/image/feedback.png");
                 break;
 
             case "Quản lý":
@@ -108,7 +112,7 @@ public class GDChinh extends javax.swing.JFrame {
                 addPanel(tKQuanLySach, "QLÝ Sách", "/image/book_30px.png");
                 
                 TKQuanLyVitri tKQuanLyVitri = new TKQuanLyVitri();
-                addPanel(tKQuanLyVitri, "QLÝ Vị trí", "/image/book_shelfs_30px.png");
+                addPanel(tKQuanLyVitri, "QLÝ Vị trí", "/image/placeholder.png");
                 
                 TKQuanLyTheLoaiSach tKQuanLyTheLoaiSach = new TKQuanLyTheLoaiSach();
                 addPanel(tKQuanLyTheLoaiSach, "QLÝ Thể Loại Sách", "/image/books_30px.png");
@@ -262,8 +266,7 @@ public class GDChinh extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnInfor, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tbPnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(tbPnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE))
         );
 
         tbPnMenu.getAccessibleContext().setAccessibleName("QLÝ VÉ XE");
